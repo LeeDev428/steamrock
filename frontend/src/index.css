@@ -18,11 +18,11 @@
 
 @layer components {
   .btn-primary {
-    @apply bg-primary hover:bg-secondary text-white font-semibold py-3 px-6 rounded transition duration-300;
+    @apply bg-primary hover:bg-secondary text-white font-semibold py-3 px-6 rounded transition-all duration-300 hover:scale-105 hover:shadow-lg;
   }
 
   .btn-secondary {
-    @apply bg-accent hover:bg-opacity-90 text-white font-semibold py-3 px-6 rounded transition duration-300;
+    @apply bg-accent hover:bg-opacity-90 text-white font-semibold py-3 px-6 rounded transition-all duration-300 hover:scale-105 hover:shadow-lg;
   }
 
   .container-custom {
@@ -31,5 +31,79 @@
 
   .section-padding {
     @apply py-16 md:py-24;
+  }
+
+  /* Scroll-triggered animations */
+  .scroll-fade-up {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  }
+
+  .scroll-fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .scroll-fade-left {
+    opacity: 0;
+    transform: translateX(-50px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  }
+
+  .scroll-fade-left.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .scroll-fade-right {
+    opacity: 0;
+    transform: translateX(50px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  }
+
+  .scroll-fade-right.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .scroll-scale {
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  }
+
+  .scroll-scale.visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* Staggered children animation */
+  .stagger-children > * {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  .stagger-children.visible > * {
+    animation: staggerFadeIn 0.6s ease-out forwards;
+  }
+
+  .stagger-children.visible > *:nth-child(1) { animation-delay: 0.1s; }
+  .stagger-children.visible > *:nth-child(2) { animation-delay: 0.2s; }
+  .stagger-children.visible > *:nth-child(3) { animation-delay: 0.3s; }
+  .stagger-children.visible > *:nth-child(4) { animation-delay: 0.4s; }
+  .stagger-children.visible > *:nth-child(5) { animation-delay: 0.5s; }
+  .stagger-children.visible > *:nth-child(6) { animation-delay: 0.6s; }
+
+  @keyframes staggerFadeIn {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Smooth card hover */
+  .card-hover {
+    @apply transition-all duration-300 hover:-translate-y-2;
   }
 }
