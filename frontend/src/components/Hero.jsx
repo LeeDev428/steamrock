@@ -18,7 +18,7 @@ const Hero = () => {
     <div className="relative h-screen">
       {/* Background Image */}
       <div 
-        className="absolute inset-0 bg-cover bg-center"
+        className="absolute inset-0 bg-cover bg-center animate-fade-in"
         style={{
           backgroundImage: 'url(https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80)',
         }}
@@ -27,10 +27,10 @@ const Hero = () => {
       </div>
 
       {/* Content */}
-      <div className="relative h-full flex items-center">
+      <div className="relative h-full flex items-center animate-fade-in-up">
         <div className="container-custom">
-          <div className="max-w-4xl mx-auto text-center text-white fade-in">
-            <p className="text-accent text-sm md:text-base font-semibold tracking-wider uppercase mb-4">
+          <div className="max-w-4xl mx-auto text-center text-white">
+            <p className="text-accent text-sm md:text-base font-semibold tracking-wider uppercase mb-4 animate-fade-in-delay-1">
               YOUR TRUSTED REAL ESTATE PARTNER
             </p>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
