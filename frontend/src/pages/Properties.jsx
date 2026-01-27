@@ -3,8 +3,10 @@ import { useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import PropertyCard from '../components/PropertyCard';
 import { FaFilter } from 'react-icons/fa';
+import { useScrollAnimation } from '../hooks/useScrollAnimation';
 
 const Properties = () => {
+  const [gridRef, gridVisible] = useScrollAnimation();
   const [searchParams] = useSearchParams();
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -349,7 +351,7 @@ const Properties = () => {
                 <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-primary"></div>
               </div>
             ) : properties.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+              <div ref={gridRef} className={`grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 stagger-children ${gridVisible ? 'visible' : ''}`}>
                 {properties.map((property) => (
                   <PropertyCard key={property._id} property={property} />
                 ))}
