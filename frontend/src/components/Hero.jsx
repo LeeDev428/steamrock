@@ -29,7 +29,7 @@ const Hero = () => {
       {/* Content */}
       <div className="relative h-full flex items-center">
         <div className="container-custom">
-          <div className="max-w-4xl mx-auto text-center text-white">
+          <div className="max-w-4xl mx-auto text-center text-white fade-in">
             <p className="text-accent text-sm md:text-base font-semibold tracking-wider uppercase mb-4">
               YOUR TRUSTED REAL ESTATE PARTNER
             </p>
