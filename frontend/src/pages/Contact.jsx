@@ -1,7 +1,10 @@
 import ContactForm from '../components/ContactForm';
 import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaClock, FaFacebook, FaInstagram, FaLinkedin } from 'react-icons/fa';
+import { useScrollAnimation } from '../hooks/useScrollAnimation';
 
 const Contact = () => {
+  const [cardsRef, cardsVisible] = useScrollAnimation();
+  const [mapRef, mapVisible] = useScrollAnimation();
   const contactInfo = [
     {
       icon: <FaMapMarkerAlt className="text-3xl text-accent" />,
@@ -40,7 +43,7 @@ const Contact = () => {
       {/* Contact Info Cards */}
       <div className="section-padding bg-light">
         <div className="container-custom">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+          <div ref={cardsRef} className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16 stagger-children ${cardsVisible ? 'visible' : ''}`}>
             {contactInfo.map((info, index) => (
               <div 
                 key={index}
@@ -63,7 +66,7 @@ const Contact = () => {
           </div>
 
           {/* Map and Social Media */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          <div ref={mapRef} className={`grid grid-cols-1 lg:grid-cols-2 gap-12 scroll-fade-up ${mapVisible ? 'visible' : ''}`}>
             {/* Map */}
             <div className="bg-white rounded-lg shadow-lg overflow-hidden h-96">
               <iframe
