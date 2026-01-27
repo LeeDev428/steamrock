@@ -32,7 +32,7 @@ const Navbar = () => {
                     <img 
                       src="/src.png" 
                       alt="Streamrock Realty Logo" 
-                      className="w-16 h-16 transition-transform duration-300 group-hover:scale-105"
+                      className="w-20 h-16 transition-transform duration-300 group-hover:scale-105"
                     />
                     <div className="hidden sm:block">
                       <span className={`text-2xl font-display font-semibold tracking-tight transition-colors duration-300 ${
