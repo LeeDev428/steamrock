@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { FaUser, FaEnvelope, FaPhone, FaComment } from 'react-icons/fa';
+import { useScrollAnimation } from '../hooks/useScrollAnimation';
 
 const ContactForm = () => {
+  const [formRef, formVisible] = useScrollAnimation();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -51,7 +53,7 @@ const ContactForm = () => {
   return (
     <section className="section-padding bg-light">
       <div className="container-custom">
-        <div className="max-w-3xl mx-auto">
+        <div ref={formRef} className={`max-w-3xl mx-auto scroll-scale ${formVisible ? 'visible' : ''}`}>
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">Get In Touch</h2>
             <p className="text-gray-600">
