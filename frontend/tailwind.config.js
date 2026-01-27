@@ -14,8 +14,9 @@ export default {
         dark: '#1a202c',
       },
       fontFamily: {
-        serif: ['Georgia', 'serif'],
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        serif: ['Playfair Display', 'Georgia', 'serif'],
+        sans: ['Poppins', 'Inter', 'system-ui', 'sans-serif'],
+        display: ['Playfair Display', 'serif'],
       },
     },
   },
