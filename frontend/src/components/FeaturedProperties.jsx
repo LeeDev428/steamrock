@@ -1,8 +1,12 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import PropertyCard from './PropertyCard';
+import { useScrollAnimation } from '../hooks/useScrollAnimation';
 
 const FeaturedProperties = () => {
+  const [titleRef, titleVisible] = useScrollAnimation();
+  const [filterRef, filterVisible] = useScrollAnimation();
+  const [gridRef, gridVisible] = useScrollAnimation();
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState('All');
@@ -128,7 +132,7 @@ const FeaturedProperties = () => {
   return (
     <section className="section-padding bg-white">
       <div className="container-custom">
-        <div className="text-center mb-12">
+        <div ref={titleRef} className={`text-center mb-12 scroll-fade-up ${titleVisible ? 'visible' : ''}`}>
           <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">Featured Properties</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
             Explore our carefully selected properties across premium locations
@@ -136,7 +140,7 @@ const FeaturedProperties = () => {
         </div>
 
         {/* Category Filter */}
-        <div className="flex flex-wrap justify-center gap-3 mb-12">
+        <div ref={filterRef} className={`flex flex-wrap justify-center gap-3 mb-12 scroll-scale ${filterVisible ? 'visible' : ''}`}>
           {categories.map((category) => (
             <button
               key={category}
@@ -159,7 +163,7 @@ const FeaturedProperties = () => {
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+            <div ref={gridRef} className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12 stagger-children ${gridVisible ? 'visible' : ''}`}>
               {properties.map((property) => (
                 <PropertyCard key={property._id} property={property} />
               ))}
