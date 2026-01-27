@@ -53,7 +53,7 @@ const ContactForm = () => {
   return (
     <section className="section-padding bg-light">
       <div className="container-custom">
-        <div ref={formRef} className={`max-w-3xl mx-auto scroll-scale ${formVisible ? 'visible' : ''}`}>
+        <div ref={formRef} className={`max-w-3xl mx-auto scroll-fade-up ${formVisible ? 'visible' : ''}`}>
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">Get In Touch</h2>
             <p className="text-gray-600">
