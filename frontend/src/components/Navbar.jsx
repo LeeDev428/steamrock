@@ -24,7 +24,7 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white shadow-lg' : 'bg-transparent'}`}>
+    <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white shadow-lg' : 'bg-white/10 backdrop-blur-sm'}`}>
       <div className="container-custom">
         <div className="flex justify-between items-center h-20">
         {/* Logo */}
@@ -54,10 +54,10 @@ const Navbar = () => {
               <Link
                 key={link.name}
                 to={link.path}
-                className={`text-sm font-medium transition-colors duration-200 ${
+                className={`text-sm font-medium transition-all duration-300 hover:scale-105 ${
                   scrolled 
-                    ? 'text-gray-700 hover:text-primary' 
-                    : 'text-white hover:text-accent'
+                    ? 'text-gray-900 hover:text-primary' 
+                    : 'text-white drop-shadow-lg hover:text-accent'
                 }`}
               >
                 {link.name}
@@ -65,8 +65,8 @@ const Navbar = () => {
             ))}
             <a 
               href="tel:+639123456789" 
-              className={`flex items-center space-x-2 ${
-                scrolled ? 'text-primary' : 'text-white'
+              className={`flex items-center space-x-2 transition-all duration-300 hover:scale-105 ${
+                scrolled ? 'text-primary hover:text-secondary' : 'text-white drop-shadow-lg hover:text-accent'
               }`}
             >
               <FaPhone className="text-sm" />
