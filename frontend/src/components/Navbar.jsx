@@ -66,7 +66,7 @@ const Navbar = () => {
             <a 
               href="tel:+639123456789" 
               className={`flex items-center space-x-2 transition-all duration-300 hover:scale-105 ${
-                scrolled ? 'text-primary hover:text-secondary' : 'text-white drop-shadow-lg hover:text-accent'
+                scrolled ? 'text-primary hover:text-secondary' : 'text-gray-300 drop-shadow-lg hover:text-white'
               }`}
             >
               <FaPhone className="text-sm" />
@@ -77,7 +77,7 @@ const Navbar = () => {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className={`lg:hidden text-2xl ${scrolled ? 'text-primary' : 'text-white'}`}
+            className={`lg:hidden text-2xl ${scrolled ? 'text-primary' : 'text-gray-300 drop-shadow-lg'}`}
           >
             {isOpen ? <FaTimes /> : <FaBars />}
           </button>
