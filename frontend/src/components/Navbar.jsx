@@ -32,18 +32,18 @@ const Navbar = () => {
                     <img 
                       src="/src.png" 
                       alt="Streamrock Realty Logo" 
-                      className="w-20 h-16 transition-transform duration-300 group-hover:scale-105"
+                      className="w-48 h-30 transition-transform duration-300 group-hover:scale-105"
                     />
                     <div className="hidden sm:block">
                       <span className={`text-2xl font-display font-semibold tracking-tight transition-colors duration-300 ${
                         scrolled ? 'text-primary' : 'text-white'
                       }`}>
-                        Streamrock
+                        {/* Streamrock */}
                       </span>
                       <span className={`text-2xl font-light tracking-wide transition-colors duration-300 ${
                         scrolled ? 'text-gray-600' : 'text-gray-100'
                       }`}>
-                        {' '}Realty
+                        {/* {' '}Realty */}
                       </span>
                     </div>
                   </Link>
