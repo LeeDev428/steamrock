@@ -1,6 +1,10 @@
 import { FaCheckCircle, FaUsers, FaAward, FaHandshake } from 'react-icons/fa';
+import { useScrollAnimation } from '../hooks/useScrollAnimation';
 
 const About = () => {
+  const [statsRef, statsVisible] = useScrollAnimation();
+  const [contentRef, contentVisible] = useScrollAnimation();
+  const [valuesRef, valuesVisible] = useScrollAnimation();
   const stats = [
     { number: '500+', label: 'Properties Sold' },
     { number: '1000+', label: 'Happy Clients' },
@@ -49,7 +53,7 @@ const About = () => {
       {/* Stats Section */}
       <div className="bg-light py-16">
         <div className="container-custom">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div ref={statsRef} className={`grid grid-cols-2 md:grid-cols-4 gap-8 stagger-children ${statsVisible ? 'visible' : ''}`}>
             {stats.map((stat, index) => (
               <div key={index} className="text-center">
                 <div className="text-4xl md:text-5xl font-bold text-primary mb-2">{stat.number}</div>
@@ -63,7 +67,7 @@ const About = () => {
       {/* About Content */}
       <div className="section-padding bg-white">
         <div className="container-custom">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div ref={contentRef} className={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-center scroll-fade-up ${contentVisible ? 'visible' : ''}`}>
             <div>
               <h2 className="text-3xl md:text-4xl font-bold text-primary mb-6">
                 Your Real Estate Success Starts Here
@@ -97,14 +101,14 @@ const About = () => {
       {/* Values Section */}
       <div className="section-padding bg-light">
         <div className="container-custom">
-          <div className="text-center mb-16">
+          <div className="text-center mb-16 scroll-fade-up">
             <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">Our Core Values</h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
               The principles that guide us in delivering exceptional real estate services
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div ref={valuesRef} className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 stagger-children ${valuesVisible ? 'visible' : ''}`}>
             {values.map((value, index) => (
               <div 
                 key={index}
