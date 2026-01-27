@@ -33,15 +33,15 @@ const Hero = () => {
             <p className="text-accent text-sm md:text-base font-semibold tracking-wider uppercase mb-4 animate-fade-in-delay-1">
               YOUR TRUSTED REAL ESTATE PARTNER
             </p>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight animate-fade-in-delay-2">
               Find Your Dream Property
             </h1>
-            <p className="text-lg md:text-xl mb-12 text-gray-200 max-w-2xl mx-auto">
+            <p className="text-lg md:text-xl mb-12 text-gray-200 max-w-2xl mx-auto animate-fade-in-delay-3">
               Discover premium properties across Nuvali, Vermosa, Southmont, and Batangas Beach
             </p>
 
             {/* Search Form */}
-            <div className="bg-white rounded-lg shadow-2xl p-6 md:p-8">
+            <div className="bg-white rounded-lg shadow-2xl p-6 md:p-8 animate-fade-in-delay-4">
               <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div className="relative">
                   <FaHome className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
