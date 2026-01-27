@@ -10,13 +10,13 @@ const PropertyCard = ({ property }) => {
   };
 
   return (
-    <div className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300">
+    <div className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
       {/* Image */}
-      <div className="relative h-64 overflow-hidden">
+      <div className="relative h-64 overflow-hidden group">
         <img
           src={property.images?.[0] || 'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=800'}
           alt={property.name}
-          className="w-full h-full object-cover transform hover:scale-110 transition-transform duration-500"
+          className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 ease-out"
         />
         <div className="absolute top-4 right-4 bg-accent text-white px-3 py-1 rounded-full text-sm font-semibold">
           {property.propertyType}
