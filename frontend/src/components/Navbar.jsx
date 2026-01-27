@@ -57,7 +57,7 @@ const Navbar = () => {
                 className={`text-sm font-medium transition-all duration-300 hover:scale-105 ${
                   scrolled 
                     ? 'text-gray-900 hover:text-primary' 
-                    : 'text-white drop-shadow-lg hover:text-accent'
+                    : 'text-gray-300 drop-shadow-lg hover:text-white'
                 }`}
               >
                 {link.name}
