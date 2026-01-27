@@ -140,7 +140,7 @@ const FeaturedProperties = () => {
         </div>
 
         {/* Category Filter */}
-        <div ref={filterRef} className={`flex flex-wrap justify-center gap-3 mb-12 scroll-scale ${filterVisible ? 'visible' : ''}`}>
+        <div ref={filterRef} className={`flex flex-wrap justify-center gap-3 mb-12 scroll-fade-up ${filterVisible ? 'visible' : ''}`}>
           {categories.map((category) => (
             <button
               key={category}
