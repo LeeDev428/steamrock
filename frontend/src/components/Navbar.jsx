@@ -27,17 +27,28 @@ const Navbar = () => {
     <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white shadow-lg' : 'bg-transparent'}`}>
       <div className="container-custom">
         <div className="flex justify-between items-center h-20">
-          {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
-            <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center">
-              <span className={`text-2xl font-bold ${scrolled ? 'text-white' : 'text-white'}`}>SR</span>
-            </div>
-            <span className={`text-xl font-bold ${scrolled ? 'text-primary' : 'text-white'} hidden sm:block`}>
-              Streamrock Realty
-            </span>
-          </Link>
+        {/* Logo */}
+                  <Link to="/" className="flex items-center space-x-3 group">
+                    <img 
+                      src="/src.png" 
+                      alt="Streamrock Realty Logo" 
+                      className="w-16 h-16 transition-transform duration-300 group-hover:scale-105"
+                    />
+                    <div className="hidden sm:block">
+                      <span className={`text-2xl font-display font-semibold tracking-tight transition-colors duration-300 ${
+                        scrolled ? 'text-primary' : 'text-white'
+                      }`}>
+                        Streamrock
+                      </span>
+                      <span className={`text-2xl font-light tracking-wide transition-colors duration-300 ${
+                        scrolled ? 'text-gray-600' : 'text-gray-100'
+                      }`}>
+                        {' '}Realty
+                      </span>
+                    </div>
+                  </Link>
 
-          {/* Desktop Menu */}
+                          {/* Desktop Menu */}
           <div className="hidden lg:flex items-center space-x-8">
             {navLinks.map((link) => (
               <Link
