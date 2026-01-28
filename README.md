@@ -2,6 +2,16 @@
 
 A modern, professional MERN stack real estate platform for property listings and management.
 
+## 📚 Documentation
+
+**Essential Guides:**
+- 📖 [**DEVELOPMENT_WORKFLOW.md**](./DEVELOPMENT_WORKFLOW.md) - Complete development workflow for project owner and co-developers
+- ⚡ [**QUICK_WORKFLOW.md**](./QUICK_WORKFLOW.md) - Quick reference for daily tasks
+- 🚀 [**DEPLOYMENT_GUIDE.md**](./DEPLOYMENT_GUIDE.md) - Comprehensive deployment instructions
+- 🏃 [**QUICK_START.md**](./QUICK_START.md) - Get started in 5 minutes
+
+**Read DEVELOPMENT_WORKFLOW.md first for complete team workflow!**
+
 ## 🏗️ Project Structure
 
 ```
@@ -9,6 +19,9 @@ streamrock/
 ├── backend/           # Node.js + Express + MongoDB API
 ├── frontend/          # React + Vite + Tailwind CSS
 ├── mobile/           # React Native (Future Development)
+├── DEVELOPMENT_WORKFLOW.md   # Complete workflow guide
+├── QUICK_WORKFLOW.md          # Quick reference
+├── DEPLOYMENT_GUIDE.md        # Deployment instructions
 └── README.md
 ```
 
