@@ -51,11 +51,16 @@ router.get('/categories', async (req, res) => {
 });
 
 // @route   GET /api/projects/:slug
-// @desc    Get single project by slug
+// @desc    Get single project by slug or _id
 // @access  Public
 router.get('/:slug', async (req, res) => {
   try {
-    const project = await Project.findOne({ slug: req.params.slug })
+    const mongoose = require('mongoose');
+    const query = mongoose.Types.ObjectId.isValid(req.params.slug)
+      ? { _id: req.params.slug }
+      : { slug: req.params.slug };
+
+    const project = await Project.findOne(query)
       .populate('contractor', 'name logo description website')
       .populate('location');
 
