@@ -5,3 +5,7 @@ dist
 build
 *.log
 .vscode
+
+# Uploaded files
+backend/uploads/
+uploads/
