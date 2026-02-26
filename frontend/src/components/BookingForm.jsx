@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { FiUser, FiMail, FiPhone, FiCalendar, FiClock, FiMessageCircle, FiSend, FiCheck } from 'react-icons/fi';
+import { FiUser, FiMail, FiPhone, FiCalendar, FiClock, FiMessageCircle, FiSend, FiCheck, FiVideo, FiMapPin } from 'react-icons/fi';
 
 const BookingForm = ({ selectedProject }) => {
   const [projects, setProjects] = useState([]);
@@ -56,9 +56,10 @@ const BookingForm = ({ selectedProject }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    setError('');
-
+    if (!formData.tourType) {
+      setError('Please select a tour type (In Person or Video Chat).');
+      return;
+    }
     try {
       await axios.post('/bookings', formData);
       setSuccess(true);
@@ -69,6 +70,7 @@ const BookingForm = ({ selectedProject }) => {
         project: '',
         preferredDate: '',
         preferredTime: '',
+        tourType: '',
         message: ''
       });
       
@@ -216,6 +218,31 @@ const BookingForm = ({ selectedProject }) => {
               ))}
             </select>
           </div>
+        </div>
+      </div>
+
+      {/* Tour Type */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-3">Tour Type *</label>
+        <div className="grid grid-cols-2 gap-3">
+          {tourTypes.map(({ value, label, icon: Icon, desc }) => (
+            <button
+              type="button"
+              key={value}
+              onClick={() => setFormData({ ...formData, tourType: value })}
+              className={`flex items-center gap-3 p-4 border-2 rounded-xl transition-all text-left ${
+                formData.tourType === value
+                  ? 'border-primary bg-primary/5 text-primary'
+                  : 'border-gray-200 hover:border-primary/40 text-gray-700'
+              }`}
+            >
+              <Icon className="w-5 h-5 flex-shrink-0" />
+              <div>
+                <p className="font-semibold text-sm">{label}</p>
+                <p className="text-xs text-gray-500">{desc}</p>
+              </div>
+            </button>
+          ))}
         </div>
       </div>
 
