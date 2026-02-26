@@ -1,5 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import io from 'socket.io-client';
 import { useAuth } from '../../context/AuthContext';
 import {
   FiHome,
@@ -22,8 +24,53 @@ import {
 const AdminLayout = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [projectsOpen, setProjectsOpen] = useState(true);
+  const [notifOpen, setNotifOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [recentBookings, setRecentBookings] = useState([]);
+  const notifRef = useRef(null);
   const { admin, logout } = useAuth();
   const navigate = useNavigate();
+
+  // Fetch unread count and recent bookings
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      try {
+        const [countRes, bookingsRes] = await Promise.all([
+          axios.get('/bookings/unread-count'),
+          axios.get('/bookings?isRead=false')
+        ]);
+        setUnreadCount(countRes.data.count || 0);
+        const bookings = Array.isArray(bookingsRes.data) ? bookingsRes.data : [];
+        setRecentBookings(bookings.slice(0, 5));
+      } catch (err) {
+        console.error('Error fetching notifications:', err);
+      }
+    };
+    fetchNotifications();
+
+    // Socket.io for real-time updates
+    const socket = io(window.location.origin, { transports: ['websocket', 'polling'] });
+    socket.on('newBooking', (booking) => {
+      setUnreadCount(prev => prev + 1);
+      setRecentBookings(prev => [booking, ...prev].slice(0, 5));
+    });
+    socket.on('bookingUpdated', () => {
+      fetchNotifications();
+    });
+
+    return () => socket.disconnect();
+  }, []);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (notifRef.current && !notifRef.current.contains(e.target)) {
+        setNotifOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const handleLogout = () => {
     logout();
@@ -231,10 +278,72 @@ const AdminLayout = ({ children }) => {
             </Link>
 
             {/* Notifications */}
-            <button className="relative p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-xl transition-all">
-              <FiBell className="w-5 h-5" />
-              <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-            </button>
+            <div className="relative" ref={notifRef}>
+              <button
+                onClick={() => setNotifOpen(!notifOpen)}
+                className="relative p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-xl transition-all"
+              >
+                <FiBell className="w-5 h-5" />
+                {unreadCount > 0 && (
+                  <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] flex items-center justify-center bg-red-500 text-white text-[10px] font-bold rounded-full px-1">
+                    {unreadCount > 99 ? '99+' : unreadCount}
+                  </span>
+                )}
+              </button>
+
+              {/* Notification Dropdown */}
+              {notifOpen && (
+                <div className="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 overflow-hidden">
+                  <div className="px-4 py-3 bg-gradient-to-r from-primary to-secondary text-white flex items-center justify-between">
+                    <h3 className="font-semibold text-sm">Notifications</h3>
+                    {unreadCount > 0 && (
+                      <span className="text-xs bg-white/20 px-2 py-0.5 rounded-full">{unreadCount} new</span>
+                    )}
+                  </div>
+                  <div className="max-h-72 overflow-y-auto">
+                    {recentBookings.length === 0 ? (
+                      <div className="px-4 py-6 text-center text-gray-400 text-sm">
+                        No new notifications
+                      </div>
+                    ) : (
+                      recentBookings.map((b) => (
+                        <button
+                          key={b._id}
+                          onClick={() => {
+                            setNotifOpen(false);
+                            navigate('/admin/bookings');
+                          }}
+                          className="w-full text-left px-4 py-3 hover:bg-gray-50 border-b border-gray-100 last:border-0 transition-colors"
+                        >
+                          <div className="flex items-start gap-3">
+                            <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                              <FiCalendar className="w-4 h-4 text-primary" />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-medium text-gray-800 truncate">{b.name}</p>
+                              <p className="text-xs text-gray-500 truncate">
+                                {b.projectName || 'General Inquiry'} &bull; {b.preferredDate ? new Date(b.preferredDate).toLocaleDateString() : ''}
+                              </p>
+                            </div>
+                          </div>
+                        </button>
+                      ))
+                    )}
+                  </div>
+                  <div className="px-4 py-2 border-t border-gray-100 bg-gray-50">
+                    <button
+                      onClick={() => {
+                        setNotifOpen(false);
+                        navigate('/admin/bookings');
+                      }}
+                      className="w-full text-center text-xs font-semibold text-primary hover:text-secondary transition-colors py-1"
+                    >
+                      View all bookings
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
 
             {/* User Avatar (mobile) */}
             <div className="flex lg:hidden items-center gap-2">
