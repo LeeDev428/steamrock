@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaBars, FaTimes, FaPhone, FaChevronDown } from 'react-icons/fa';
 
 const Navbar = () => {
@@ -7,6 +7,13 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
   const dropdownRef = useRef(null);
+  const navigate = useNavigate();
+
+  const handleMobileLink = (path) => {
+    setIsOpen(false);
+    setActiveDropdown(null);
+    navigate(path);
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -167,34 +174,31 @@ const Navbar = () => {
                     </button>
                     {activeDropdown === link.name && (
                       <div className="pl-4 pb-2">
-                        <Link
-                          to={link.path}
-                          className="block py-2 text-sm text-gray-600 hover:text-primary"
-                          onClick={() => setIsOpen(false)}
+                        <button
+                          className="block w-full text-left py-2 text-sm text-gray-600 hover:text-primary"
+                          onClick={() => handleMobileLink(link.path)}
                         >
                           All Projects
-                        </Link>
+                        </button>
                         {link.items.map((item) => (
-                          <Link
+                          <button
                             key={item.name}
-                            to={item.path}
-                            className="block py-2 text-sm text-gray-600 hover:text-primary"
-                            onClick={() => setIsOpen(false)}
+                            className="block w-full text-left py-2 text-sm text-gray-600 hover:text-primary"
+                            onClick={() => handleMobileLink(item.path)}
                           >
                             {item.name}
-                          </Link>
+                          </button>
                         ))}
                       </div>
                     )}
                   </>
                 ) : (
-                  <Link
-                    to={link.path}
-                    className="block py-3 text-gray-700 font-medium hover:text-primary"
-                    onClick={() => setIsOpen(false)}
+                  <button
+                    className="block w-full text-left py-3 text-gray-700 font-medium hover:text-primary"
+                    onClick={() => handleMobileLink(link.path)}
                   >
                     {link.name}
-                  </Link>
+                  </button>
                 )}
               </div>
             ))}
