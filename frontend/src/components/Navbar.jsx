@@ -42,6 +42,7 @@ const Navbar = () => {
       items: categories
     },
     { name: 'About Us', path: '/about' },
+    { name: 'Blog', path: '/blog' },
     { name: 'Contact', path: '/contact' }
   ];
 
