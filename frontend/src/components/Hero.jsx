@@ -4,6 +4,7 @@ import { FaChevronLeft, FaChevronRight, FaPlay } from 'react-icons/fa';
 
 const Hero = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [loaded, setLoaded] = useState(false);
 
   // Default slides - will be replaced by SiteSettings from API
   const slides = [
@@ -33,6 +34,12 @@ const Hero = () => {
     }, 6000);
     return () => clearInterval(timer);
   }, [slides.length]);
+
+  // Trigger entrance animation after mount
+  useEffect(() => {
+    const t = setTimeout(() => setLoaded(true), 100);
+    return () => clearTimeout(t);
+  }, []);
 
   const goToSlide = (index) => setCurrentSlide(index);
   const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
@@ -75,16 +82,16 @@ const Hero = () => {
       <div className="relative h-full flex items-end pb-32">
         <div className="container-custom">
           <div className="max-w-3xl">
-            <p className="text-accent text-sm tracking-[0.3em] uppercase mb-4 font-medium">
+            <p className={`text-accent text-sm tracking-[0.3em] uppercase mb-4 font-medium transition-all duration-700 ${loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
               STREAMROCK REALTY
             </p>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-6 leading-tight">
+            <h1 className={`text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-6 leading-tight transition-all duration-700 delay-200 ${loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
               {slides[currentSlide].title}
             </h1>
-            <p className="text-xl text-gray-200 mb-8 max-w-xl">
+            <p className={`text-xl text-gray-200 mb-8 max-w-xl transition-all duration-700 delay-[400ms] ${loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
               {slides[currentSlide].subtitle}
             </p>
-            <div className="flex flex-wrap gap-4">
+            <div className={`flex flex-wrap gap-4 transition-all duration-700 delay-[600ms] ${loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
               <Link
                 to="/projects"
                 className="px-8 py-4 bg-white text-primary font-semibold hover:bg-gray-100 transition-colors"
