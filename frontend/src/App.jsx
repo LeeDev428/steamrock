@@ -1,7 +1,9 @@
+import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import LoadingScreen from './components/LoadingScreen';
 import Home from './pages/Home';
 import Projects from './pages/Projects';
 import ProjectDetail from './pages/ProjectDetail';
@@ -29,6 +31,15 @@ const PublicLayout = ({ children }) => (
 );
 
 function App() {
+  const [appLoading, setAppLoading] = useState(true);
+
+  useEffect(() => {
+    const t = setTimeout(() => setAppLoading(false), 1500);
+    return () => clearTimeout(t);
+  }, []);
+
+  if (appLoading) return <LoadingScreen />;
+
   return (
     <AuthProvider>
       <Router>
