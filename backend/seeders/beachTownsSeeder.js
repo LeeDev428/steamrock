@@ -53,7 +53,7 @@ const beachTownsProjects = [
     category: 'BeachTowns',
     propertyType: 'Condominium',
     totalArea: { value: 0.46, unit: 'Hectares' },
-    unitSizeRange: { min: 36.1, max: 182.7, unit: 'sqm' },
+    lotSizeRange: { min: 36.1, max: 182.7, unit: 'sqm' },
     status: 'Published',
     featured: true,
     shortDescription:
@@ -172,7 +172,7 @@ const beachTownsProjects = [
     category: 'BeachTowns',
     propertyType: 'Condominium',
     totalArea: { value: 1.26, unit: 'Hectares' },
-    unitSizeRange: { min: 59.92, max: 143.83, unit: 'sqm' },
+    lotSizeRange: { min: 59.92, max: 143.83, unit: 'sqm' },
     status: 'Published',
     featured: true,
     shortDescription:
@@ -297,7 +297,7 @@ const beachTownsProjects = [
     category: 'BeachTowns',
     propertyType: 'Condominium',
     totalArea: { value: 0.315, unit: 'Hectares' },
-    unitSizeRange: { min: 36.6, max: 130, unit: 'sqm' },
+    lotSizeRange: { min: 36.6, max: 130, unit: 'sqm' },
     status: 'Published',
     featured: true,
     shortDescription:
