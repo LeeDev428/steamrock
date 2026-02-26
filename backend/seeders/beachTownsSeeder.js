@@ -59,11 +59,11 @@ const beachTownsProjects = [
     shortDescription:
       'A coastal sanctuary inspired by Captain Nemo\'s maritime discoveries, situated within the world-class resort of CaSoBē. Features luxurious private units with modern designs, private balconies, and an infinity pool—both a visionary home and a smart investment.',
 
-    cardImage: 'https://images.unsplash.com/photo-1582271342647-7a9e22c76b6b?w=900&auto=format&fit=crop',
+    cardImage: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=900&auto=format&fit=crop',
     hero: {
       title: 'The Nautilus at CaSoBē',
       subtitle: 'A Coastal Sanctuary Inspired by the Sea',
-      image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1600&auto=format&fit=crop'
+      image: 'https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=1600&auto=format&fit=crop'
     },
 
     gallery: [
