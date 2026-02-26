@@ -77,13 +77,15 @@ const AdminLayout = ({ children }) => {
                   key={subitem.path}
                   to={subitem.path}
                   end
-                  className={({ isActive }) => {
-                    // For query-param routes, check exact match
+                  className={() => {
+                    // Custom matching for query-param routes
                     const currentSearch = window.location.search;
                     const subPath = subitem.path.split('?')[0];
                     const subQuery = subitem.path.includes('?') ? '?' + subitem.path.split('?')[1] : '';
                     const currentPath = window.location.pathname;
-                    const exactMatch = currentPath === subPath && (subQuery === '' || currentSearch === subQuery);
+                    
+                    // Both pathname and query string must match exactly
+                    const exactMatch = currentPath === subPath && currentSearch === subQuery;
                     return `block px-3 py-2 rounded-lg text-sm transition-all duration-200 ${
                       exactMatch
                         ? 'bg-gradient-to-r from-primary to-secondary text-white font-semibold shadow-lg'
