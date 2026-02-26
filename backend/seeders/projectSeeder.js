@@ -62,7 +62,7 @@ const parksProjects = [
     status: 'Published',
     featured: true,
     shortDescription:
-      'A Mediterranean-inspired resort-like subdivision in Zamboanga City featuring resort-style pools, lush green corridors, and a grand ballroom set across 24 hectares.',
+      'A 24-hectare Mediterranean-inspired residential community in Zamboanga City, offering resort-caliber amenities including free-form pools, a grand ballroom, lush green corridors, and modern sports facilities.',
 
     // Up to 4 images (admins can replace in the CMS)
     cardImage: 'https://images.unsplash.com/photo-1591474200742-8e512e6f98f8?w=900&auto=format&fit=crop',
@@ -159,14 +159,17 @@ const parksProjects = [
     ],
 
     features: [
-      { icon: 'pool', title: 'Infinity Pool', description: 'Free-form adult infinity pool with resort ambiance' },
-      { icon: 'park', title: 'Linear Park', description: 'Expansive green corridors for jogging and strolls' },
-      { icon: 'basketball', title: 'Basketball Court', description: 'Outdoor court for active play' },
-      { icon: 'pickleball', title: 'Pickleball Court', description: 'Modern recreational facility for a fast-growing sport' },
-      { icon: 'gym', title: 'Outdoor Gym', description: 'Open-air fitness area' },
-      { icon: 'ballroom', title: 'Grand Ballroom', description: 'Refined venue for celebrations and events' },
-      { icon: 'security', title: '24/7 Security', description: 'Round-the-clock security and property management' },
-      { icon: 'playground', title: "Kid's Grove", description: 'Safe, nature-inspired playground' }
+      { icon: 'walkway', title: 'Scenic Tree-Lined Walkways', description: 'Leisurely paths embraced by greenery, inviting calm moments and closer connection with nature' },
+      { icon: 'gate', title: 'Grand Landscaped Gateways', description: 'Elegant main entrance, lush roads, and rotundas that set a distinguished sense of arrival' },
+      { icon: 'security', title: 'Secure & Hassle-Free Living', description: 'Round-the-clock security and professional property management for comfort and peace of mind' },
+      { icon: 'ballroom', title: 'Grand Ballroom', description: 'A refined venue for celebrations, gatherings, and milestones' },
+      { icon: 'pool', title: 'Resort-Style Pools', description: 'Free-form adult pool and dedicated kiddie pool for relaxation and family fun' },
+      { icon: 'basketball', title: 'Basketball Court', description: 'Outdoor court perfect for active play and friendly competition' },
+      { icon: 'pickleball', title: 'Pickleball Court', description: 'Modern recreation facility for a fast-growing sport enjoyed by all ages' },
+      { icon: 'gym', title: 'Outdoor Gym', description: 'Fitness in the open air, blending wellness and nature in a refreshing setting' },
+      { icon: 'picnic', title: 'Picnic Area', description: 'Open spaces designed for family bonding, weekend leisure, and memorable outdoor moments' },
+      { icon: 'playground', title: "Kid's Grove", description: 'A safe and playful haven for children to explore, laugh, and create memories' },
+      { icon: 'park', title: 'Linear Park', description: 'Expansive green corridors ideal for morning jogs or quiet strolls' }
     ]
   },
 
@@ -180,7 +183,7 @@ const parksProjects = [
     status: 'Published',
     featured: true,
     shortDescription:
-      'A historic 50-hectare estate in Tiaong, Quezon that blends legendary Filipino architecture and traditional culture with modern comforts, set amidst ancestral Escudero lands.',
+      'A sprawling 50-hectare heritage estate in Tiaong, Quezon, where legendary Filipino architecture and traditional culture converge with contemporary comforts amid the storied Escudero lands.',
 
     cardImage: 'https://images.unsplash.com/photo-1523217582562-09d0def993a6?w=900&auto=format&fit=crop',
     hero: {
@@ -260,14 +263,14 @@ const parksProjects = [
     ],
 
     features: [
-      { icon: 'gate', title: 'Exclusive Gated', description: 'Secure and distinguished living experience' },
-      { icon: 'farm', title: 'Farm Lots', description: 'Residential options integrated with natural landscape' },
-      { icon: 'kayak', title: 'Kayaking', description: 'Access to natural waterways for adventure' },
-      { icon: 'fishing', title: 'Fishing', description: 'Premier fishing spots on estate grounds' },
-      { icon: 'pool', title: 'Swimming Pool', description: 'On-site leisure facility' },
-      { icon: 'clubhouse', title: 'Clubhouse', description: 'Facilities for community gatherings and events' },
-      { icon: 'park', title: 'Parks & Playground', description: 'Dedicated open spaces for family activities' },
-      { icon: 'mountain', title: 'Mountain Views', description: 'Panoramic views of Mt. Banahaw, Cristobal, and Makiling' }
+      { icon: 'gate', title: 'Exclusive Gated Community', description: 'Secure and distinguished living experience within heritage grounds' },
+      { icon: 'resort', title: 'Villa Escudero Resort', description: 'Access to the iconic Villa Escudero Resort on the estate' },
+      { icon: 'farm', title: 'Farm and Lakeside Lots', description: 'Residential options integrated with natural farm and lake landscape' },
+      { icon: 'clubhouse', title: 'Clubhouse', description: 'Community clubhouse for gatherings, events, and leisure' },
+      { icon: 'hall', title: 'Multi-purpose Hall', description: 'Versatile indoor facility for functions and community activities' },
+      { icon: 'pool', title: 'Swimming Pool', description: 'On-site leisure pool for residents' },
+      { icon: 'park', title: 'Parks and Playground', description: 'Dedicated open spaces for family activities and children play' },
+      { icon: 'mountain', title: 'Mountain Views', description: 'Panoramic views of Mt. Banahaw, Mt. Cristobal, and Mt. Makiling' }
     ]
   },
 
@@ -281,7 +284,7 @@ const parksProjects = [
     status: 'Published',
     featured: false,
     shortDescription:
-      'A 71-hectare floral haven in Silang, Cavite blending Spanish-Mexican architecture with lush themed gardens, resort pools, and the cool breezes of Tagaytay ridge.',
+      'A 71-hectare nature retreat in Silang, Cavite blending Spanish-Mexican architecture with themed gardens, resort-style pools, and the refreshing cool climate of the Tagaytay ridge.',
 
     cardImage: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=900&auto=format&fit=crop',
     hero: {
@@ -383,14 +386,19 @@ const parksProjects = [
     ],
 
     features: [
-      { icon: 'garden', title: 'Themed Gardens', description: 'El Refugio, El Sanctuario, and Campos Verdes' },
-      { icon: 'pool', title: 'Resort Pools', description: 'Adult and children pools for leisure' },
-      { icon: 'trail', title: 'Nature Trail', description: 'Scenic walking trail through the estate' },
-      { icon: 'grotto', title: 'Grotto', description: 'Our Lady of Guadalupe Grotto for reflection' },
-      { icon: 'basketball', title: 'Basketball Court', description: 'Outdoor sports facility' },
-      { icon: 'clubhouse', title: 'Clubhouse', description: 'Villa Ponderosa Clubhouse for gatherings' },
-      { icon: 'campsite', title: 'Campsite', description: 'Outdoor camping and barbeque areas' },
-      { icon: 'security', title: '24/7 Security', description: 'Round-the-clock gated security' }
+      { icon: 'gate', title: 'Exclusive Gated Community', description: 'Secure entrance with round-the-clock access control' },
+      { icon: 'trail', title: 'Nature Trail', description: 'Scenic walking trail through the estate grounds' },
+      { icon: 'fish', title: 'Fish Pond', description: 'Tranquil fish pond integrated into the landscape' },
+      { icon: 'clubhouse', title: 'Clubhouse', description: 'Villa Ponderosa Clubhouse for community gatherings' },
+      { icon: 'pool', title: 'Swimming Pool', description: 'Resort-style pool for residents and families' },
+      { icon: 'basketball', title: 'Basketball Court', description: 'Outdoor court for active recreation' },
+      { icon: 'campsite', title: 'Campsite', description: 'Outdoor camping and barbeque area' },
+      { icon: 'teahouse', title: 'Tea House', description: 'Intimate venue for small gatherings and conversations' },
+      { icon: 'garden', title: 'El Sanctuario', description: 'Beautifully themed garden for reflection and strolls' },
+      { icon: 'grotto', title: 'Our Lady of Guadalupe Grotto', description: 'A serene grotto for prayer and meditation' },
+      { icon: 'meditation', title: 'Meditation Area', description: 'Dedicated space for mindfulness and tranquility' },
+      { icon: 'pine', title: 'Miniature Pine Forests', description: 'Charming pine groves perfect for picnics and small receptions' },
+      { icon: 'garden', title: 'Campos Verdes', description: 'Themed garden with open spaces for barbeques and picnics' }
     ]
   },
 
