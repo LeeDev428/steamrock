@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import { FaMapMarkerAlt, FaFilter, FaTimes } from 'react-icons/fa';
+import { useScrollAnimation } from '../hooks/useScrollAnimation';
 
 const Projects = () => {
   const [searchParams] = useSearchParams();
@@ -11,6 +12,9 @@ const Projects = () => {
   const [filter, setFilter] = useState({
     category: searchParams.get('category') || ''
   });
+
+  const [filtersRef, filtersVisible] = useScrollAnimation();
+  const [gridRef, gridVisible] = useScrollAnimation();
 
   const categories = [
     { value: '', label: 'All Projects' },
@@ -88,7 +92,7 @@ const Projects = () => {
 
       <div className="container-custom py-12">
         {/* Filters */}
-        <div className="flex flex-wrap items-center gap-4 mb-12 pb-8 border-b border-gray-200">
+        <div ref={filtersRef} className={`flex flex-wrap items-center gap-4 mb-12 pb-8 border-b border-gray-200 scroll-fade-up ${filtersVisible ? 'visible' : ''}`}>
           <span className="text-gray-500 flex items-center gap-2">
             <FaFilter className="text-sm" /> Filter by:
           </span>
@@ -135,7 +139,7 @@ const Projects = () => {
             )}
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div ref={gridRef} className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 stagger-children ${gridVisible ? 'visible' : ''}`}>
             {projects.map((project) => (
               <Link
                 key={project._id}
