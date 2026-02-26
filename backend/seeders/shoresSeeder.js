@@ -78,7 +78,7 @@ const shoresProjects = [
         label: 'ABOUT',
         title: 'Where Land Meets the Sea',
         description:
-          'Peninsula de Punta Fuego is Landco's flagship masterpiece — an 88-hectare flame-shaped peninsula set against the azure waters of Nasugbu, Batangas. With a Spanish-Mediterranean inspired design, the community blends natural beauty with refined living. Twelve white-sand beaches, a Club Punta Fuego, a 9-hole golf course, and the South Marina define life on the peninsula.',
+          'Peninsula de Punta Fuego is Landco\'s flagship masterpiece — an 88-hectare flame-shaped peninsula set against the azure waters of Nasugbu, Batangas. With a Spanish-Mediterranean inspired design, the community blends natural beauty with refined living. Twelve white-sand beaches, a Club Punta Fuego, a 9-hole golf course, and the South Marina define life on the peninsula.',
         backgroundColor: '#ffffff',
         textColor: '#000000'
       },
@@ -88,7 +88,7 @@ const shoresProjects = [
         label: 'LIFESTYLE',
         title: 'Life on the Peninsula',
         description:
-          'Whether you sail, golf, swim, or simply unwind on the shore, Peninsula de Punta Fuego delivers the lifestyle you deserve. The community's exclusive club, pristine beaches, and marina make every day feel like a resort escape.',
+          'Whether you sail, golf, swim, or simply unwind on the shore, Peninsula de Punta Fuego delivers the lifestyle you deserve. The community\'s exclusive club, pristine beaches, and marina make every day feel like a resort escape.',
         backgroundColor: '#f9f9f9',
         textColor: '#000000',
         features: [
@@ -121,7 +121,7 @@ const shoresProjects = [
 
     cardImage: 'https://images.unsplash.com/photo-1519046904884-53103b34b206?w=800&auto=format&fit=crop',
     shortDescription:
-      'A 61–92 hectare hillside coastal estate in Brgy. Natipuan, Nasugbu featuring 800m of white-sand beach, terrace homes, a 9-hole golf course, Peak Linear Park, and a yacht club.',
+      'A 61\u201392 hectare hillside coastal estate in Brgy. Natipuan, Nasugbu featuring 800m of white-sand beach, terrace homes, a 9-hole golf course, Peak Linear Park, and a yacht club.',
 
     hero: {
       image:  'https://images.unsplash.com/photo-1519046904884-53103b34b206?w=1600&auto=format&fit=crop',
