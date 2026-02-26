@@ -50,7 +50,7 @@ const shoresProjects = [
 
     cardImage: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&auto=format&fit=crop',
     shortDescription:
-      'A flame-shaped peninsula offering 88 hectares of Spanish-Mediterranean luxury with 12 pristine white-sand beaches, a 9-hole golf course, and South Marina in the heart of Nasugbu, Batangas.',
+      'An 88-hectare flame-shaped peninsula in Nasugbu, Batangas featuring Spanish-Mediterranean luxury with 12 white-sand beaches, a 9-hole seaside golf course, and South Marina.',
 
     hero: {
       image:  'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1600&auto=format&fit=crop',
@@ -121,7 +121,7 @@ const shoresProjects = [
 
     cardImage: 'https://images.unsplash.com/photo-1519046904884-53103b34b206?w=800&auto=format&fit=crop',
     shortDescription:
-      'A 61\u201392 hectare hillside coastal estate in Brgy. Natipuan, Nasugbu featuring 800m of white-sand beach, terrace homes, a 9-hole golf course, Peak Linear Park, and a yacht club.',
+      'A 61–92 hectare hillside coastal estate in Nasugbu, Batangas featuring 800 meters of white-sand beach, terraced homes, a 9-hole golf course, Peak Linear Park, and a full-service yacht club.',
 
     hero: {
       image:  'https://images.unsplash.com/photo-1519046904884-53103b34b206?w=1600&auto=format&fit=crop',
