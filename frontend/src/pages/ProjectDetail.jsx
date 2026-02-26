@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import { FaMapMarkerAlt, FaRuler, FaMoneyBillWave, FaChevronLeft, FaChevronRight, FaPhone, FaEnvelope } from 'react-icons/fa';
+import { FiCheck } from 'react-icons/fi';
+import { useScrollAnimation } from '../hooks/useScrollAnimation';
 
 const ProjectDetail = () => {
   const { slug } = useParams();
@@ -50,6 +52,11 @@ const ProjectDetail = () => {
 
   const prevImage = () => setCurrentImage((prev) => (prev - 1 + allImages.length) % allImages.length);
   const nextImage = () => setCurrentImage((prev) => (prev + 1) % allImages.length);
+
+  const [aboutRef, aboutVisible] = useScrollAnimation();
+  const [featuresRef, featuresVisible] = useScrollAnimation();
+  const [galleryRef, galleryVisible] = useScrollAnimation();
+  const [sidebarRef, sidebarVisible] = useScrollAnimation();
 
   return (
     <div>
@@ -129,7 +136,7 @@ const ProjectDetail = () => {
             <div className="lg:col-span-2 space-y-16">
               {/* About */}
               {project.shortDescription && (
-                <section>
+                <section ref={aboutRef} className={`scroll-fade-up ${aboutVisible ? 'visible' : ''}`}>
                   <span className="text-primary text-sm tracking-[0.3em] uppercase font-medium">About</span>
                   <h2 className="text-3xl font-display font-bold text-gray-900 mt-2 mb-6">
                     Discover {project.name}
@@ -192,7 +199,7 @@ const ProjectDetail = () => {
 
               {/* Features & Amenities */}
               {project.features?.length > 0 && (
-                <section>
+                <section ref={featuresRef} className={`scroll-fade-up ${featuresVisible ? 'visible' : ''}`}>
                   <span className="text-primary text-sm tracking-[0.3em] uppercase font-medium">Amenities</span>
                   <h2 className="text-3xl font-display font-bold text-gray-900 mt-2 mb-8">
                     Features & Amenities
@@ -200,8 +207,8 @@ const ProjectDetail = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {project.features.map((feature, index) => (
                       <div key={index} className="flex gap-4">
-                        <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0 text-2xl">
-                          {feature.icon || '✓'}
+                        <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                          <FiCheck className="w-5 h-5 text-primary" />
                         </div>
                         <div>
                           <h3 className="font-semibold text-gray-900">{feature.title}</h3>
@@ -215,7 +222,7 @@ const ProjectDetail = () => {
 
               {/* Gallery */}
               {allImages.length > 0 && (
-                <section>
+                <section ref={galleryRef} className={`scroll-fade-up ${galleryVisible ? 'visible' : ''}`}>
                   <span className="text-primary text-sm tracking-[0.3em] uppercase font-medium">Gallery</span>
                   <h2 className="text-3xl font-display font-bold text-gray-900 mt-2 mb-8">
                     Project Gallery
@@ -267,7 +274,7 @@ const ProjectDetail = () => {
             </div>
 
             {/* Sidebar */}
-            <div className="lg:col-span-1">
+            <div ref={sidebarRef} className={`lg:col-span-1 scroll-fade-up ${sidebarVisible ? 'visible' : ''}`}>
               <div className="sticky top-24 space-y-6">
                 {/* Inquiry Card */}
                 <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
