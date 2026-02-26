@@ -80,16 +80,16 @@ const ProjectDetail = () => {
         
         <div className="absolute bottom-0 left-0 right-0 pb-16">
           <div className="container-custom">
-            <span className="inline-block px-3 py-1 bg-primary text-white text-xs font-medium tracking-wide uppercase mb-4">
+            <span className="inline-block px-3 py-1 bg-primary text-white text-xs font-medium tracking-wide uppercase mb-4 animate-fade-in-delay-1">
               {project.category === 'BeachTowns' ? 'Beach Towns' : project.category}
             </span>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-4">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-4 animate-fade-in-delay-2">
               {project.hero?.title || project.name}
             </h1>
             {project.hero?.subtitle && (
-              <p className="text-xl text-white/80 max-w-2xl">{project.hero.subtitle}</p>
+              <p className="text-xl text-white/80 max-w-2xl animate-fade-in-delay-3">{project.hero.subtitle}</p>
             )}
-            <p className="text-white/70 flex items-center gap-2 mt-4">
+            <p className="text-white/70 flex items-center gap-2 mt-4 animate-fade-in-delay-4">
               <FaMapMarkerAlt />
               {project.location?.city}, {project.location?.province}
             </p>
