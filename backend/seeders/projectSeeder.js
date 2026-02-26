@@ -412,7 +412,7 @@ const parksProjects = [
     status: 'Published',
     featured: false,
     shortDescription:
-      'A master-planned enclave in San Pablo City, Laguna featuring Southern Californian architecture and the majestic backdrop of Mt. Cristobal, Mt. Makiling, and Mt. Banahaw.',
+      'A 102-hectare master-planned enclave in San Pablo City, Laguna showcasing Southern Californian architecture against the majestic backdrop of Mt. Cristobal, Mt. Makiling, and Mt. Banahaw.',
 
     cardImage: 'https://images.unsplash.com/photo-1560179707-f14e90ef3623?w=900&auto=format&fit=crop',
     hero: {
@@ -492,14 +492,15 @@ const parksProjects = [
     ],
 
     features: [
-      { icon: 'gate', title: 'Two Entrance Gates', description: 'Secure dual entrance gated community' },
-      { icon: 'pool', title: 'Sunken Deck Pool', description: 'Adult and kiddie pools with sunken deck feature' },
-      { icon: 'clubhouse', title: 'Clubhouse', description: 'Beautifully designed clubhouse for gatherings' },
-      { icon: 'pavilion', title: 'Pavilion', description: 'Open pavilion for events and celebrations' },
-      { icon: 'park', title: 'Plaza Sacramento', description: 'Uniquely designed community park' },
-      { icon: 'playground', title: 'Kiddie Play Area', description: 'Safe and dedicated play area for children' },
-      { icon: 'mountain', title: 'Mountain Views', description: 'Panoramic Mt. Cristobal, Makiling & Banahaw views' },
-      { icon: 'road', title: 'Landscaped Roads', description: 'Wide, tree-lined roads throughout the estate' }
+      { icon: 'gate', title: 'Exclusive Gated Community', description: 'Secure and private residential enclave' },
+      { icon: 'architecture', title: 'Southern Californian Architecture', description: 'Elegant design inspired by Southern California aesthetics' },
+      { icon: 'road', title: 'Wide Landscaped Roads', description: 'Spacious, tree-lined roads throughout the estate' },
+      { icon: 'entrance', title: 'Two Entrance Gates', description: 'Dual gated entries providing secure and convenient access' },
+      { icon: 'park', title: 'Plaza Sacramento', description: 'Uniquely designed community park for leisure and gatherings' },
+      { icon: 'clubhouse', title: 'Clubhouse', description: 'Beautifully designed clubhouse for community events' },
+      { icon: 'pool', title: 'Adult and Kiddie Pools', description: 'Swimming pools with sunken deck for all ages' },
+      { icon: 'pavilion', title: 'Pavilion', description: 'Open pavilion for outdoor events and celebrations' },
+      { icon: 'playground', title: 'Kiddie Play Area', description: 'Safe and dedicated play area for children' }
     ]
   }
 ];
