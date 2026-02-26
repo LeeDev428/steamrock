@@ -13,15 +13,15 @@ const Admin = require('../models/Admin');
 const admins = [
   {
     name: 'Super Admin',
-    email: 'admin@streamrock.com',
-    password: 'admin123456', // Will be hashed
+    email: 'admin@gmail.com',
+    password: 'password', // Will be hashed
     role: 'superadmin',
     permissions: ['all']
   },
   {
     name: 'Content Manager',
-    email: 'manager@streamrock.com',
-    password: 'manager123456', // Will be hashed
+    email: 'manager@gmail.com',
+    password: 'password', // Will be hashed
     role: 'admin',
     permissions: ['projects', 'contractors', 'locations', 'media']
   }
