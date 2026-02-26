@@ -24,6 +24,14 @@ const AdminProjects = () => {
   const categories = ['Parks', 'BeachTowns', 'Shores', 'Peaks'];
   const statuses = ['Draft', 'Published', 'Archived'];
 
+  // Sync filter state with URL search params when sidebar links are clicked
+  useEffect(() => {
+    setFilter({
+      category: searchParams.get('category') || '',
+      status: searchParams.get('status') || ''
+    });
+  }, [searchParams]);
+
   useEffect(() => {
     fetchProjects();
   }, [filter]);
