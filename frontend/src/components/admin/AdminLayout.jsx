@@ -76,13 +76,20 @@ const AdminLayout = ({ children }) => {
                 <NavLink
                   key={subitem.path}
                   to={subitem.path}
-                  className={({ isActive }) =>
-                    `block px-3 py-2 rounded-lg text-sm transition-all duration-200 ${
-                      isActive
+                  end
+                  className={({ isActive }) => {
+                    // For query-param routes, check exact match
+                    const currentSearch = window.location.search;
+                    const subPath = subitem.path.split('?')[0];
+                    const subQuery = subitem.path.includes('?') ? '?' + subitem.path.split('?')[1] : '';
+                    const currentPath = window.location.pathname;
+                    const exactMatch = currentPath === subPath && (subQuery === '' || currentSearch === subQuery);
+                    return `block px-3 py-2 rounded-lg text-sm transition-all duration-200 ${
+                      exactMatch
                         ? 'bg-gradient-to-r from-primary to-secondary text-white font-semibold shadow-lg'
                         : 'text-gray-400 hover:bg-white/5 hover:text-white'
-                    }`
-                  }
+                    }`;
+                  }}
                 >
                   {subitem.label}
                 </NavLink>
@@ -147,7 +154,7 @@ const AdminLayout = ({ children }) => {
               </button>
             </div>
 
-            {/* Navigation - scrollable */}}
+            {/* Navigation - scrollable */}
         <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent">
           <p className="px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
             Main Menu
