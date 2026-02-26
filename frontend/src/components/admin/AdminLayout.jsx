@@ -14,7 +14,8 @@ import {
   FiImage,
   FiBell,
   FiSearch,
-  FiExternalLink
+  FiExternalLink,
+  FiFileText
 } from 'react-icons/fi';
 
 const AdminLayout = ({ children }) => {
