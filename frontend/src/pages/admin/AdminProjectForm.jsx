@@ -49,8 +49,8 @@ const AdminProjectForm = () => {
         axios.get('/contractors'),
         axios.get('/locations')
       ]);
-      setContractors(contractorsRes.data.data || []);
-      setLocations(locationsRes.data.data || []);
+      setContractors(Array.isArray(contractorsRes.data) ? contractorsRes.data : []);
+      setLocations(Array.isArray(locationsRes.data) ? locationsRes.data : []);
     } catch (error) {
       console.error('Error fetching options:', error);
     }
