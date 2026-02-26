@@ -1,10 +1,8 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FiUser, FiMail, FiPhone, FiCalendar, FiClock, FiMessageCircle, FiSend, FiCheck, FiVideo, FiMapPin } from 'react-icons/fi';
-import { useToast } from './Toast';
 
 const BookingForm = ({ selectedProject }) => {
-  const toast = useToast();
   const [projects, setProjects] = useState([]);
   const [formData, setFormData] = useState({
     name: '',
@@ -68,19 +66,18 @@ const BookingForm = ({ selectedProject }) => {
     setError('');
     if (!formData.tourType) {
       setLoading(false);
-      toast.warning('Please select a tour type (In Person or Video Chat).');
+      setError('Please select a tour type (In Person or Video Chat).');
       return;
     }
     try {
-      // Find the selected project name to send with booking
+      // Look up the project name for the selected project
       const selectedProj = projects.find(p => p._id === formData.project);
       const payload = {
         ...formData,
-        projectName: selectedProj ? selectedProj.name : ''
+        projectName: selectedProj?.name || ''
       };
       await axios.post('/bookings', payload);
       setSuccess(true);
-      toast.success('Booking request submitted! We will contact you shortly.');
       setFormData({
         name: '',
         email: '',
@@ -96,7 +93,7 @@ const BookingForm = ({ selectedProject }) => {
       setTimeout(() => setSuccess(false), 5000);
     } catch (error) {
       console.error('Error submitting booking:', error);
-      toast.error(error.response?.data?.message || 'Failed to submit booking. Please try again.');
+      setError(error.response?.data?.message || 'Failed to submit booking. Please try again.');
     }
     setLoading(false);
   };
