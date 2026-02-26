@@ -11,11 +11,17 @@ const BookingForm = ({ selectedProject }) => {
     project: '',
     preferredDate: '',
     preferredTime: '',
+    tourType: '',
     message: ''
   });
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
+
+  const tourTypes = [
+    { value: 'In Person', label: 'In Person', icon: FiMapPin, desc: 'Visit the property on-site' },
+    { value: 'Video Chat', label: 'Video Chat', icon: FiVideo, desc: 'Virtual tour via video call' },
+  ];
 
   const timeSlots = [
     '9:00 AM - 10:00 AM',
@@ -56,7 +62,10 @@ const BookingForm = ({ selectedProject }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError('');
     if (!formData.tourType) {
+      setLoading(false);
       setError('Please select a tour type (In Person or Video Chat).');
       return;
     }
