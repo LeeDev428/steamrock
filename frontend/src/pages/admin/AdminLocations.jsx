@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import AdminLayout from '../../components/admin/AdminLayout';
+import { useToast } from '../../components/Toast';
 import { FiPlus, FiEdit2, FiTrash2, FiX, FiCheck, FiMapPin } from 'react-icons/fi';
 
 const AdminLocations = () => {
+  const toast = useToast();
   const [locations, setLocations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -62,7 +64,7 @@ const AdminLocations = () => {
       setShowModal(false);
     } catch (error) {
       console.error('Error saving location:', error);
-      alert(error.response?.data?.message || 'Failed to save location');
+      toast.error(error.response?.data?.message || 'Failed to save location');
     }
   };
 
@@ -73,7 +75,7 @@ const AdminLocations = () => {
       setLocations(locations.filter(l => l._id !== id));
     } catch (error) {
       console.error('Error deleting location:', error);
-      alert('Failed to delete location');
+      toast.error('Failed to delete location');
     }
   };
 
