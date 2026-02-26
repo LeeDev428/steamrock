@@ -7,6 +7,7 @@ const Projects = () => {
   const [searchParams] = useSearchParams();
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [categoryBanner, setCategoryBanner] = useState('');
   const [filter, setFilter] = useState({
     category: searchParams.get('category') || ''
   });
@@ -23,6 +24,17 @@ const Projects = () => {
     setFilter({ category: searchParams.get('category') || '' });
   }, [searchParams]);
 
+  // Fetch category banner from site settings
+  useEffect(() => {
+    if (!filter.category) { setCategoryBanner(''); return; }
+    axios.get('/settings')
+      .then((res) => {
+        const banners = res.data?.categoryBanners || {};
+        setCategoryBanner(banners[filter.category] || '');
+      })
+      .catch(() => setCategoryBanner(''));
+  }, [filter.category]);
+
   useEffect(() => {
     fetchProjects();
   }, [filter]);
@@ -35,7 +47,7 @@ const Projects = () => {
       if (filter.category) params.append('category', filter.category);
       
       const res = await axios.get(`/projects?${params.toString()}`);
-      setProjects(res.data.data || []);
+      setProjects(Array.isArray(res.data) ? res.data : (res.data.data || []));
     } catch (error) {
       console.error('Error fetching projects:', error);
     }
@@ -45,18 +57,26 @@ const Projects = () => {
   return (
     <div className="pt-24 pb-20">
       {/* Header */}
-      <div className="bg-gray-50 py-16">
-        <div className="container-custom">
-          <span className="text-primary text-sm tracking-[0.3em] uppercase font-medium">
+      <div
+        className="relative py-20 bg-gray-50 overflow-hidden"
+        style={categoryBanner ? {
+          backgroundImage: `url(${categoryBanner})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center'
+        } : {}}
+      >
+        {categoryBanner && <div className="absolute inset-0 bg-primary/70" />}
+        <div className={`container-custom relative z-10 ${categoryBanner ? 'text-white' : ''}`}>
+          <span className={`text-xs tracking-[0.3em] uppercase font-semibold ${categoryBanner ? 'text-white/80' : 'text-primary'}`}>
             Our Portfolio
           </span>
-          <h1 className="text-4xl md:text-5xl font-display font-bold text-gray-900 mt-4">
-            {filter.category 
+          <h1 className={`text-4xl md:text-5xl font-display font-bold mt-3 ${categoryBanner ? 'text-white' : 'text-gray-900'}`}>
+            {filter.category
               ? (filter.category === 'BeachTowns' ? 'Beach Towns' : filter.category)
               : 'All Projects'}
           </h1>
           {filter.category && (
-            <p className="text-gray-600 mt-4 max-w-2xl">
+            <p className={`mt-4 max-w-2xl ${categoryBanner ? 'text-white/80' : 'text-gray-600'}`}>
               {filter.category === 'Parks' && 'Discover our nature-inspired communities perfect for families and nature lovers.'}
               {filter.category === 'BeachTowns' && 'Experience coastal living at its finest with our beachfront developments.'}
               {filter.category === 'Shores' && 'Find your lakeside retreat with stunning waterfront properties.'}
