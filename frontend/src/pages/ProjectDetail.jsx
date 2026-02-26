@@ -286,11 +286,12 @@ const ProjectDetail = () => {
                       +63 912 345 6789
                     </a>
                     <a
-                      href="mailto:hello@streamrock.ph"
+                      href="mailto:dwllaneta@gmail.com"
                       className="flex items-center gap-3 text-gray-600 hover:text-primary transition-colors"
                     >
                       <FaEnvelope className="text-primary" />
-                      hello@streamrock.ph
+                      dwllaneta@gmail.com
+
                     </a>
                   </div>
                   <Link
