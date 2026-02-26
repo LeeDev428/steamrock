@@ -70,7 +70,13 @@ const BookingForm = ({ selectedProject }) => {
       return;
     }
     try {
-      await axios.post('/bookings', formData);
+      // Find the selected project name to send with booking
+      const selectedProj = projects.find(p => p._id === formData.project);
+      const payload = {
+        ...formData,
+        projectName: selectedProj ? selectedProj.name : ''
+      };
+      await axios.post('/bookings', payload);
       setSuccess(true);
       setFormData({
         name: '',
