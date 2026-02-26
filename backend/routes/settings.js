@@ -40,6 +40,12 @@ const defaultSettings = {
     email: 'info@streamrockrealty.com',
     address: 'Manila, Philippines'
   },
+  categoryBanners: {
+    Parks: '',
+    BeachTowns: '',
+    Shores: '',
+    Peaks: ''
+  },
   footer: {
     copyright: '© 2026 Streamrock Realty. All rights reserved.'
   }
