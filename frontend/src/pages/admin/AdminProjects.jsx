@@ -2,9 +2,11 @@ import { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import AdminLayout from '../../components/admin/AdminLayout';
+import { useToast } from '../../components/Toast';
 import { FiPlus, FiEdit2, FiTrash2, FiEye, FiImage, FiFilter, FiTrendingUp, FiPackage, FiCheckCircle, FiClock } from 'react-icons/fi';
 
 const AdminProjects = () => {
+  const toast = useToast();
   const [searchParams] = useSearchParams();
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -58,7 +60,7 @@ const AdminProjects = () => {
       setProjects(projects.filter(p => p._id !== id));
     } catch (error) {
       console.error('Error deleting project:', error);
-      alert('Failed to delete project');
+      toast.error('Failed to delete project');
     }
   };
 
@@ -70,7 +72,7 @@ const AdminProjects = () => {
       ));
     } catch (error) {
       console.error('Error updating status:', error);
-      alert('Failed to update status');
+      toast.error('Failed to update status');
     }
   };
 
