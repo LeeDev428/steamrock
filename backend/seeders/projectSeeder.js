@@ -62,7 +62,7 @@ const parksProjects = [
     status: 'Published',
     featured: true,
     shortDescription:
-      'A Mediterranean-inspired resort-like subdivision in Zamboanga City featuring resort-style pools, lush green corridors, and a grand ballroom set across 24 hectares.',
+      'Spanning 24 hectares in Zamboanga City, this master-planned community brings Mediterranean-inspired elegance to life with resort-style pools, lush green corridors, and a grand ballroom for residents.','
 
     // Up to 4 images (admins can replace in the CMS)
     cardImage: 'https://images.unsplash.com/photo-1591474200742-8e512e6f98f8?w=900&auto=format&fit=crop',
@@ -180,7 +180,7 @@ const parksProjects = [
     status: 'Published',
     featured: true,
     shortDescription:
-      'A historic 50-hectare estate in Tiaong, Quezon that blends legendary Filipino architecture and traditional culture with modern comforts, set amidst ancestral Escudero lands.',
+      'Set within the storied Escudero ancestral grounds in Tiaong, Quezon, this 50-hectare estate weaves Filipino heritage and traditional architecture into a modern residential experience.','
 
     cardImage: 'https://images.unsplash.com/photo-1523217582562-09d0def993a6?w=900&auto=format&fit=crop',
     hero: {
@@ -281,7 +281,7 @@ const parksProjects = [
     status: 'Published',
     featured: false,
     shortDescription:
-      'A 71-hectare floral haven in Silang, Cavite blending Spanish-Mexican architecture with lush themed gardens, resort pools, and the cool breezes of Tagaytay ridge.',
+      'Nestled in the cool highlands of Silang, Cavite, this 71-hectare nature retreat showcases Spanish-Mexican architecture amid lush themed gardens, resort pools, and refreshing Tagaytay breezes.','
 
     cardImage: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=900&auto=format&fit=crop',
     hero: {
@@ -404,7 +404,7 @@ const parksProjects = [
     status: 'Published',
     featured: false,
     shortDescription:
-      'A master-planned enclave in San Pablo City, Laguna featuring Southern Californian architecture and the majestic backdrop of Mt. Cristobal, Mt. Makiling, and Mt. Banahaw.',
+      'Inspired by Southern Californian design, this master-planned community in San Pablo City, Laguna offers serene living framed by the majestic peaks of Mt. Cristobal, Makiling, and Banahaw.','
 
     cardImage: 'https://images.unsplash.com/photo-1560179707-f14e90ef3623?w=900&auto=format&fit=crop',
     hero: {
