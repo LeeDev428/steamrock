@@ -26,6 +26,7 @@ const AdminLayout = ({ children }) => {
   const [projectsOpen, setProjectsOpen] = useState(true);
   const [notifOpen, setNotifOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
+  const [pendingCount, setPendingCount] = useState(0);
   const [recentBookings, setRecentBookings] = useState([]);
   const notifRef = useRef(null);
   const { admin, logout } = useAuth();
@@ -40,6 +41,7 @@ const AdminLayout = ({ children }) => {
           axios.get('/bookings?isRead=false')
         ]);
         setUnreadCount(countRes.data.count || 0);
+        setPendingCount(countRes.data.pending || 0);
         const bookings = Array.isArray(bookingsRes.data) ? bookingsRes.data : [];
         setRecentBookings(bookings.slice(0, 5));
       } catch (err) {
@@ -48,17 +50,24 @@ const AdminLayout = ({ children }) => {
     };
     fetchNotifications();
 
+    // Poll every 60 seconds for fresh counts
+    const interval = setInterval(fetchNotifications, 60_000);
+
     // Socket.io for real-time updates
     const socket = io(window.location.origin, { transports: ['websocket', 'polling'] });
     socket.on('newBooking', (booking) => {
       setUnreadCount(prev => prev + 1);
+      setPendingCount(prev => prev + 1);
       setRecentBookings(prev => [booking, ...prev].slice(0, 5));
     });
     socket.on('bookingUpdated', () => {
       fetchNotifications();
     });
 
-    return () => socket.disconnect();
+    return () => {
+      clearInterval(interval);
+      socket.disconnect();
+    };
   }, []);
 
   // Close dropdown when clicking outside
@@ -91,7 +100,7 @@ const AdminLayout = ({ children }) => {
         { path: '/admin/projects?category=Peaks', label: 'Peaks' }
       ]
     },
-    { path: '/admin/bookings', icon: FiCalendar, label: 'Bookings' },
+    { path: '/admin/bookings', icon: FiCalendar, label: 'Bookings', badge: pendingCount },
     { path: '/admin/blogs', icon: FiFileText, label: 'Blog Posts' },
     { path: '/admin/contractors', icon: FiUsers, label: 'Contractors' },
     { path: '/admin/locations', icon: FiMapPin, label: 'Locations' },
@@ -167,7 +176,12 @@ const AdminLayout = ({ children }) => {
         }`}>
           <item.icon className="w-4 h-4" />
         </div>
-        <span className="font-medium">{item.label}</span>
+        <span className="font-medium flex-1">{item.label}</span>
+        {item.badge > 0 && (
+          <span className="min-w-[20px] h-5 flex items-center justify-center bg-red-500 text-white text-[10px] font-bold rounded-full px-1.5">
+            {item.badge > 99 ? '99+' : item.badge}
+          </span>
+        )}
       </NavLink>
     );
   };
