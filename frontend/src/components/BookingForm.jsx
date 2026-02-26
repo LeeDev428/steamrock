@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FiUser, FiMail, FiPhone, FiCalendar, FiClock, FiMessageCircle, FiSend, FiCheck, FiVideo, FiMapPin } from 'react-icons/fi';
+import { useToast } from './Toast';
 
 const BookingForm = ({ selectedProject }) => {
+  const toast = useToast();
   const [projects, setProjects] = useState([]);
   const [formData, setFormData] = useState({
     name: '',
@@ -66,7 +68,7 @@ const BookingForm = ({ selectedProject }) => {
     setError('');
     if (!formData.tourType) {
       setLoading(false);
-      setError('Please select a tour type (In Person or Video Chat).');
+      toast.warning('Please select a tour type (In Person or Video Chat).');
       return;
     }
     try {
@@ -78,6 +80,7 @@ const BookingForm = ({ selectedProject }) => {
       };
       await axios.post('/bookings', payload);
       setSuccess(true);
+      toast.success('Booking request submitted! We will contact you shortly.');
       setFormData({
         name: '',
         email: '',
@@ -93,7 +96,7 @@ const BookingForm = ({ selectedProject }) => {
       setTimeout(() => setSuccess(false), 5000);
     } catch (error) {
       console.error('Error submitting booking:', error);
-      setError(error.response?.data?.message || 'Failed to submit booking. Please try again.');
+      toast.error(error.response?.data?.message || 'Failed to submit booking. Please try again.');
     }
     setLoading(false);
   };
