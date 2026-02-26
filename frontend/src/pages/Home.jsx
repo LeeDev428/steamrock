@@ -2,6 +2,7 @@
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Hero from '../components/Hero';
+import { AnimatedSection } from '../hooks/useScrollAnimation';
 import { FaTree, FaWater, FaSun, FaMountain, FaMapMarkerAlt, FaArrowRight, FaCheckCircle } from 'react-icons/fa';
 
 const Home = () => {
@@ -39,34 +40,36 @@ const Home = () => {
       {/* Lifestyle Categories */}
       <section className="py-20 bg-white border-t border-gray-100">
         <div className="container-custom">
-          <div className="text-center mb-14">
+          <AnimatedSection animation="fade-in-up" className="text-center mb-14">
             <span className="text-primary text-xs tracking-[0.3em] uppercase font-semibold">
               Our Portfolio
             </span>
             <h2 className="mt-3 text-3xl md:text-4xl font-serif font-bold text-gray-900">
               Discover Your Ideal Lifestyle
             </h2>
-          </div>
+          </AnimatedSection>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-gray-200 border border-gray-200">
-            {categories.map((cat) => (
-              <Link
-                key={cat.name}
-                to={`/projects?category=${cat.name}`}
-                className="group flex flex-col items-center text-center p-10 bg-white hover:bg-primary transition-colors duration-300"
-              >
-                <div className="w-12 h-12 flex items-center justify-center mb-5">
-                  <cat.icon className="text-2xl text-primary group-hover:text-white transition-colors duration-300" />
-                </div>
-                <h3 className="font-semibold text-base text-gray-900 group-hover:text-white transition-colors duration-300 mb-1">
-                  {cat.name === 'BeachTowns' ? 'Beach Towns' : cat.name}
-                </h3>
-                <p className="text-xs text-gray-500 group-hover:text-white/80 transition-colors duration-300 leading-relaxed">
-                  {cat.description}
-                </p>
-              </Link>
-            ))}
-          </div>
+          <AnimatedSection animation="fade-in-up" delay={200}>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-gray-200 border border-gray-200">
+              {categories.map((cat) => (
+                <Link
+                  key={cat.name}
+                  to={`/projects?category=${cat.name}`}
+                  className="group flex flex-col items-center text-center p-10 bg-white hover:bg-primary transition-colors duration-300"
+                >
+                  <div className="w-12 h-12 flex items-center justify-center mb-5">
+                    <cat.icon className="text-2xl text-primary group-hover:text-white transition-colors duration-300" />
+                  </div>
+                  <h3 className="font-semibold text-base text-gray-900 group-hover:text-white transition-colors duration-300 mb-1">
+                    {cat.name === 'BeachTowns' ? 'Beach Towns' : cat.name}
+                  </h3>
+                  <p className="text-xs text-gray-500 group-hover:text-white/80 transition-colors duration-300 leading-relaxed">
+                    {cat.description}
+                  </p>
+                </Link>
+              ))}
+            </div>
+          </AnimatedSection>
         </div>
       </section>
 
@@ -74,7 +77,7 @@ const Home = () => {
       <section className="py-24 bg-gray-50">
         <div className="container-custom">
           <div className="grid md:grid-cols-2 gap-16 items-center">
-            <div>
+            <AnimatedSection animation="slide-in-left">
               <span className="text-primary text-xs tracking-[0.3em] uppercase font-semibold">
                 About Streamrock
               </span>
@@ -99,9 +102,9 @@ const Home = () => {
               >
                 Learn More <FaArrowRight className="text-sm group-hover:translate-x-1 transition-transform" />
               </Link>
-            </div>
+            </AnimatedSection>
 
-            <div className="relative">
+            <AnimatedSection animation="slide-in-right" delay={200} className="relative">
               <div className="aspect-[4/3] overflow-hidden">
                 <img
                   src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=800"
@@ -113,7 +116,7 @@ const Home = () => {
                 <p className="text-3xl font-bold text-white">50+</p>
                 <p className="text-sm text-white/80 mt-1">Projects</p>
               </div>
-            </div>
+            </AnimatedSection>
           </div>
         </div>
       </section>
@@ -218,7 +221,7 @@ const Home = () => {
       {/* CTA */}
       <section className="py-24 bg-primary">
         <div className="container-custom">
-          <div className="max-w-3xl mx-auto text-center">
+          <AnimatedSection animation="fade-in-up" className="max-w-3xl mx-auto text-center">
             <h2 className="text-4xl md:text-5xl font-serif font-bold text-white leading-tight">
               Ready to Find Your Perfect Property?
             </h2>
@@ -239,7 +242,7 @@ const Home = () => {
                 Contact Us <FaArrowRight className="text-sm" />
               </Link>
             </div>
-          </div>
+          </AnimatedSection>
         </div>
       </section>
     </div>
