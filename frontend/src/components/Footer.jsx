@@ -55,7 +55,7 @@ const Footer = () => {
             <ul className="space-y-3 text-sm">
               <li className="flex items-start space-x-2">
                 <FaMapMarkerAlt className="mt-1 flex-shrink-0" />
-                <span>123 Real Estate Avenue, Makati City, Philippines</span>
+                <span>Blk 8 Lot 3 Iris St., Camella Homes I, Brgy. Putatan, Muntinlupa City 1770</span>
               </li>
               <li className="flex items-center space-x-2">
                 <FaPhone />
