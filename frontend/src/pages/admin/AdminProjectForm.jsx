@@ -2,9 +2,11 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import AdminLayout from '../../components/admin/AdminLayout';
+import { useToast } from '../../components/Toast';
 import { FiSave, FiX, FiUpload, FiPlus, FiTrash2 } from 'react-icons/fi';
 
 const AdminProjectForm = () => {
+  const toast = useToast();
   const { id } = useParams();
   const navigate = useNavigate();
   const isEditing = Boolean(id);
@@ -67,7 +69,7 @@ const AdminProjectForm = () => {
       });
     } catch (error) {
       console.error('Error fetching project:', error);
-      alert('Failed to load project');
+      toast.error('Failed to load project');
       navigate('/admin/projects');
     }
     setLoading(false);
@@ -109,7 +111,7 @@ const AdminProjectForm = () => {
       }
     } catch (error) {
       console.error('Error uploading image:', error);
-      alert('Failed to upload image');
+      toast.error('Failed to upload image');
     }
   };
 
@@ -182,7 +184,7 @@ const AdminProjectForm = () => {
       navigate('/admin/projects');
     } catch (error) {
       console.error('Error saving project:', error);
-      alert(error.response?.data?.message || 'Failed to save project');
+      toast.error(error.response?.data?.message || 'Failed to save project');
     }
     setSaving(false);
   };
