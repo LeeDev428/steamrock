@@ -1,10 +1,8 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
-import { ToastProvider } from './components/Toast';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import ScrollToTop from './components/ScrollToTop';
 import LoadingScreen from './components/LoadingScreen';
 import Home from './pages/Home';
 import Projects from './pages/Projects';
@@ -33,28 +31,20 @@ const PublicLayout = ({ children }) => (
     <Navbar />
     <main className="flex-grow">{children}</main>
     <Footer />
-    <ScrollToTop />
   </div>
 );
 
 function App() {
   const [appLoading, setAppLoading] = useState(true);
-  const [appVisible, setAppVisible] = useState(false);
 
   useEffect(() => {
-    const t = setTimeout(() => {
-      setAppLoading(false);
-      // Trigger fade-in after loading screen disappears
-      requestAnimationFrame(() => setAppVisible(true));
-    }, 1700);
+    const t = setTimeout(() => setAppLoading(false), 1500);
     return () => clearTimeout(t);
   }, []);
 
   if (appLoading) return <LoadingScreen />;
 
   return (
-    <ToastProvider>
-    <div className={`transition-opacity duration-700 ease-out ${appVisible ? 'opacity-100' : 'opacity-0'}`}>
     <AuthProvider>
       <Router>
         <Routes>
@@ -152,8 +142,6 @@ function App() {
         </Routes>
       </Router>
     </AuthProvider>
-    </div>
-    </ToastProvider>
   );
 }
 
