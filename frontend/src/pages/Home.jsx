@@ -2,6 +2,7 @@
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Hero from '../components/Hero';
+import BookingForm from '../components/BookingForm';
 import { AnimatedSection } from '../hooks/useScrollAnimation';
 import { FaTree, FaWater, FaSun, FaMountain, FaMapMarkerAlt, FaArrowRight, FaCheckCircle } from 'react-icons/fa';
 
@@ -242,6 +243,24 @@ const Home = () => {
                 Contact Us <FaArrowRight className="text-sm" />
               </Link>
             </div>
+          </AnimatedSection>
+        </div>
+      </section>
+
+      {/* Schedule a Viewing */}
+      <section className="py-20 bg-gray-50">
+        <div className="container-custom">
+          <AnimatedSection animation="fade-in-up" className="max-w-3xl mx-auto">
+            <div className="text-center mb-10">
+              <span className="text-primary text-sm tracking-[0.3em] uppercase font-medium">Book Now</span>
+              <h2 className="text-3xl md:text-4xl font-display font-bold text-gray-900 mt-2">
+                Schedule a Property Viewing
+              </h2>
+              <p className="mt-4 text-gray-600">
+                Fill out the form below and our team will get back to you to confirm your appointment.
+              </p>
+            </div>
+            <BookingForm />
           </AnimatedSection>
         </div>
       </section>
