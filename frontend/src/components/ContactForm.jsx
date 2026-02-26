@@ -2,8 +2,10 @@ import { useState } from 'react';
 import axios from 'axios';
 import { FaUser, FaEnvelope, FaPhone, FaComment } from 'react-icons/fa';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
+import { useToast } from './Toast';
 
 const ContactForm = () => {
+  const toast = useToast();
   const [formRef, formVisible] = useScrollAnimation();
   const [formData, setFormData] = useState({
     name: '',
@@ -22,6 +24,7 @@ const ContactForm = () => {
 
     try {
       await axios.post('/api/inquiries', formData);
+      toast.success('Thank you for your inquiry! We will contact you soon.');
       setStatus({
         type: 'success',
         message: 'Thank you for your inquiry! We will contact you soon.'
@@ -34,6 +37,7 @@ const ContactForm = () => {
         propertyInterest: 'General Inquiry'
       });
     } catch (error) {
+      toast.error('Something went wrong. Please try again.');
       setStatus({
         type: 'error',
         message: 'Something went wrong. Please try again.'
