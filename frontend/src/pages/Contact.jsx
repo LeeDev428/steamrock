@@ -1,5 +1,5 @@
 import ContactForm from '../components/ContactForm';
-import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaClock, FaFacebook, FaInstagram, FaLinkedin } from 'react-icons/fa';
+import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaClock, FaFacebook, FaInstagram, FaWhatsapp } from 'react-icons/fa';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 
 const Contact = () => {
@@ -14,14 +14,14 @@ const Contact = () => {
     {
       icon: <FaPhone className="text-3xl text-accent" />,
       title: 'Phone Number',
-      content: '+63 912 345 6789',
-      link: 'tel:+639123456789'
+      content: '+63 908 885 6169',
+      link: 'tel:+639088856169'
     },
     {
       icon: <FaEnvelope className="text-3xl text-accent" />,
       title: 'Email Address',
-      content: 'info@streamrockrealty.com',
-      link: 'mailto:info@streamrockrealty.com'
+      content: 'dwllaneta@gmail.com',
+      link: 'mailto:dwllaneta@gmail.com'
     },
     {
       icon: <FaClock className="text-3xl text-accent" />,
@@ -91,22 +91,28 @@ const Contact = () => {
               
               <div className="flex space-x-4 mb-8">
                 <a 
-                  href="#" 
+                  href="https://www.facebook.com/streamrockrealty" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
                   className="w-12 h-12 bg-primary hover:bg-secondary text-white rounded-full flex items-center justify-center transition-colors"
                 >
                   <FaFacebook size={24} />
                 </a>
                 <a 
-                  href="#" 
+                  href="https://instagram.com/streamrock_realty" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
                   className="w-12 h-12 bg-primary hover:bg-secondary text-white rounded-full flex items-center justify-center transition-colors"
                 >
                   <FaInstagram size={24} />
                 </a>
                 <a 
-                  href="#" 
+                  href="https://wa.me/639088856169" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
                   className="w-12 h-12 bg-primary hover:bg-secondary text-white rounded-full flex items-center justify-center transition-colors"
                 >
-                  <FaLinkedin size={24} />
+                  <FaWhatsapp size={24} />
                 </a>
               </div>
 
@@ -115,7 +121,7 @@ const Contact = () => {
                 <p className="text-gray-600 mb-4">
                   Want to see a property in person? Contact us to schedule a viewing at your convenience.
                 </p>
-                <a href="tel:+639123456789" className="btn-primary inline-block">
+                <a href="tel:+639088856169" className="btn-primary inline-block">
                   Call Now
                 </a>
               </div>
