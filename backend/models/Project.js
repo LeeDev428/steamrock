@@ -127,7 +127,6 @@ ProjectSchema.pre('save', function(next) {
 
 // Index for faster queries
 ProjectSchema.index({ category: 1, status: 1 });
-ProjectSchema.index({ slug: 1 });
 ProjectSchema.index({ featured: 1 });
 
 module.exports = mongoose.model('Project', ProjectSchema);
