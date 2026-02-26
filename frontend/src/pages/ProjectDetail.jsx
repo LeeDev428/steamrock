@@ -13,7 +13,7 @@ const ProjectDetail = () => {
     const fetchProject = async () => {
       try {
         const res = await axios.get(`/projects/${slug}`);
-        setProject(res.data.data);
+        setProject(res.data);
       } catch (error) {
         console.error('Error fetching project:', error);
       }
