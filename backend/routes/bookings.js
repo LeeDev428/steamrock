@@ -93,8 +93,11 @@ router.get('/stats', protect, adminOnly, async (req, res) => {
 // @access  Private
 router.get('/unread-count', protect, adminOnly, async (req, res) => {
   try {
-    const count = await Booking.countDocuments({ isRead: false, status: 'Pending' });
-    res.json({ count });
+    const [count, pending] = await Promise.all([
+      Booking.countDocuments({ isRead: false }),
+      Booking.countDocuments({ status: 'Pending' })
+    ]);
+    res.json({ count, pending });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
