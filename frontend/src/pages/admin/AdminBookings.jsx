@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import AdminLayout from '../../components/admin/AdminLayout';
+import { useToast } from '../../components/Toast';
 import { FiCalendar, FiClock, FiUser, FiMail, FiPhone, FiCheck, FiX, FiEye, FiTrash2, FiMapPin, FiMessageCircle, FiCheckCircle, FiAlertCircle } from 'react-icons/fi';
 
 const AdminBookings = () => {
+  const toast = useToast();
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState({
@@ -79,10 +81,10 @@ const AdminBookings = () => {
       setShowModal(false);
       fetchBookings();
       fetchStats();
-      alert('Booking status updated and notification sent to customer.');
+      toast.success('Booking status updated and notification sent to customer.');
     } catch (error) {
       console.error('Error updating booking:', error);
-      alert('Failed to update booking status');
+      toast.error('Failed to update booking status');
     }
   };
 
@@ -95,7 +97,7 @@ const AdminBookings = () => {
       fetchStats();
     } catch (error) {
       console.error('Error deleting booking:', error);
-      alert('Failed to delete booking');
+      toast.error('Failed to delete booking');
     }
   };
 
