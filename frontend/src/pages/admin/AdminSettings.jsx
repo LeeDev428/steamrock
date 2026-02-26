@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import AdminLayout from '../../components/admin/AdminLayout';
+import { useToast } from '../../components/Toast';
 import { FiSave, FiPlus, FiTrash2, FiUpload, FiImage, FiVideo } from 'react-icons/fi';
 
 const AdminSettings = () => {
+  const toast = useToast();
   const [settings, setSettings] = useState(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -35,10 +37,10 @@ const AdminSettings = () => {
     setSaving(true);
     try {
       await axios.put('/settings', settings);
-      alert('Settings saved successfully!');
+      toast.success('Settings saved successfully!');
     } catch (error) {
       console.error('Error saving settings:', error);
-      alert('Failed to save settings');
+      toast.error('Failed to save settings');
     }
     setSaving(false);
   };
@@ -61,7 +63,7 @@ const AdminSettings = () => {
       setSettings({ ...settings, hero: { ...settings.hero, items: newItems } });
     } catch (error) {
       console.error('Error uploading image:', error);
-      alert('Failed to upload image');
+      toast.error('Failed to upload image');
     }
   };
 
@@ -426,7 +428,7 @@ const AdminSettings = () => {
                             try {
                               const r = await axios.post('/upload', fd, { headers: { 'Content-Type': 'multipart/form-data' } });
                               setSettings({ ...settings, categoryBanners: { ...settings.categoryBanners, [cat]: r.data.url } });
-                            } catch { alert('Upload failed'); }
+                            } catch { toast.error('Upload failed'); }
                           }} />
                         </label>
                       </div>
