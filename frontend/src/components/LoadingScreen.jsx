@@ -3,9 +3,12 @@ const LoadingScreen = () => (
     <img
       src="/src.png"
       alt="Streamrock Realty"
-      className="h-16 w-auto mb-6 animate-pulse"
+      className="h-16 w-auto mb-8"
     />
-    <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+    {/* Line loading animation */}
+    <div className="w-48 h-1 bg-gray-200 rounded-full overflow-hidden">
+      <div className="h-full bg-gradient-to-r from-primary to-secondary rounded-full animate-loading-line" />
+    </div>
   </div>
 );
 
