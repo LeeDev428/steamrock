@@ -1,39 +1,44 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 
 /**
- * Custom hook for scroll-triggered animations
- * @param {Object} options - Configuration options
- * @param {number} options.threshold - Intersection threshold (0-1)
- * @param {string} options.rootMargin - Root margin for intersection observer
- * @returns {[React.RefObject, boolean]} - Ref to attach to element and visibility state
+ * Custom hook for scroll-triggered animations.
+ * Uses a callback ref so the observer correctly registers even when the target
+ * element renders AFTER the initial mount (e.g. behind a loading state).
+ *
+ * @param {Object} options
+ * @param {number} options.threshold  - Intersection threshold (0-1)
+ * @param {string} options.rootMargin - Margin for intersection observer
+ * @returns {[Function, boolean]} - Callback ref to attach to element + visibility state
  */
 export const useScrollAnimation = (options = {}) => {
   const { threshold = 0.1, rootMargin = '0px 0px -50px 0px' } = options;
-  const ref = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
+  const observerRef = useRef(null);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.unobserve(entry.target);
-        }
-      },
-      { threshold, rootMargin }
-    );
-
-    const currentRef = ref.current;
-    if (currentRef) {
-      observer.observe(currentRef);
-    }
-
-    return () => {
-      if (currentRef) {
-        observer.unobserve(currentRef);
+  // Callback ref: React calls this with the DOM node when the element mounts /
+  // unmounts, so observation is always set up correctly even with delayed renders.
+  const ref = useCallback(
+    (node) => {
+      // Clean up any existing observer
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+        observerRef.current = null;
       }
-    };
-  }, [threshold, rootMargin]);
+      if (!node) return;
+
+      observerRef.current = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+            observerRef.current?.disconnect();
+          }
+        },
+        { threshold, rootMargin }
+      );
+      observerRef.current.observe(node);
+    },
+    [threshold, rootMargin]
+  );
 
   return [ref, isVisible];
 };
@@ -61,7 +66,11 @@ export const AnimatedSection = ({
     <div
       ref={ref}
       className={`${className} ${isVisible ? animationClasses[animation] : 'opacity-0'}`}
-      style={{ animationDelay: `${delay}ms` }}
+      style={{
+        animationDelay: delay ? `${delay}ms` : undefined,
+        // Keep element invisible during animation delay so there's no flash
+        animationFillMode: delay ? 'backwards' : undefined,
+      }}
     >
       {children}
     </div>
