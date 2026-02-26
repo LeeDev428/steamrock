@@ -3,7 +3,8 @@ import { AuthProvider } from './context/AuthContext';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
-import Properties from './pages/Properties';
+import Projects from './pages/Projects';
+import ProjectDetail from './pages/ProjectDetail';
 import About from './pages/About';
 import Contact from './pages/Contact';
 
@@ -33,7 +34,8 @@ function App() {
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<PublicLayout><Home /></PublicLayout>} />
-          <Route path="/properties" element={<PublicLayout><Properties /></PublicLayout>} />
+          <Route path="/projects" element={<PublicLayout><Projects /></PublicLayout>} />
+          <Route path="/projects/:slug" element={<PublicLayout><ProjectDetail /></PublicLayout>} />
           <Route path="/about" element={<PublicLayout><About /></PublicLayout>} />
           <Route path="/contact" element={<PublicLayout><Contact /></PublicLayout>} />
 
