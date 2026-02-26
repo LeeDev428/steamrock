@@ -136,7 +136,7 @@ const AdminBlogs = () => {
     if (!file) return;
 
     const uploadFormData = new FormData();
-    uploadFormData.append('image', file);
+    uploadFormData.append('file', file);
 
     try {
       const res = await axios.post('/upload', uploadFormData);
