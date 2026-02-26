@@ -59,7 +59,7 @@ const AdminProjectForm = () => {
   const fetchProject = async () => {
     try {
       const res = await axios.get(`/projects/${id}`);
-      const project = res.data.data;
+      const project = res.data;
       setFormData({
         ...project,
         contractor: project.contractor?._id || project.contractor,
