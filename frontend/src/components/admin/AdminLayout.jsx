@@ -44,6 +44,7 @@ const AdminLayout = ({ children }) => {
         { path: '/admin/projects?category=Peaks', label: 'Peaks' }
       ]
     },
+    { path: '/admin/bookings', icon: FiCalendar, label: 'Bookings' },
     { path: '/admin/blogs', icon: FiFileText, label: 'Blog Posts' },
     { path: '/admin/contractors', icon: FiUsers, label: 'Contractors' },
     { path: '/admin/locations', icon: FiMapPin, label: 'Locations' },
