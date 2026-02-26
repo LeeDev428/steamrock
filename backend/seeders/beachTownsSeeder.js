@@ -57,7 +57,7 @@ const beachTownsProjects = [
     status: 'Published',
     featured: true,
     shortDescription:
-      'A coastal sanctuary inspired by Captain Nemo\'s maritime discoveries, situated within the world-class resort of CaSoBē. Features luxurious private units with modern designs, private balconies, and an infinity pool—both a visionary home and a smart investment.',
+      'A coastal retreat inspired by Captain Nemo\'s maritime legacy, nestled within the world-class CaSoBē resort in Calatagan, Batangas. Offers luxurious private units with modern interiors, private balconies, and resort amenities.',
 
     cardImage: 'https://images.unsplash.com/photo-1582271342647-7a9e22c76b6b?w=900&auto=format&fit=crop',
     hero: {
@@ -155,13 +155,17 @@ const beachTownsProjects = [
 
     features: [
       { icon: 'beach', title: 'Beachfront', description: 'All units with panoramic seaview' },
-      { icon: 'pool', title: 'Infinity Pool', description: 'Pool deck with infinity pool overlooking the sea' },
-      { icon: 'spa', title: 'Spa & Sauna', description: 'Full-service spa and sauna facilities' },
-      { icon: 'gym', title: 'Fitness Gym', description: 'Fully equipped gym and yoga room' },
-      { icon: 'bar', title: 'Restobar & Speak Easy', description: 'Dining and nightlife on-site' },
+      { icon: 'privilege', title: 'Landco Privilege Program', description: 'Exclusive ownership benefits and perks' },
+      { icon: 'lobby', title: 'Reception & Lobby Lounge', description: 'Welcoming reception area and elegant lounge' },
+      { icon: 'retail', title: 'Retail Area', description: 'Convenient on-site retail and shopping' },
+      { icon: 'gym', title: 'Fitness Gym & Yoga Room', description: 'Fully equipped gym and dedicated yoga space' },
+      { icon: 'bar', title: 'Restobar', description: 'On-site dining and drinks by the coast' },
       { icon: 'game', title: 'Gameroom', description: 'Dedicated entertainment and recreation space' },
-      { icon: 'investment', title: 'Leaseback Program', description: 'Optional rental income through LLV' },
-      { icon: 'privilege', title: 'Landco Privilege', description: 'Exclusive ownership benefits and perks' }
+      { icon: 'speakeasy', title: 'Speak Easy', description: 'Exclusive lounge for intimate social gatherings' },
+      { icon: 'pool', title: 'Pool Deck with Infinity Pool', description: 'Infinity pool deck overlooking the sea' },
+      { icon: 'spa', title: 'Spa and Sauna', description: 'Full-service spa and sauna facilities' },
+      { icon: 'conference', title: 'Conference Room', description: 'Professional meeting and conference space' },
+      { icon: 'investment', title: 'Optional Leaseback Program', description: 'Rental income option through Landco Lifestyle Ventures (LLV)' }
     ]
   },
 
@@ -176,7 +180,7 @@ const beachTownsProjects = [
     status: 'Published',
     featured: true,
     shortDescription:
-      'The final opportunity to join the illustrious Punta Fuego society—an exclusive destination-ready beachfront community two hours from Metro Manila. Sitting directly across 800 meters of pristine white sand, combining modern comforts with prestigious club membership.',
+      'The last chance to become part of the prestigious Punta Fuego community — an exclusive beachfront enclave in Nasugbu, Batangas just two hours from Metro Manila, set across 800 meters of pristine white sand.',
 
     cardImage: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=900&auto=format&fit=crop',
     hero: {
@@ -279,14 +283,24 @@ const beachTownsProjects = [
     ],
 
     features: [
+      { icon: 'gate', title: 'Exclusive Gated Community', description: 'Private beachfront enclave with controlled access' },
       { icon: 'beach', title: 'Beachfront', description: '800m of pristine white sand directly across' },
-      { icon: 'golf', title: 'Golf Course', description: 'Nine-hole golf course via Club Punta Fuego' },
-      { icon: 'pool', title: 'Infinity Pool', description: 'Pool deck with infinity pool and function room' },
-      { icon: 'spa', title: 'Spa & Sauna', description: 'On-site wellness and relaxation facilities' },
-      { icon: 'marina', title: 'Marina Access', description: 'Marina facilities through club membership' },
+      { icon: 'seaview', title: 'Seaview from All Units', description: 'Every unit enjoys panoramic ocean views' },
+      { icon: 'parking', title: 'One Parking Slot per Unit', description: 'Inclusive parking allocation with every unit purchase' },
+      { icon: 'beachclub', title: 'Terrazas Beach Club Access', description: 'Full access to the Terrazas de Punta Fuego Beach Club' },
+      { icon: 'membership', title: 'Club Punta Fuego Membership', description: 'Associate Membership at the prestigious Club Punta Fuego' },
+      { icon: 'privilege', title: 'Landco Privilege Program', description: 'Exclusive ownership benefits and perks' },
+      { icon: 'lobby', title: 'Reception & Lobby Lounge', description: 'Welcoming reception area and elegant lounge' },
       { icon: 'garden', title: 'Garden Courtyards', description: 'Landscaped garden spaces for residents' },
-      { icon: 'eco', title: 'EDGE-Certified', description: 'Eco-friendly design with rainwater harvesting' },
-      { icon: 'privilege', title: 'Landco Privilege', description: 'Exclusive ownership benefits and perks' }
+      { icon: 'playground', title: 'Indoor Play Area', description: 'Dedicated indoor play space for children' },
+      { icon: 'pool', title: 'Pool Deck with Infinity Pool', description: 'Infinity pool with adjacent function room' },
+      { icon: 'function', title: 'Pool Function Room', description: 'Poolside venue for events and private gatherings' },
+      { icon: 'spa', title: 'Spa and Sauna', description: 'On-site wellness and relaxation facilities' },
+      { icon: 'conference', title: 'Conference Room', description: 'Professional meeting space for residents' },
+      { icon: 'eco', title: 'EDGE Registered', description: 'Sustainability-certified green building' },
+      { icon: 'rainwater', title: 'Rainwater Harvesting', description: 'Eco-friendly rainwater collection system' },
+      { icon: 'water', title: 'Double-Piped Waterline', description: 'Dual waterline system for efficiency' },
+      { icon: 'tree', title: 'Tree Preservation', description: 'Masterplan includes tree preservation zones' }
     ]
   },
 
@@ -301,7 +315,7 @@ const beachTownsProjects = [
     status: 'Published',
     featured: true,
     shortDescription:
-      'Named after a graceful sail, this sleek beachfront condominium in Club Laiya offers panoramic sea views on one side and verdant mountains on the other. A luxury coastal sanctuary with a sky bar, ballroom, and infinity lap pool.',
+      'Named after a graceful sail, this striking beachfront condominium in Club Laiya offers sweeping sea views on one side and lush mountain scenery on the other, with a sky bar, ballroom, and infinity pool.',
 
     cardImage: 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=900&auto=format&fit=crop',
     hero: {
@@ -381,14 +395,15 @@ const beachTownsProjects = [
     ],
 
     features: [
+      { icon: 'gate', title: 'Exclusive Gated Community', description: 'Private beachfront enclave with secure access' },
       { icon: 'beach', title: 'Beachfront', description: 'Directly on the beach with panoramic seaview' },
+      { icon: 'seaview', title: 'Seaview from All Units', description: 'Every unit enjoys unobstructed ocean views' },
+      { icon: 'conference', title: 'Meeting & Conference Rooms', description: 'Professional meeting and conference facilities' },
+      { icon: 'gym', title: 'Fitness Center and Spa', description: 'Fully equipped gym and wellness spa' },
+      { icon: 'lounge', title: 'Lounge', description: 'Dedicated social lounge for relaxation' },
+      { icon: 'playzone', title: 'Playzone', description: 'Fun-filled activity area for kids and families' },
       { icon: 'pool', title: 'Infinity Lap Pool', description: 'Olympic-style lap pool overlooking the sea' },
-      { icon: 'spa', title: 'Spa', description: 'Wellness and relaxation facilities' },
-      { icon: 'gym', title: 'Fitness Center', description: 'Fully equipped gym for residents' },
-      { icon: 'bar', title: 'Sky Bar', description: 'Rooftop bar with panoramic views' },
-      { icon: 'ballroom', title: 'Ballroom', description: 'Grand venue for celebrations and events' },
-      { icon: 'mountain', title: 'Mountain Views', description: 'Verdant mountain backdrop from inland-facing units' },
-      { icon: 'conference', title: 'Conference Rooms', description: 'Professional meeting facilities' }
+      { icon: 'bar', title: 'Sky Bar and Ballroom', description: 'Rooftop bar and grand ballroom for celebrations' }
     ]
   },
 
@@ -403,7 +418,7 @@ const beachTownsProjects = [
     status: 'Published',
     featured: true,
     shortDescription:
-      'A premier 15-hectare tourism and business hub in Calatagan, Batangas, combining stunning coastal landscapes with 4-star Filipino hospitality. A place where residents can live, work, and collaborate in a resort environment featuring the Aquaria Waterpark and iconic beachfront boardwalk.',
+      'A premier 15-hectare coastal lifestyle and tourism hub in Calatagan, Batangas, blending stunning beachfront scenery with 4-star Filipino hospitality and world-class resort amenities.',
 
     cardImage: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=900&auto=format&fit=crop',
     hero: {
@@ -516,14 +531,25 @@ const beachTownsProjects = [
     ],
 
     features: [
+      { icon: 'entrance', title: 'Main Entrance & Guard House', description: 'Secure gated entry with 24/7 guard house' },
+      { icon: 'rotunda', title: 'Main Rotonda', description: 'Grand central roundabout at the heart of the community' },
       { icon: 'waterpark', title: 'Aquaria Waterpark', description: 'Major recreational waterpark within the estate' },
-      { icon: 'beach', title: 'Beachfront', description: 'Direct beach access and iconic boardwalk' },
-      { icon: 'lighthouse', title: 'Lighthouse', description: 'Iconic majestic lighthouse landmark' },
-      { icon: 'restaurant', title: 'Restaurants & Bars', description: 'The Sands, Swing Bar, Captain Barbozza & more' },
-      { icon: 'cabin', title: 'Resort Stays', description: 'Crusoe Cabins, Cocoons, Canopy & unique overnight options' },
-      { icon: 'basketball', title: 'Basketball Court', description: 'Hoops court for active residents' },
-      { icon: 'park', title: 'Harbor Parks', description: 'Harbor Park, Walk and Estates for strolls' },
-      { icon: 'security', title: 'Gated & Secure', description: 'Main entrance with 24/7 guard house' }
+      { icon: 'restaurant', title: 'The Sands Restaurant', description: 'Signature beachfront dining venue' },
+      { icon: 'bar', title: 'The Swing Bar', description: 'Casual seaside bar for cocktails and socializing' },
+      { icon: 'beach', title: 'Beach Front', description: 'Direct access to pristine beachfront' },
+      { icon: 'boardwalk', title: 'Boardwalk', description: 'Iconic beachfront boardwalk for strolls and ocean views' },
+      { icon: 'lighthouse', title: 'Lighthouse', description: 'Majestic lighthouse landmark' },
+      { icon: 'pirate', title: 'Captain Barbozza', description: 'Themed dining and entertainment spot' },
+      { icon: 'beachclub', title: 'Residential Beach Club', description: 'Exclusive beach club for homeowners' },
+      { icon: 'park', title: 'Harbour Park, Walk & Estates', description: 'Harbour-side parks and walkways' },
+      { icon: 'basketball', title: 'Hoops Basketball Court', description: 'Outdoor basketball court for active residents' },
+      { icon: 'gym', title: 'Outdoor Playground & Gym', description: 'Combined playground and fitness area' },
+      { icon: 'cabin', title: 'Crusoe Cabins', description: 'Unique island-inspired cabin accommodations' },
+      { icon: 'cocoon', title: 'Cocoons', description: 'Pod-style resort stay experience' },
+      { icon: 'cupola', title: 'Cupola', description: 'Distinctive domed accommodation' },
+      { icon: 'chairman', title: "The Chairman's Cabin", description: 'Premium cabin retreat for guests' },
+      { icon: 'upcoming', title: 'Apollo (Rising Soon)', description: 'Upcoming attraction and amenity' },
+      { icon: 'upcoming', title: 'Gourmet Garage (Rising Soon)', description: 'Upcoming gourmet dining venue' }
     ]
   }
 ];
