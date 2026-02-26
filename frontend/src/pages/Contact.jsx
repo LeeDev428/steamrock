@@ -9,7 +9,7 @@ const Contact = () => {
     {
       icon: <FaMapMarkerAlt className="text-3xl text-accent" />,
       title: 'Office Address',
-      content: '123 Real Estate Avenue, Makati City, Philippines 1200'
+      content: 'Blk 8 Lot 3 Iris St., Camella Homes I, Brgy. Putatan, Muntinlupa City 1770'
     },
     {
       icon: <FaPhone className="text-3xl text-accent" />,
