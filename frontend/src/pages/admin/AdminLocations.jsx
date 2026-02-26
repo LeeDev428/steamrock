@@ -24,7 +24,7 @@ const AdminLocations = () => {
   const fetchLocations = async () => {
     try {
       const res = await axios.get('/locations');
-      setLocations(res.data.data || []);
+      setLocations(Array.isArray(res.data) ? res.data : []);
     } catch (error) {
       console.error('Error fetching locations:', error);
     }
@@ -54,10 +54,10 @@ const AdminLocations = () => {
     try {
       if (editing) {
         const res = await axios.put(`/locations/${editing}`, formData);
-        setLocations(locations.map(l => l._id === editing ? res.data.data : l));
+        setLocations(locations.map(l => l._id === editing ? res.data : l));
       } else {
         const res = await axios.post('/locations', formData);
-        setLocations([...locations, res.data.data]);
+        setLocations([...locations, res.data]);
       }
       setShowModal(false);
     } catch (error) {
