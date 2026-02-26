@@ -4,7 +4,7 @@ import axios from 'axios';
 import AdminLayout from '../../components/admin/AdminLayout';
 import { 
   FiGrid, FiUsers, FiMapPin, FiImage, FiPlus, FiArrowRight, 
-  FiTrendingUp, FiCheckCircle, FiClock, FiArchive, FiEye, FiEdit2
+  FiCheckCircle, FiClock, FiArchive, FiEye, FiEdit2
 } from 'react-icons/fi';
 
 const AdminDashboard = () => {
@@ -14,6 +14,7 @@ const AdminDashboard = () => {
     locations: 0
   });
   const [recentProjects, setRecentProjects] = useState([]);
+  const [allProjects, setAllProjects] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -40,6 +41,7 @@ const AdminDashboard = () => {
           locations: locations.length
         });
 
+        setAllProjects(projects);
         setRecentProjects(projects.slice(0, 6));
       } catch (error) {
         console.error('Error fetching dashboard data:', error);
@@ -50,7 +52,7 @@ const AdminDashboard = () => {
     fetchData();
   }, []);
 
-  const StatCard = ({ icon: Icon, label, value, trend, color, bgColor, link }) => (
+  const StatCard = ({ icon: Icon, label, value, color, bgColor, link }) => (
     <Link
       to={link}
       className="group bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 p-6 border border-gray-100 hover:border-primary/30 relative overflow-hidden"
@@ -63,12 +65,6 @@ const AdminDashboard = () => {
           <div className={`p-3 ${bgColor} rounded-xl shadow-lg`}>
             <Icon className={`w-6 h-6 ${color}`} />
           </div>
-          {trend && (
-            <div className="flex items-center gap-1 text-green-600 text-sm font-semibold">
-              <FiTrendingUp className="w-4 h-4" />
-              <span>+{trend}%</span>
-            </div>
-          )}
         </div>
         
         <h3 className="text-3xl font-bold text-gray-900 mb-1">{value}</h3>
@@ -118,7 +114,6 @@ const AdminDashboard = () => {
             icon={FiGrid}
             label="Total Projects"
             value={stats.projects.total}
-            trend={12}
             color="text-blue-600"
             bgColor="bg-blue-100"
             link="/admin/projects"
@@ -127,7 +122,6 @@ const AdminDashboard = () => {
             icon={FiCheckCircle}
             label="Published Projects"
             value={stats.projects.published}
-            trend={8}
             color="text-green-600"
             bgColor="bg-green-100"
             link="/admin/projects?status=Published"
@@ -136,7 +130,6 @@ const AdminDashboard = () => {
             icon={FiUsers}
             label="Total Contractors"
             value={stats.contractors}
-            trend={5}
             color="text-purple-600"
             bgColor="bg-purple-100"
             link="/admin/contractors"
@@ -145,7 +138,6 @@ const AdminDashboard = () => {
             icon={FiMapPin}
             label="Locations"
             value={stats.locations}
-            trend={3}
             color="text-orange-600"
             bgColor="bg-orange-100"
             link="/admin/locations"
@@ -381,8 +373,8 @@ const AdminDashboard = () => {
                   { name: 'Shores', color: 'bg-blue-500' },
                   { name: 'Peaks', color: 'bg-purple-500' }
                 ].map((cat) => {
-                  const count = recentProjects.filter(p => p.category === cat.name).length;
-                  const total = recentProjects.length || 1;
+                  const count = allProjects.filter(p => p.category === cat.name).length;
+                  const total = allProjects.length || 1;
                   const percentage = Math.round((count / total) * 100);
                   
                   return (
