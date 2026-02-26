@@ -324,35 +324,3 @@ const AdminProjects = () => {
 };
 
 export default AdminProjects;
-
-                            <FiEye className="w-5 h-5" />
-                          </Link>
-                          <Link
-                            to={`/admin/projects/${project._id}`}
-                            className="p-2 text-gray-400 hover:text-primary transition-colors"
-                            title="Edit"
-                          >
-                            <FiEdit2 className="w-5 h-5" />
-                          </Link>
-                          <button
-                            onClick={() => handleDelete(project._id)}
-                            className="p-2 text-gray-400 hover:text-red-600 transition-colors"
-                            title="Delete"
-                          >
-                            <FiTrash2 className="w-5 h-5" />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </div>
-      </div>
-    </AdminLayout>
-  );
-};
-
-export default AdminProjects;
