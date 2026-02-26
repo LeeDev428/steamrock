@@ -10,6 +10,11 @@ import Contact from './pages/Contact';
 // Admin imports
 import AdminLogin from './pages/admin/AdminLogin';
 import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminProjects from './pages/admin/AdminProjects';
+import AdminProjectForm from './pages/admin/AdminProjectForm';
+import AdminContractors from './pages/admin/AdminContractors';
+import AdminLocations from './pages/admin/AdminLocations';
+import AdminSettings from './pages/admin/AdminSettings';
 import ProtectedRoute from './components/admin/ProtectedRoute';
 
 // Public layout wrapper
@@ -43,10 +48,50 @@ function App() {
             }
           />
           <Route
-            path="/admin/*"
+            path="/admin/projects"
             element={
               <ProtectedRoute>
-                <AdminDashboard />
+                <AdminProjects />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/projects/new"
+            element={
+              <ProtectedRoute>
+                <AdminProjectForm />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/projects/:id"
+            element={
+              <ProtectedRoute>
+                <AdminProjectForm />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/contractors"
+            element={
+              <ProtectedRoute>
+                <AdminContractors />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/locations"
+            element={
+              <ProtectedRoute>
+                <AdminLocations />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/settings"
+            element={
+              <ProtectedRoute>
+                <AdminSettings />
               </ProtectedRoute>
             }
           />
