@@ -129,12 +129,12 @@ const Navbar = () => {
               </div>
             ))}
             
-            <Link 
+            {/* <Link 
               to="/contact" 
               className="ml-4 px-5 py-2 bg-primary text-white text-sm font-medium rounded hover:bg-secondary transition-colors"
             >
               Inquire Now
-            </Link>
+            </Link> */}
           </div>
 
           {/* Mobile Menu Button */}
@@ -197,13 +197,13 @@ const Navbar = () => {
                 )}
               </div>
             ))}
-            <Link 
+            {/* <Link 
               to="/contact" 
               className="block mt-4 px-5 py-3 bg-primary text-white text-center font-medium rounded hover:bg-secondary"
               onClick={() => setIsOpen(false)}
             >
               Inquire Now
-            </Link>
+            </Link> */}
           </div>
         </div>
       )}
