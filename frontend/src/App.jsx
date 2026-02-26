@@ -22,6 +22,7 @@ import AdminLocations from './pages/admin/AdminLocations';
 import AdminMedia from './pages/admin/AdminMedia';
 import AdminSettings from './pages/admin/AdminSettings';
 import AdminBlogs from './pages/admin/AdminBlogs';
+import AdminBookings from './pages/admin/AdminBookings';
 import ProtectedRoute from './components/admin/ProtectedRoute';
 
 // Public layout wrapper
