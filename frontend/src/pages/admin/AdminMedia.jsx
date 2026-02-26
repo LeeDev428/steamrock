@@ -11,6 +11,21 @@ const AdminMedia = () => {
   const [uploading, setUploading] = useState(false);
   const [copiedUrl, setCopiedUrl] = useState(null);
 
+  useEffect(() => {
+    fetchFiles();
+  }, []);
+
+  const fetchFiles = async () => {
+    setLoading(true);
+    try {
+      const res = await axios.get('/upload');
+      setFiles(Array.isArray(res.data) ? res.data : []);
+    } catch (error) {
+      console.error('Error fetching files:', error);
+    }
+    setLoading(false);
+  };
+
   const fileTypes = [
     { value: 'projects', label: 'Projects', icon: FiFolder },
     { value: 'contractors', label: 'Contractors', icon: FiImage },
