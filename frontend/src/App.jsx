@@ -15,6 +15,7 @@ import AdminProjects from './pages/admin/AdminProjects';
 import AdminProjectForm from './pages/admin/AdminProjectForm';
 import AdminContractors from './pages/admin/AdminContractors';
 import AdminLocations from './pages/admin/AdminLocations';
+import AdminMedia from './pages/admin/AdminMedia';
 import AdminSettings from './pages/admin/AdminSettings';
 import ProtectedRoute from './components/admin/ProtectedRoute';
 
@@ -86,6 +87,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <AdminLocations />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/media"
+            element={
+              <ProtectedRoute>
+                <AdminMedia />
               </ProtectedRoute>
             }
           />
