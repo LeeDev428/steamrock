@@ -132,23 +132,17 @@ router.post('/', async (req, res) => {
   try {
     const { name, email, phone, project, projectName, preferredDate, preferredTime, tourType, message } = req.body;
 
-    const bookingData = {
+    const booking = new Booking({
       name,
       email,
       phone,
+      project,
       projectName,
       preferredDate,
       preferredTime,
       tourType,
       message
-    };
-
-    // Only set project ObjectId if a valid value was provided
-    if (project && project.length > 0) {
-      bookingData.project = project;
-    }
-
-    const booking = new Booking(bookingData);
+    });
 
     await booking.save();
 
@@ -165,6 +159,7 @@ router.post('/', async (req, res) => {
           <div style="background: white; border-radius: 8px; padding: 20px; margin: 20px 0;">
             <h3 style="color: #1a365d; margin-top: 0;">Booking Details</h3>
             <p style="margin: 8px 0;"><strong>Property:</strong> ${projectName || 'General Inquiry'}</p>
+            <p style="margin: 8px 0;"><strong>Tour Type:</strong> ${tourType || 'N/A'}</p>
             <p style="margin: 8px 0;"><strong>Date:</strong> ${new Date(preferredDate).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
             <p style="margin: 8px 0;"><strong>Time:</strong> ${preferredTime}</p>
           </div>
