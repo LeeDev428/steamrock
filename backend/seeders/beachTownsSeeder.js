@@ -57,7 +57,7 @@ const beachTownsProjects = [
     status: 'Published',
     featured: true,
     shortDescription:
-      'A coastal sanctuary inspired by Captain Nemo\'s maritime discoveries, situated within the world-class resort of CaSoBē. Features luxurious private units with modern designs, private balconies, and an infinity pool—both a visionary home and a smart investment.',
+      'Drawing inspiration from Captain Nemo\'s maritime legacy, this beachfront retreat within CaSoBē resort offers luxurious private units with sleek modern designs, private balconies, and a stunning infinity pool—equal parts dream home and savvy investment.','
 
     cardImage: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=900&auto=format&fit=crop',
     hero: {
@@ -176,7 +176,7 @@ const beachTownsProjects = [
     status: 'Published',
     featured: true,
     shortDescription:
-      'The final opportunity to join the illustrious Punta Fuego society—an exclusive destination-ready beachfront community two hours from Metro Manila. Sitting directly across 800 meters of pristine white sand, combining modern comforts with prestigious club membership.',
+      'Your last chance to become part of the prestigious Punta Fuego community—just two hours from Metro Manila with 800 meters of white sand at your doorstep, blending modern coastal living with exclusive club privileges.','
 
     cardImage: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=900&auto=format&fit=crop',
     hero: {
@@ -301,7 +301,7 @@ const beachTownsProjects = [
     status: 'Published',
     featured: true,
     shortDescription:
-      'Named after a graceful sail, this sleek beachfront condominium in Club Laiya offers panoramic sea views on one side and verdant mountains on the other. A luxury coastal sanctuary with a sky bar, ballroom, and infinity lap pool.',
+      'Rising gracefully along the shores of Club Laiya, this striking beachfront condo blends panoramic sea views with mountain vistas, complemented by a rooftop sky bar, grand ballroom, and infinity lap pool.','
 
     cardImage: 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=900&auto=format&fit=crop',
     hero: {
@@ -403,7 +403,7 @@ const beachTownsProjects = [
     status: 'Published',
     featured: true,
     shortDescription:
-      'A premier 15-hectare tourism and business hub in Calatagan, Batangas, combining stunning coastal landscapes with 4-star Filipino hospitality. A place where residents can live, work, and collaborate in a resort environment featuring the Aquaria Waterpark and iconic beachfront boardwalk.',
+      'A vibrant 15-hectare resort community in Calatagan, Batangas where coastal living meets 4-star Filipino hospitality—home to the Aquaria Waterpark, an iconic boardwalk, and spaces designed for living, working, and unwinding by the sea.','
 
     cardImage: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=900&auto=format&fit=crop',
     hero: {
