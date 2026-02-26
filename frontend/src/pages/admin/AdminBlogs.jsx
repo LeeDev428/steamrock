@@ -2,9 +2,11 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import AdminLayout from '../../components/admin/AdminLayout';
+import { useToast } from '../../components/Toast';
 import { FiPlus, FiEdit2, FiTrash2, FiEye, FiImage, FiFilter, FiFileText, FiCheckCircle, FiClock, FiX } from 'react-icons/fi';
 
 const AdminBlogs = () => {
+  const toast = useToast();
   const navigate = useNavigate();
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -114,7 +116,7 @@ const AdminBlogs = () => {
       fetchBlogs();
     } catch (error) {
       console.error('Error saving blog:', error);
-      alert(error.response?.data?.message || 'Failed to save blog');
+      toast.error(error.response?.data?.message || 'Failed to save blog');
     }
   };
 
@@ -127,7 +129,7 @@ const AdminBlogs = () => {
       fetchBlogs();
     } catch (error) {
       console.error('Error deleting blog:', error);
-      alert('Failed to delete blog');
+      toast.error('Failed to delete blog');
     }
   };
 
@@ -143,7 +145,7 @@ const AdminBlogs = () => {
       setFormData({ ...formData, featuredImage: res.data.url });
     } catch (error) {
       console.error('Error uploading image:', error);
-      alert('Failed to upload image');
+      toast.error('Failed to upload image');
     }
   };
 
