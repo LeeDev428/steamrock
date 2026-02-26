@@ -4,6 +4,7 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const { protect, adminOnly } = require('../middleware/auth');
+const MediaFile = require('../models/MediaFile');
 
 // Ensure uploads directory exists
 const uploadsDir = path.join(__dirname, '../uploads');
@@ -49,6 +50,20 @@ const upload = multer({
   }
 });
 
+// @route   GET /api/upload
+// @desc    List all uploaded files
+// @access  Private/Admin
+router.get('/', protect, adminOnly, async (req, res) => {
+  try {
+    const filter = {};
+    if (req.query.type) filter.type = req.query.type;
+    const files = await MediaFile.find(filter).sort({ createdAt: -1 });
+    res.json(files);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 // @route   POST /api/upload
 // @desc    Upload single file
 // @access  Private/Admin
@@ -61,8 +76,18 @@ router.post('/', protect, adminOnly, upload.single('file'), async (req, res) => 
     const type = req.query.type || 'general';
     const fileUrl = `/uploads/${type}/${req.file.filename}`;
 
+    const mediaFile = await MediaFile.create({
+      filename: req.file.filename,
+      url: fileUrl,
+      size: req.file.size,
+      mimetype: req.file.mimetype,
+      type,
+      uploadedBy: req.admin._id
+    });
+
     res.json({
       message: 'File uploaded successfully',
+      _id: mediaFile._id,
       filename: req.file.filename,
       url: fileUrl,
       size: req.file.size,
@@ -114,6 +139,7 @@ router.delete('/', protect, adminOnly, async (req, res) => {
     
     if (fs.existsSync(filePath)) {
       fs.unlinkSync(filePath);
+      await MediaFile.findOneAndDelete({ url });
       res.json({ message: 'File deleted successfully' });
     } else {
       res.status(404).json({ message: 'File not found' });
