@@ -99,6 +99,14 @@ const SiteSettingsSchema = new mongoose.Schema({
     }]
   },
   
+  // Category Banner Images (shown on /projects?category=... header)
+  categoryBanners: {
+    Parks: { type: String, default: '' },
+    BeachTowns: { type: String, default: '' },
+    Shores: { type: String, default: '' },
+    Peaks: { type: String, default: '' }
+  },
+
   // SEO
   seo: {
     title: { type: String },
