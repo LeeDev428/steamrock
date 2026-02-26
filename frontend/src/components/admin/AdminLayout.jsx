@@ -113,12 +113,12 @@ const AdminLayout = ({ children }) => {
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 z-50 w-64 h-full bg-gray-900 transform transition-transform duration-300 lg:translate-x-0 ${
+        className={`fixed top-0 left-0 z-50 w-64 h-full bg-gray-900 transform transition-transform duration-300 lg:translate-x-0 flex flex-col ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
         {/* Logo */}
-        <div className="flex items-center justify-between h-16 px-6 border-b border-gray-800">
+        <div className="flex items-center justify-between h-16 px-6 border-b border-gray-800 flex-shrink-0">
           <Link to="/admin/dashboard" className="text-white font-display font-bold text-lg">
             Streamrock Admin
           </Link>
@@ -130,15 +130,15 @@ const AdminLayout = ({ children }) => {
           </button>
         </div>
 
-        {/* Navigation */}
-        <nav className="p-4 space-y-2">
+        {/* Navigation - scrollable */}
+        <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
           {navItems.map((item, index) => (
             <NavItem key={index} item={item} />
           ))}
         </nav>
 
-        {/* Logout */}
-        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-800">
+        {/* Logout - fixed at bottom */}
+        <div className="flex-shrink-0 p-4 border-t border-gray-800">
           <button
             onClick={handleLogout}
             className="w-full flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-red-600 hover:text-white rounded-lg transition-colors"
