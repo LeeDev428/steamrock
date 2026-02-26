@@ -63,7 +63,7 @@ const AdminMedia = () => {
     
     try {
       await axios.delete('/upload', { data: { url } });
-      setFiles(files.filter(f => f.url !== url));
+      await fetchFiles();
     } catch (error) {
       console.error('Delete error:', error);
       alert('Failed to delete file');
