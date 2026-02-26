@@ -5,6 +5,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import LoadingScreen from './components/LoadingScreen';
 import ScrollToTop from './components/ScrollToTop';
+import { ToastProvider } from './components/Toast';
 import Home from './pages/Home';
 import Projects from './pages/Projects';
 import ProjectDetail from './pages/ProjectDetail';
@@ -48,8 +49,9 @@ function App() {
 
   return (
     <AuthProvider>
-      <Router>
-        <Routes>
+      <ToastProvider>
+        <Router>
+          <Routes>
           {/* Public Routes */}
           <Route path="/" element={<PublicLayout><Home /></PublicLayout>} />
           <Route path="/projects" element={<PublicLayout><Projects /></PublicLayout>} />
@@ -141,8 +143,9 @@ function App() {
               </ProtectedRoute>
             }
           />
-        </Routes>
-      </Router>
+          </Routes>
+        </Router>
+      </ToastProvider>
     </AuthProvider>
   );
 }
