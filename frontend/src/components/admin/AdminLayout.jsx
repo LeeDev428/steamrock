@@ -128,15 +128,11 @@ const AdminLayout = ({ children }) => {
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
-        {/* Logo with gradient background */}
+        {/* Logo only */}
         <div className="relative flex items-center justify-between h-20 px-6 border-b border-white/10 flex-shrink-0 bg-gradient-to-r from-primary/20 to-secondary/20">
-          <Link to="/admin/dashboard" className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-lg">
-              <img src="/src.png" alt="Logo" className="w-8 h-8 object-contain" />
-            </div>
-            <div>
-              <h1 className="text-white font-display font-bold text-lg leading-tight">Streamrock</h1>
-              <p className="text-gray-400 text-xs">Admin Portal</p>
+          <Link to="/admin/dashboard" className="flex items-center justify-center">
+            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-lg">
+              <img src="/src.png" alt="Logo" className="w-10 h-10 object-contain" />
             </div>
           </Link>
           <button
@@ -145,26 +141,6 @@ const AdminLayout = ({ children }) => {
           >
             <FiX className="w-6 h-6" />
           </button>
-        </div>
-
-        {/* Admin Profile Card */}
-        <div className="px-6 py-5 border-b border-white/10 flex-shrink-0">
-          <div className="flex items-center gap-3 p-3 rounded-xl bg-white/5 hover:bg-white/10 transition-all cursor-pointer group">
-            <div className="relative">
-              <div className="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center text-white font-bold text-sm shadow-lg">
-                {admin?.name?.charAt(0).toUpperCase() || 'A'}
-              </div>
-              <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 rounded-full border-2 border-gray-900"></div>
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-white font-semibold text-sm truncate">
-                {admin?.name || 'Administrator'}
-              </p>
-              <p className="text-gray-400 text-xs truncate">
-                {admin?.email || 'admin@streamrock.com'}
-              </p>
-            </div>
-          </div>
         </div>
 
         {/* Navigation - scrollable */}
@@ -177,11 +153,24 @@ const AdminLayout = ({ children }) => {
           ))}
         </nav>
 
-        {/* Logout - fixed at bottom */}
+        {/* Logout with admin info */}
         <div className="flex-shrink-0 p-4 border-t border-white/10 bg-gradient-to-r from-gray-900/50 to-gray-800/50">
+          <div className="flex items-center gap-3 mb-3 px-2">
+            <div className="w-9 h-9 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center text-white font-bold text-sm shadow-lg">
+              {admin?.name?.charAt(0).toUpperCase() || 'A'}
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-white font-semibold text-sm truncate">
+                {admin?.name || 'Administrator'}
+              </p>
+              <p className="text-gray-400 text-xs truncate">
+                {admin?.email || 'admin@streamrock.com'}
+              </p>
+            </div>
+          </div>
           <button
             onClick={handleLogout}
-            className="w-full flex items-center gap-3 px-4 py-3.5 text-gray-300 hover:bg-red-500/20 hover:text-red-400 rounded-xl transition-all duration-200 group border border-transparent hover:border-red-500/30"
+            className="w-full flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-red-500/20 hover:text-red-400 rounded-xl transition-all duration-200 group border border-transparent hover:border-red-500/30"
           >
             <div className="p-1.5 rounded-lg bg-white/10 group-hover:bg-red-500/20 transition-colors">
               <FiLogOut className="w-4 h-4" />
