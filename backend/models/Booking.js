@@ -31,8 +31,21 @@ const bookingSchema = new mongoose.Schema({
   },
   preferredTime: {
     type: String,
-    enum: ['9:00 AM', '10:00 AM', '11:00 AM', '1:00 PM', '2:00 PM', '3:00 PM', '4:00 PM', '5:00 PM'],
+    enum: [
+      '9:00 AM - 10:00 AM',
+      '10:00 AM - 11:00 AM',
+      '11:00 AM - 12:00 PM',
+      '1:00 PM - 2:00 PM',
+      '2:00 PM - 3:00 PM',
+      '3:00 PM - 4:00 PM',
+      '4:00 PM - 5:00 PM'
+    ],
     required: [true, 'Preferred time is required']
+  },
+  tourType: {
+    type: String,
+    enum: ['In Person', 'Video Chat'],
+    required: [true, 'Tour type is required']
   },
   message: {
     type: String,
