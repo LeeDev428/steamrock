@@ -133,21 +133,21 @@ const AdminLayout = ({ children }) => {
         }`}
       >
         {/* Logo only */}
-        <div className="relative flex items-center justify-between h-20 px-6 border-b border-white/10 flex-shrink-0 bg-gradient-to-r from-primary/20 to-secondary/20">
-          <Link to="/admin/dashboard" className="flex items-center justify-center">
-            <div className="w-48 h-12 rounded-xl  from-primary to-secondary flex items-center justify-center shadow-lg">
-              <img src="/src.png" alt="Logo" className="w-36 h-36 object-contain" />
+            <div className="relative flex items-center justify-between h-20 px-6 border-b border-white/10 flex-shrink-0 bg-gradient-to-r from-white/10 to-white/5">
+              <Link to="/admin/dashboard" className="flex items-center justify-center">
+                <div className="w-48 h-12 rounded-xl bg-white/30 flex items-center justify-center shadow-lg">
+                  <img src="/src.png" alt="Logo" className="w-28 h-28 object-contain" />
+                </div>
+              </Link>
+              <button
+                onClick={() => setSidebarOpen(false)}
+                className="lg:hidden text-gray-300 hover:text-gray-100 transition-colors"
+              >
+                <FiX className="w-6 h-6" />
+              </button>
             </div>
-          </Link>
-          <button
-            onClick={() => setSidebarOpen(false)}
-            className="lg:hidden text-gray-400 hover:text-white transition-colors"
-          >
-            <FiX className="w-6 h-6" />
-          </button>
-        </div>
 
-        {/* Navigation - scrollable */}
+            {/* Navigation - scrollable */}}
         <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent">
           <p className="px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
             Main Menu
