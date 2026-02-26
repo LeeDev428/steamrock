@@ -89,34 +89,46 @@ const BlogDetail = () => {
           </AnimatedSection>
 
           {/* Article Header */}
-          <AnimatedSection animation="fade-in-up" className="bg-white rounded-2xl shadow-sm p-8 md:p-12 -mt-20 relative z-10 mb-8">
-            <span className="inline-block px-4 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium mb-4">
-              {blog.category}
-            </span>
-            
-            <h1 className="text-3xl md:text-4xl font-serif font-bold text-gray-900 mb-6">
-              {blog.title}
-            </h1>
+          <AnimatedSection animation="fade-in-up" className="bg-white rounded-2xl shadow-sm overflow-hidden -mt-20 relative z-10 mb-8">
+            {/* Cover Image */}
+            {blog.featuredImage && (
+              <div className="w-full aspect-[21/9] overflow-hidden">
+                <img
+                  src={blog.featuredImage}
+                  alt={blog.title}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            )}
+            <div className="p-8 md:p-12">
+              <span className="inline-block px-4 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium mb-4">
+                {blog.category}
+              </span>
 
-            <div className="flex flex-wrap items-center gap-6 text-sm text-gray-500 pb-6 border-b border-gray-100">
-              <span className="flex items-center gap-2">
-                <FaUser className="text-primary" />
-                {blog.author?.name || 'Admin'}
-              </span>
-              <span className="flex items-center gap-2">
-                <FaCalendar className="text-primary" />
-                {formatDate(blog.createdAt)}
-              </span>
-              <span className="flex items-center gap-2">
-                <FaEye className="text-primary" />
-                {blog.views || 0} views
-              </span>
+              <h1 className="text-3xl md:text-4xl font-serif font-bold text-gray-900 mb-6">
+                {blog.title}
+              </h1>
+
+              <div className="flex flex-wrap items-center gap-6 text-sm text-gray-500 pb-6 border-b border-gray-100">
+                <span className="flex items-center gap-2">
+                  <FaUser className="text-primary" />
+                  {blog.author?.name || 'Admin'}
+                </span>
+                <span className="flex items-center gap-2">
+                  <FaCalendar className="text-primary" />
+                  {formatDate(blog.createdAt)}
+                </span>
+                <span className="flex items-center gap-2">
+                  <FaEye className="text-primary" />
+                  {blog.views || 0} views
+                </span>
+              </div>
+
+              {/* Excerpt */}
+              <p className="mt-6 text-lg text-gray-600 leading-relaxed italic border-l-4 border-primary pl-4">
+                {blog.excerpt}
+              </p>
             </div>
-
-            {/* Excerpt */}
-            <p className="mt-6 text-lg text-gray-600 leading-relaxed italic border-l-4 border-primary pl-4">
-              {blog.excerpt}
-            </p>
           </AnimatedSection>
 
           {/* Article Content */}
