@@ -135,8 +135,8 @@ const AdminLayout = ({ children }) => {
         {/* Logo only */}
         <div className="relative flex items-center justify-between h-20 px-6 border-b border-white/10 flex-shrink-0 bg-gradient-to-r from-primary/20 to-secondary/20">
           <Link to="/admin/dashboard" className="flex items-center justify-center">
-            <div className="w-48 h-12 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-lg">
-              <img src="/src.png" alt="Logo" className="w-10 h-10 object-contain" />
+            <div className="w-48 h-12 rounded-xl  from-primary to-secondary flex items-center justify-center shadow-lg">
+              <img src="/src.png" alt="Logo" className="w-36 h-36 object-contain" />
             </div>
           </Link>
           <button
