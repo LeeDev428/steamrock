@@ -36,15 +36,21 @@ const PublicLayout = ({ children }) => (
 
 function App() {
   const [appLoading, setAppLoading] = useState(true);
+  const [appVisible, setAppVisible] = useState(false);
 
   useEffect(() => {
-    const t = setTimeout(() => setAppLoading(false), 1500);
+    const t = setTimeout(() => {
+      setAppLoading(false);
+      // Trigger fade-in after loading screen disappears
+      requestAnimationFrame(() => setAppVisible(true));
+    }, 1700);
     return () => clearTimeout(t);
   }, []);
 
   if (appLoading) return <LoadingScreen />;
 
   return (
+    <div className={`transition-opacity duration-700 ease-out ${appVisible ? 'opacity-100' : 'opacity-0'}`}>
     <AuthProvider>
       <Router>
         <Routes>
