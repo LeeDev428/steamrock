@@ -64,16 +64,7 @@ const BlogDetail = () => {
   return (
     <div className="pt-20 min-h-screen bg-gray-50">
       {/* Hero Image */}
-      {blog.featuredImage && (
-        <div className="relative h-[50vh] min-h-[400px]">
-          <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `url(${blog.featuredImage})` }}
-          >
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
-          </div>
-        </div>
-      )}
+    <br />
 
       <div className="container-custom py-12">
         <div className="max-w-4xl mx-auto">
