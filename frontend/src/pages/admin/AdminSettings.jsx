@@ -16,7 +16,15 @@ const AdminSettings = () => {
   const fetchSettings = async () => {
     try {
       const res = await axios.get('/settings');
-      setSettings(res.data.data);
+      const data = res.data;
+      setSettings({
+        ...data,
+        hero: data.hero || { type: 'carousel', items: [] },
+        featureIcons: data.featureIcons || [],
+        contact: data.contact || { phone: '', email: '', address: '' },
+        social: data.social || { facebook: '', instagram: '', linkedin: '', youtube: '' },
+        categoryBanners: data.categoryBanners || { Parks: '', BeachTowns: '', Shores: '', Peaks: '' },
+      });
     } catch (error) {
       console.error('Error fetching settings:', error);
     }
@@ -133,7 +141,7 @@ const AdminSettings = () => {
         <div className="bg-white rounded-lg shadow-sm">
           <div className="border-b">
             <nav className="flex gap-4 px-6">
-              {['hero', 'features', 'contact', 'social'].map((tab) => (
+              {['hero', 'features', 'banners', 'contact', 'social'].map((tab) => (
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
@@ -382,6 +390,48 @@ const AdminSettings = () => {
                     rows="3"
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                   />
+                </div>
+              </div>
+            )}
+
+            {/* Banners Tab */}
+            {activeTab === 'banners' && (
+              <div className="space-y-6">
+                <p className="text-sm text-gray-500">Upload banner images for each project category page. These appear as the header background on the /projects?category=... pages.</p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {['Parks', 'BeachTowns', 'Shores', 'Peaks'].map((cat) => (
+                    <div key={cat} className="border border-gray-200 rounded-lg p-4">
+                      <label className="block text-sm font-medium text-gray-700 mb-3">
+                        {cat === 'BeachTowns' ? 'Beach Towns' : cat}
+                      </label>
+                      {settings.categoryBanners?.[cat] && (
+                        <img src={settings.categoryBanners[cat]} alt={cat} className="w-full h-24 object-cover rounded-lg mb-3" />
+                      )}
+                      <div className="flex gap-2">
+                        <input
+                          type="url"
+                          value={settings.categoryBanners?.[cat] || ''}
+                          onChange={(e) => setSettings({ ...settings, categoryBanners: { ...settings.categoryBanners, [cat]: e.target.value } })}
+                          placeholder="https://... or upload below"
+                          className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:border-transparent"
+                        />
+                        <label className="px-3 py-2 bg-gray-100 text-gray-700 rounded-lg cursor-pointer hover:bg-gray-200 text-sm flex items-center gap-1">
+                          <FiUpload className="w-4 h-4" />
+                          <input type="file" accept="image/*" className="hidden" onChange={async (e) => {
+                            const file = e.target.files[0];
+                            if (!file) return;
+                            const fd = new FormData();
+                            fd.append('file', file);
+                            fd.append('type', 'banner');
+                            try {
+                              const r = await axios.post('/upload', fd, { headers: { 'Content-Type': 'multipart/form-data' } });
+                              setSettings({ ...settings, categoryBanners: { ...settings.categoryBanners, [cat]: r.data.url } });
+                            } catch { alert('Upload failed'); }
+                          }} />
+                        </label>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             )}
