@@ -1,110 +1,137 @@
-import { useState } from 'react';
-import { FaSearch, FaMapMarkerAlt, FaHome } from 'react-icons/fa';
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { FaChevronLeft, FaChevronRight, FaPlay } from 'react-icons/fa';
 
 const Hero = () => {
-  const [formData, setFormData] = useState({
-    propertyType: '',
-    location: '',
-    priceRange: ''
-  });
+  const [currentSlide, setCurrentSlide] = useState(0);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Navigate to properties with filters
-    window.location.href = `/properties?type=${formData.propertyType}&location=${formData.location}&price=${formData.priceRange}`;
-  };
+  // Default slides - will be replaced by SiteSettings from API
+  const slides = [
+    {
+      type: 'image',
+      url: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
+      title: 'Live in Harmony with Nature',
+      subtitle: 'Discover premium communities in Laguna and Batangas'
+    },
+    {
+      type: 'image',
+      url: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
+      title: 'Your Dream Home Awaits',
+      subtitle: 'Exclusive properties from top developers'
+    },
+    {
+      type: 'image',
+      url: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
+      title: 'Investment Opportunities',
+      subtitle: 'Secure your future with prime real estate'
+    }
+  ];
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 6000);
+    return () => clearInterval(timer);
+  }, [slides.length]);
+
+  const goToSlide = (index) => setCurrentSlide(index);
+  const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % slides.length);
 
   return (
-    <div className="relative h-screen">
-      {/* Background Image */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center animate-fade-in"
-        style={{
-          backgroundImage: 'url(https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80)',
-        }}
-      >
-        <div className="absolute inset-0 bg-black bg-opacity-50"></div>
-      </div>
+    <div className="relative h-[90vh] min-h-[600px] overflow-hidden">
+      {/* Slides */}
+      {slides.map((slide, index) => (
+        <div
+          key={index}
+          className={`absolute inset-0 transition-opacity duration-1000 ${
+            index === currentSlide ? 'opacity-100' : 'opacity-0'
+          }`}
+        >
+          {slide.type === 'video' ? (
+            <video
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="absolute inset-0 w-full h-full object-cover"
+            >
+              <source src={slide.url} type="video/mp4" />
+            </video>
+          ) : (
+            <div
+              className="absolute inset-0 bg-cover bg-center transition-transform duration-[8000ms] ease-out"
+              style={{
+                backgroundImage: `url(${slide.url})`,
+                transform: index === currentSlide ? 'scale(1.05)' : 'scale(1)'
+              }}
+            />
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+        </div>
+      ))}
 
       {/* Content */}
-      <div className="relative h-full flex items-center animate-fade-in-up">
+      <div className="relative h-full flex items-end pb-32">
         <div className="container-custom">
-          <div className="max-w-4xl mx-auto text-center text-white">
-            <p className="text-accent text-sm md:text-base font-semibold tracking-wider uppercase mb-4 animate-fade-in-delay-1">
-              YOUR TRUSTED REAL ESTATE PARTNER
+          <div className="max-w-3xl">
+            <p className="text-accent text-sm tracking-[0.3em] uppercase mb-4 font-medium">
+              STREAMROCK REALTY
             </p>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight animate-fade-in-delay-2">
-              Find Your Dream Property
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-6 leading-tight">
+              {slides[currentSlide].title}
             </h1>
-            <p className="text-lg md:text-xl mb-12 text-gray-200 max-w-2xl mx-auto animate-fade-in-delay-3">
-              Discover premium properties across Nuvali, Vermosa, Southmont, and Batangas Beach
+            <p className="text-xl text-gray-200 mb-8 max-w-xl">
+              {slides[currentSlide].subtitle}
             </p>
-
-            {/* Search Form */}
-            <div className="bg-white rounded-lg shadow-2xl p-6 md:p-8 animate-fade-in-delay-4">
-              <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div className="relative">
-                  <FaHome className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                  <select
-                    value={formData.propertyType}
-                    onChange={(e) => setFormData({...formData, propertyType: e.target.value})}
-                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-gray-700"
-                  >
-                    <option value="">Property Type</option>
-                    <option value="house-and-lot">House and Lot</option>
-                    <option value="condo">Condominium</option>
-                    <option value="lot">Lot Only</option>
-                    <option value="commercial">Commercial</option>
-                  </select>
-                </div>
-
-                <div className="relative">
-                  <FaMapMarkerAlt className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                  <select
-                    value={formData.location}
-                    onChange={(e) => setFormData({...formData, location: e.target.value})}
-                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-gray-700"
-                  >
-                    <option value="">Location</option>
-                    <option value="nuvali">Nuvali</option>
-                    <option value="vermosa">Vermosa</option>
-                    <option value="southmont">Southmont</option>
-                    <option value="batangas">Batangas Beach</option>
-                  </select>
-                </div>
-
-                <div className="relative">
-                  <select
-                    value={formData.priceRange}
-                    onChange={(e) => setFormData({...formData, priceRange: e.target.value})}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-gray-700"
-                  >
-                    <option value="">Price Range</option>
-                    <option value="0-3000000">Under ₱3M</option>
-                    <option value="3000000-5000000">₱3M - ₱5M</option>
-                    <option value="5000000-10000000">₱5M - ₱10M</option>
-                    <option value="10000000-999999999">Above ₱10M</option>
-                  </select>
-                </div>
-
-                <button
-                  type="submit"
-                  className="btn-primary flex items-center justify-center space-x-2"
-                >
-                  <FaSearch />
-                  <span>Search</span>
-                </button>
-              </form>
+            <div className="flex flex-wrap gap-4">
+              <Link
+                to="/projects"
+                className="px-8 py-4 bg-white text-primary font-semibold hover:bg-gray-100 transition-colors"
+              >
+                View Projects
+              </Link>
+              <Link
+                to="/contact"
+                className="px-8 py-4 border-2 border-white text-white font-semibold hover:bg-white/10 transition-colors"
+              >
+                Schedule Visit
+              </Link>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-        <div className="w-6 h-10 border-2 border-white rounded-full flex justify-center">
-          <div className="w-1 h-3 bg-white rounded-full mt-2"></div>
-        </div>
+      {/* Navigation Arrows */}
+      <button
+        onClick={prevSlide}
+        className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center text-white/70 hover:text-white transition-colors"
+        aria-label="Previous slide"
+      >
+        <FaChevronLeft className="text-2xl" />
+      </button>
+      <button
+        onClick={nextSlide}
+        className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center text-white/70 hover:text-white transition-colors"
+        aria-label="Next slide"
+      >
+        <FaChevronRight className="text-2xl" />
+      </button>
+
+      {/* Slide Indicators */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3">
+        {slides.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => goToSlide(index)}
+            className={`h-1 transition-all duration-300 ${
+              index === currentSlide
+                ? 'w-12 bg-white'
+                : 'w-4 bg-white/40 hover:bg-white/60'
+            }`}
+            aria-label={`Go to slide ${index + 1}`}
+          />
+        ))}
       </div>
     </div>
   );
