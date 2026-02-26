@@ -130,18 +130,25 @@ router.get('/:id', protect, adminOnly, async (req, res) => {
 // @access  Public
 router.post('/', async (req, res) => {
   try {
-    const { name, email, phone, project, projectName, preferredDate, preferredTime, message } = req.body;
+    const { name, email, phone, project, projectName, preferredDate, preferredTime, tourType, message } = req.body;
 
-    const booking = new Booking({
+    const bookingData = {
       name,
       email,
       phone,
-      project,
       projectName,
       preferredDate,
       preferredTime,
+      tourType,
       message
-    });
+    };
+
+    // Only set project ObjectId if a valid value was provided
+    if (project && project.length > 0) {
+      bookingData.project = project;
+    }
+
+    const booking = new Booking(bookingData);
 
     await booking.save();
 
