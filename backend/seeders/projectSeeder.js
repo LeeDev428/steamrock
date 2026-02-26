@@ -368,7 +368,7 @@ const parksProjects = [
         label: 'VENUES',
         title: 'Community & Gathering Spaces',
         description:
-          'Share life's moments at elegant venue spaces designed for intimate gatherings and grand celebrations alike.',
+          "Share life's moments at elegant venue spaces designed for intimate gatherings and grand celebrations alike.",
         features: [
           'Villa Ponderosa Clubhouse',
           'Plaza Maravilla',
@@ -443,7 +443,7 @@ const parksProjects = [
         label: 'ABOUT',
         title: 'A Jewel of the Escudero Legacy',
         description:
-          'Montelago Nature Estates is a master-planned enclave in Barangay Sta. Elena, San Pablo City, Laguna — a "jewel of the Escudero legacy" that blends modern living with nature's tranquility. Inspired by Southern Californian architecture, it features a majestic backdrop of Mt. Cristobal, Mt. Makiling, and Mt. Banahaw.',
+          "Montelago Nature Estates is a master-planned enclave in Barangay Sta. Elena, San Pablo City, Laguna — a 'jewel of the Escudero legacy' that blends modern living with nature's tranquility. Inspired by Southern Californian architecture, it features a majestic backdrop of Mt. Cristobal, Mt. Makiling, and Mt. Banahaw.",
         backgroundColor: '#ffffff',
         textColor: '#1a202c'
       },
