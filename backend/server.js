@@ -3,10 +3,31 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const path = require('path');
+const http = require('http');
+const { Server } = require('socket.io');
 
 dotenv.config();
 
 const app = express();
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+    methods: ['GET', 'POST']
+  }
+});
+
+// Make io accessible in routes
+app.set('io', io);
+
+// Socket.io connection handling
+io.on('connection', (socket) => {
+  console.log('🔌 Client connected:', socket.id);
+  
+  socket.on('disconnect', () => {
+    console.log('🔌 Client disconnected:', socket.id);
+  });
+});
 
 // Middleware
 app.use(cors());
@@ -31,6 +52,7 @@ app.use('/api/upload', require('./routes/upload'));
 app.use('/api/properties', require('./routes/properties'));
 app.use('/api/inquiries', require('./routes/inquiries'));
 app.use('/api/blogs', require('./routes/blogs'));
+app.use('/api/bookings', require('./routes/bookings'));
 
 // Health Check
 app.get('/api/health', (req, res) => {
@@ -48,6 +70,7 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
+  console.log(`🔌 Socket.io ready`);
 });
