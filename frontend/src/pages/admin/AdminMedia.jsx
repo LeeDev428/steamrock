@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import AdminLayout from '../../components/admin/AdminLayout';
+import { useToast } from '../../components/Toast';
 import { FiUpload, FiTrash2, FiX, FiFolder, FiImage, FiCopy, FiCheck } from 'react-icons/fi';
 
 const AdminMedia = () => {
+  const toast = useToast();
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
   const [uploadModal, setUploadModal] = useState(false);
@@ -66,7 +68,7 @@ const AdminMedia = () => {
       await fetchFiles();
     } catch (error) {
       console.error('Delete error:', error);
-      alert('Failed to delete file');
+      toast.error('Failed to delete file');
     }
   };
 
