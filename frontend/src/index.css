@@ -248,6 +248,22 @@
     }
   }
 
+  /* Toast animation */
+  .animate-slide-in-right {
+    animation: toastSlideIn 0.35s ease-out;
+  }
+
+  @keyframes toastSlideIn {
+    from {
+      opacity: 0;
+      transform: translateX(100%);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
   /* Smooth scrollbar */
   .scrollbar-thin {
     scrollbar-width: thin;
