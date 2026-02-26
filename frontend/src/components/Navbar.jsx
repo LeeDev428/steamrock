@@ -73,15 +73,15 @@ const Navbar = () => {
       <div className="container-custom">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center">
-            <img 
-              src="/src.png" 
-              alt="Streamrock Realty Logo" 
-              className="h-12 w-auto"
-            />
-          </Link>
+                <Link to="/" className="flex items-center">
+                <img 
+                  src="/src.png" 
+                  alt="Streamrock Realty Logo" 
+                  className="h-12 w-auto"
+                />
+                </Link>
 
-          {/* Desktop Menu */}
+                {/* Desktop Menu */}
           <div className="hidden lg:flex items-center gap-8" ref={dropdownRef}>
             {navLinks.map((link) => (
               <div key={link.name} className="relative">
