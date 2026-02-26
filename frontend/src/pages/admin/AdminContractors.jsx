@@ -127,17 +127,17 @@ const AdminContractors = () => {
                 Add your first contractor
               </button>
             </div>
-          ) : (filter(c => c && c._id).map((contractor) => (
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-6">
+              {contractors.filter(c => c && c._id).map((contractor) => (
                 <div key={contractor._id} className="border border-gray-200 rounded-lg p-4 hover:border-primary transition-colors">
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-3">
-                      {contractor?"flex items-start justify-between">
-                    <div className="flex items-center gap-3">
-                      {contractor.logo ? (
+                      {contractor?.logo ? (
                         <img src={contractor.logo} alt={contractor.name} className="w-12 h-12 object-contain rounded" />
                       ) : (
                         <div className="w-12 h-12 bg-gray-100 rounded flex items-center justify-center text-gray-400 font-bold">
-                          {contractor.name.charAt(0)}
+                          {contractor.name?.charAt(0) || '?'}
                         </div>
                       )}
                       <div>
