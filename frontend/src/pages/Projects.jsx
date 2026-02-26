@@ -62,29 +62,36 @@ const Projects = () => {
     <div className="pt-24 pb-20">
       {/* Header */}
       <div
-        className="relative py-20 bg-gray-50 overflow-hidden"
-        style={categoryBanner ? {
-          backgroundImage: `url(${categoryBanner})`,
+        className="relative py-24 overflow-hidden"
+        style={{
+          backgroundImage: categoryBanner
+            ? `url(${categoryBanner})`
+            : `url(https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1600&auto=format&fit=crop)`,
           backgroundSize: 'cover',
           backgroundPosition: 'center'
-        } : {}}
+        }}
       >
-        {categoryBanner && <div className="absolute inset-0 bg-primary/70" />}
-        <div className={`container-custom relative z-10 ${categoryBanner ? 'text-white' : ''}`}>
-          <span className={`text-xs tracking-[0.3em] uppercase font-semibold ${categoryBanner ? 'text-white/80' : 'text-primary'}`}>
+        <div className="absolute inset-0 bg-gray-900/60" />
+        <div className="container-custom relative z-10 text-white">
+          <span className="text-xs tracking-[0.3em] uppercase font-semibold text-white/70">
             Our Portfolio
           </span>
-          <h1 className={`text-4xl md:text-5xl font-display font-bold mt-3 ${categoryBanner ? 'text-white' : 'text-gray-900'}`}>
+          <h1 className="text-4xl md:text-5xl font-display font-bold mt-3 text-white">
             {filter.category
               ? (filter.category === 'BeachTowns' ? 'Beach Towns' : filter.category)
               : 'All Projects'}
           </h1>
           {filter.category && (
-            <p className={`mt-4 max-w-2xl ${categoryBanner ? 'text-white/80' : 'text-gray-600'}`}>
+            <p className="mt-4 max-w-2xl text-white/80">
               {filter.category === 'Parks' && 'Discover our nature-inspired communities perfect for families and nature lovers.'}
               {filter.category === 'BeachTowns' && 'Experience coastal living at its finest with our beachfront developments.'}
               {filter.category === 'Shores' && 'Find your lakeside retreat with stunning waterfront properties.'}
               {filter.category === 'Peaks' && 'Escape to the highlands with our mountain hideaway properties.'}
+            </p>
+          )}
+          {!filter.category && (
+            <p className="mt-4 max-w-2xl text-white/80">
+              Browse our curated selection of premium residential and lifestyle communities across the Philippines.
             </p>
           )}
         </div>
