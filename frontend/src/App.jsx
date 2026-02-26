@@ -9,6 +9,8 @@ import Projects from './pages/Projects';
 import ProjectDetail from './pages/ProjectDetail';
 import About from './pages/About';
 import Contact from './pages/Contact';
+import Blog from './pages/Blog';
+import BlogDetail from './pages/BlogDetail';
 
 // Admin imports
 import AdminLogin from './pages/admin/AdminLogin';
@@ -19,6 +21,7 @@ import AdminContractors from './pages/admin/AdminContractors';
 import AdminLocations from './pages/admin/AdminLocations';
 import AdminMedia from './pages/admin/AdminMedia';
 import AdminSettings from './pages/admin/AdminSettings';
+import AdminBlogs from './pages/admin/AdminBlogs';
 import ProtectedRoute from './components/admin/ProtectedRoute';
 
 // Public layout wrapper
@@ -49,6 +52,8 @@ function App() {
           <Route path="/projects" element={<PublicLayout><Projects /></PublicLayout>} />
           <Route path="/projects/:slug" element={<PublicLayout><ProjectDetail /></PublicLayout>} />
           <Route path="/about" element={<PublicLayout><About /></PublicLayout>} />
+          <Route path="/blog" element={<PublicLayout><Blog /></PublicLayout>} />
+          <Route path="/blog/:slug" element={<PublicLayout><BlogDetail /></PublicLayout>} />
           <Route path="/contact" element={<PublicLayout><Contact /></PublicLayout>} />
 
           {/* Admin Routes */}
@@ -114,6 +119,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <AdminSettings />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/blogs"
+            element={
+              <ProtectedRoute>
+                <AdminBlogs />
               </ProtectedRoute>
             }
           />
