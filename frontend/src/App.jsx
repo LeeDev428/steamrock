@@ -32,6 +32,7 @@ const PublicLayout = ({ children }) => (
     <Navbar />
     <main className="flex-grow">{children}</main>
     <Footer />
+    <ScrollToTop />
   </div>
 );
 
