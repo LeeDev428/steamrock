@@ -70,7 +70,7 @@ const Contact = () => {
             {/* Map */}
             <div className="bg-white rounded-lg shadow-lg overflow-hidden h-96">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3861.4037268!2d121.0234!3d14.5547!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397c90264a0c8d9%3A0x4d7f48d2c5e7!2sMakati%2C%20Metro%20Manila!5e0!3m2!1sen!2sph!4v1234567890"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3862.803019063658!2d121.0419!3d14.4180!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397d1a3f826f54b%3A0x2e2d79eb1a2afb4e!2sPutatan%2C%20Muntinlupa%2C%20Metro%20Manila!5e0!3m2!1sen!2sph!4v1741000000000"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
