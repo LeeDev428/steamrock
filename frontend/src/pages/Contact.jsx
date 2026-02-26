@@ -1,10 +1,12 @@
-import ContactForm from '../components/ContactForm';
+import BookingForm from '../components/BookingForm';
 import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaClock, FaFacebook, FaInstagram, FaWhatsapp } from 'react-icons/fa';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 
 const Contact = () => {
   const [cardsRef, cardsVisible] = useScrollAnimation();
   const [mapRef, mapVisible] = useScrollAnimation();
+  const [formRef, formVisible] = useScrollAnimation();
+  
   const contactInfo = [
     {
       icon: <FaMapMarkerAlt className="text-3xl text-accent" />,
@@ -119,19 +121,30 @@ const Contact = () => {
               <div className="border-t pt-6">
                 <h4 className="font-semibold text-primary mb-3">Schedule a Visit</h4>
                 <p className="text-gray-600 mb-4">
-                  Want to see a property in person? Contact us to schedule a viewing at your convenience.
+                  Want to see a property in person? Fill out our booking form below to schedule a viewing.
                 </p>
-                <a href="tel:+639088856169" className="btn-primary inline-block">
-                  Call Now
-                </a>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Contact Form */}
-      <ContactForm />
+      {/* Booking Form Section */}
+      <div className="section-padding bg-white">
+        <div className="container-custom">
+          <div ref={formRef} className={`max-w-3xl mx-auto scroll-fade-up ${formVisible ? 'visible' : ''}`}>
+            <div className="text-center mb-10">
+              <h2 className="text-3xl font-bold text-primary mb-4">Schedule a Property Viewing</h2>
+              <p className="text-gray-600">
+                Fill out the form below to book a viewing appointment. Our team will contact you to confirm your schedule.
+              </p>
+            </div>
+            <div className="bg-gray-50 rounded-2xl p-8 shadow-lg">
+              <BookingForm />
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
