@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { FaFacebook, FaInstagram, FaLinkedin, FaPhone, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
+import { FaFacebook, FaInstagram, FaWhatsapp, FaPhone, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -15,14 +15,14 @@ const Footer = () => {
               Your trusted partner in real estate investments across the Philippines.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="hover:text-accent transition-colors">
+              <a href="https://www.facebook.com/streamrockrealty" target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors">
                 <FaFacebook size={20} />
               </a>
-              <a href="#" className="hover:text-accent transition-colors">
+              <a href="https://instagram.com/streamrock_realty" target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors">
                 <FaInstagram size={20} />
               </a>
-              <a href="#" className="hover:text-accent transition-colors">
-                <FaLinkedin size={20} />
+              <a href="https://wa.me/639088856169" target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors">
+                <FaWhatsapp size={20} />
               </a>
             </div>
           </div>
@@ -59,11 +59,11 @@ const Footer = () => {
               </li>
               <li className="flex items-center space-x-2">
                 <FaPhone />
-                <a href="tel:+639123456789" className="hover:text-accent transition-colors">+63 912 345 6789</a>
+                <a href="tel:+639088856169" className="hover:text-accent transition-colors">+63 908 885 6169</a>
               </li>
               <li className="flex items-center space-x-2">
                 <FaEnvelope />
-                <a href="mailto:info@streamrockrealty.com" className="hover:text-accent transition-colors">info@streamrockrealty.com</a>
+                <a href="mailto:dwllaneta@gmail.com" className="hover:text-accent transition-colors">dwllaneta@gmail.com</a>
               </li>
             </ul>
           </div>
