@@ -22,9 +22,10 @@ const AdminContractors = () => {
   const fetchContractors = async () => {
     try {
       const res = await axios.get('/contractors');
-      setContractors(res.data.data || []);
+      setContractors(Array.isArray(res.data) ? res.data : res.data.data || []);
     } catch (error) {
       console.error('Error fetching contractors:', error);
+      setContractors([]);
     }
     setLoading(false);
   };
@@ -50,10 +51,12 @@ const AdminContractors = () => {
     try {
       if (editing) {
         const res = await axios.put(`/contractors/${editing}`, formData);
-        setContractors(contractors.map(c => c._id === editing ? res.data.data : c));
+        const updatedContractor = res.data.data || res.data;
+        setContractors(contractors.map(c => c._id === editing ? updatedContractor : c));
       } else {
         const res = await axios.post('/contractors', formData);
-        setContractors([...contractors, res.data.data]);
+        const newContractor = res.data.data || res.data;
+        setContractors([...contractors, newContractor]);
       }
       setShowModal(false);
     } catch (error) {
@@ -124,11 +127,11 @@ const AdminContractors = () => {
                 Add your first contractor
               </button>
             </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-6">
-              {contractors.map((contractor) => (
+          ) : (filter(c => c && c._id).map((contractor) => (
                 <div key={contractor._id} className="border border-gray-200 rounded-lg p-4 hover:border-primary transition-colors">
                   <div className="flex items-start justify-between">
+                    <div className="flex items-center gap-3">
+                      {contractor?"flex items-start justify-between">
                     <div className="flex items-center gap-3">
                       {contractor.logo ? (
                         <img src={contractor.logo} alt={contractor.name} className="w-12 h-12 object-contain rounded" />
