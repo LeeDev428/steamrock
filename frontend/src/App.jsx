@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
+import { ToastProvider } from './components/Toast';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
@@ -52,6 +53,7 @@ function App() {
   if (appLoading) return <LoadingScreen />;
 
   return (
+    <ToastProvider>
     <div className={`transition-opacity duration-700 ease-out ${appVisible ? 'opacity-100' : 'opacity-0'}`}>
     <AuthProvider>
       <Router>
@@ -151,6 +153,7 @@ function App() {
       </Router>
     </AuthProvider>
     </div>
+    </ToastProvider>
   );
 }
 
