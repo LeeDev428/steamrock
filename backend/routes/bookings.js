@@ -188,6 +188,7 @@ router.post('/', async (req, res) => {
           <p style="margin: 8px 0;"><strong>Phone:</strong> ${phone}</p>
           <h3 style="color: #1a365d; margin-top: 20px;">Booking Details</h3>
           <p style="margin: 8px 0;"><strong>Property:</strong> ${projectName || 'General Inquiry'}</p>
+          <p style="margin: 8px 0;"><strong>Tour Type:</strong> ${tourType || 'N/A'}</p>
           <p style="margin: 8px 0;"><strong>Date:</strong> ${new Date(preferredDate).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
           <p style="margin: 8px 0;"><strong>Time:</strong> ${preferredTime}</p>
           ${message ? `<p style="margin: 8px 0;"><strong>Message:</strong> ${message}</p>` : ''}
