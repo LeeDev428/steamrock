@@ -40,10 +40,9 @@ const AdminMedia = () => {
     const uploadPromises = selectedFiles.map(async (file) => {
       const formData = new FormData();
       formData.append('file', file);
-      formData.append('type', selectedType);
 
       try {
-        const res = await axios.post('/upload', formData, {
+        const res = await axios.post(`/upload?type=${selectedType}`, formData, {
           headers: { 'Content-Type': 'multipart/form-data' }
         });
         return res.data;
@@ -53,10 +52,8 @@ const AdminMedia = () => {
       }
     });
 
-    const results = await Promise.all(uploadPromises);
-    const successfulUploads = results.filter(r => r !== null);
-    
-    setFiles([...successfulUploads, ...files]);
+    await Promise.all(uploadPromises);
+    await fetchFiles();
     setUploading(false);
     setUploadModal(false);
   };
