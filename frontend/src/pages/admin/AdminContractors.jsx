@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import AdminLayout from '../../components/admin/AdminLayout';
+import { useToast } from '../../components/Toast';
 import { FiPlus, FiEdit2, FiTrash2, FiX, FiCheck, FiUpload } from 'react-icons/fi';
 
 const AdminContractors = () => {
+  const toast = useToast();
   const [contractors, setContractors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -61,7 +63,7 @@ const AdminContractors = () => {
       setShowModal(false);
     } catch (error) {
       console.error('Error saving contractor:', error);
-      alert(error.response?.data?.message || 'Failed to save contractor');
+      toast.error(error.response?.data?.message || 'Failed to save contractor');
     }
   };
 
@@ -72,7 +74,7 @@ const AdminContractors = () => {
       setContractors(contractors.filter(c => c._id !== id));
     } catch (error) {
       console.error('Error deleting contractor:', error);
-      alert('Failed to delete contractor');
+      toast.error('Failed to delete contractor');
     }
   };
 
@@ -91,7 +93,7 @@ const AdminContractors = () => {
       setFormData({ ...formData, logo: res.data.url });
     } catch (error) {
       console.error('Error uploading logo:', error);
-      alert('Failed to upload logo');
+      toast.error('Failed to upload logo');
     }
   };
 
