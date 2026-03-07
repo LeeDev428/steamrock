@@ -103,6 +103,43 @@ router.get('/unread-count', protect, adminOnly, async (req, res) => {
   }
 });
 
+// @route   POST /api/bookings/:id/send-email
+// @desc    Admin sends a custom email to the customer
+// @access  Private
+router.post('/:id/send-email', protect, adminOnly, async (req, res) => {
+  try {
+    const { subject, message } = req.body;
+    if (!subject?.trim() || !message?.trim()) {
+      return res.status(400).json({ message: 'Subject and message are required' });
+    }
+
+    const booking = await Booking.findById(req.params.id);
+    if (!booking) return res.status(404).json({ message: 'Booking not found' });
+
+    const html = `
+      <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;">
+        <div style="background:#1a365d;color:white;padding:20px 28px;border-radius:12px 12px 0 0;">
+          <h2 style="margin:0;font-size:20px;">Streamrock Realty</h2>
+        </div>
+        <div style="background:#f7fafc;padding:28px;border-radius:0 0 12px 12px;">
+          <p style="color:#4a5568;margin:0 0 12px;">Dear <strong>${booking.name}</strong>,</p>
+          <div style="white-space:pre-wrap;color:#2d3748;line-height:1.7;">${message}</div>
+          <hr style="border:none;border-top:1px solid #e2e8f0;margin:24px 0;" />
+          <p style="color:#718096;font-size:13px;margin:0;">Streamrock Realty Corporation<br/>📞 +63 908 885 6169</p>
+        </div>
+        <p style="color:#a0aec0;font-size:11px;text-align:center;margin-top:16px;">© ${new Date().getFullYear()} Streamrock Realty. All rights reserved.</p>
+      </div>
+    `;
+
+    const sent = await sendEmail(booking.email, subject, html);
+    if (!sent) return res.status(500).json({ message: 'Failed to send email' });
+
+    res.json({ message: 'Email sent successfully' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 // @route   GET /api/bookings/:id
 // @desc    Get single booking
 // @access  Private
