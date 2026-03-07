@@ -60,12 +60,19 @@ app.get('/api/health', (req, res) => {
 });
 
 // Serve frontend
-const frontendPath = path.join(__dirname, '../frontend/dist');
+const frontendPath = path.resolve(__dirname, '../frontend/dist');
+console.log(`📁 Serving frontend from: ${frontendPath}`);
 
 app.use(express.static(frontendPath));
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(frontendPath, 'index.html'));
+  const indexPath = path.join(frontendPath, 'index.html');
+  res.sendFile(indexPath, (err) => {
+    if (err) {
+      console.error(`❌ Failed to send index.html from ${indexPath}:`, err.message);
+      res.status(404).send('Frontend not found. Build may be missing.');
+    }
+  });
 });
 
 // Error handling middleware
