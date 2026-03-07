@@ -101,12 +101,12 @@ const AdminLogin = () => {
               className="h-16 w-auto"
             />
           </div>
-          <h1 className="text-4xl font-display font-bold text-white mb-2">
+          {/* <h1 className="text-4xl font-display font-bold text-white mb-2">
             Streamrock Realty
           </h1>
           <p className="text-white/80 text-lg">
             Administration Portal
-          </p>
+          </p> */}
         </div>
 
         {/* Main Form Card */}
