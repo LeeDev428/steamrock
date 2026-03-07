@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import { AnimatedSection } from '../hooks/useScrollAnimation';
-import { FaCalendar, FaUser, FaEye, FaArrowLeft, FaFacebook, FaTwitter, FaLinkedin, FaWhatsapp, FaTag } from 'react-icons/fa';
+import { FaCalendar, FaUser, FaEye, FaArrowLeft, FaFacebook, FaTwitter, FaLinkedin, FaWhatsapp, FaTag, FaYoutube } from 'react-icons/fa';
 
 const BlogDetail = () => {
   const { slug } = useParams();
@@ -39,6 +39,11 @@ const BlogDetail = () => {
     });
   };
 
+  const getYoutubeId = (url) => {
+    const match = url?.match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+    return match?.[1] || null;
+  };
+
   const shareUrl = window.location.href;
   const shareTitle = blog?.title || '';
 
@@ -61,10 +66,20 @@ const BlogDetail = () => {
     );
   }
 
+  const videoId = blog.youtubeUrl ? getYoutubeId(blog.youtubeUrl) : null;
+  const heroThumb = videoId
+    ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`
+    : blog.featuredImage || null;
+
   return (
     <div className="pt-20 min-h-screen bg-gray-50">
-      {/* Hero Image */}
-    <br />
+      {/* Hero Banner */}
+      <div
+        className="relative h-40 md:h-56 overflow-hidden bg-gradient-to-br from-primary to-secondary"
+        style={heroThumb ? { backgroundImage: `url(${heroThumb})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}
+      >
+        <div className="absolute inset-0 bg-black/40" />
+      </div>
 
       <div className="container-custom py-12">
         <div className="max-w-4xl mx-auto">
@@ -80,7 +95,7 @@ const BlogDetail = () => {
           </AnimatedSection>
 
           {/* Article Header */}
-          <AnimatedSection animation="fade-in-up" className="bg-white rounded-2xl shadow-sm overflow-hidden -mt-20 relative z-10 mb-8">
+          <AnimatedSection animation="fade-in-up" className="bg-white rounded-2xl shadow-sm overflow-hidden -mt-16 relative z-10 mb-8">
             {/* Cover Image */}
             {blog.featuredImage && (
               <div className="w-full aspect-[21/9] overflow-hidden">
@@ -124,6 +139,27 @@ const BlogDetail = () => {
 
           {/* Article Content */}
           <AnimatedSection animation="fade-in-up" delay={100} className="bg-white rounded-2xl shadow-sm p-8 md:p-12 mb-8">
+            {videoId && (
+              <div className="mb-8">
+                <div className="relative aspect-video rounded-xl overflow-hidden shadow-md">
+                  <iframe
+                    src={`https://www.youtube.com/embed/${videoId}`}
+                    title={blog.title}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    className="absolute inset-0 w-full h-full"
+                  />
+                </div>
+                <a
+                  href={blog.youtubeUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-2 inline-flex items-center gap-1.5 text-sm text-red-600 hover:text-red-700 font-medium"
+                >
+                  <FaYoutube className="text-lg" /> Watch on YouTube
+                </a>
+              </div>
+            )}
             <div 
               className="prose prose-lg max-w-none
                 prose-headings:font-serif prose-headings:text-gray-900
