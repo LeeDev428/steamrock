@@ -55,6 +55,10 @@ app.use('/api/blogs', require('./routes/blogs'));
 app.use('/api/bookings', require('./routes/bookings'));
 
 // Health Check
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'ok' });
+});
+
 app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', message: 'Server is running' });
 });
