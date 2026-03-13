@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Project = require('../models/Project');
 const { protect, adminOnly } = require('../middleware/auth');
+const { normalizeProjectPayload } = require('../utils/projectContent');
 
 // @route   GET /api/projects
 // @desc    Get all projects (public - with filters)
@@ -84,7 +85,7 @@ router.get('/:slug', async (req, res) => {
 // @access  Private/Admin
 router.post('/', protect, adminOnly, async (req, res) => {
   try {
-    const project = new Project(req.body);
+    const project = new Project(normalizeProjectPayload(req.body));
     const newProject = await project.save();
     
     const populatedProject = await Project.findById(newProject._id)
@@ -97,22 +98,72 @@ router.post('/', protect, adminOnly, async (req, res) => {
   }
 });
 
+// @route   PUT /api/projects/bulk-status
+// @desc    Update status for multiple projects
+// @access  Private/Admin
+router.put('/bulk-status', protect, adminOnly, async (req, res) => {
+  try {
+    const { ids, status } = req.body;
+
+    if (!Array.isArray(ids) || ids.length === 0) {
+      return res.status(400).json({ message: 'Project IDs are required' });
+    }
+
+    if (!['Draft', 'Published', 'Archived'].includes(status)) {
+      return res.status(400).json({ message: 'Invalid status value' });
+    }
+
+    const result = await Project.updateMany(
+      { _id: { $in: ids } },
+      { $set: { status } }
+    );
+
+    res.json({
+      message: 'Project statuses updated successfully',
+      modifiedCount: result.modifiedCount
+    });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+// @route   DELETE /api/projects/bulk
+// @desc    Delete multiple projects
+// @access  Private/Admin
+router.delete('/bulk', protect, adminOnly, async (req, res) => {
+  try {
+    const { ids } = req.body;
+
+    if (!Array.isArray(ids) || ids.length === 0) {
+      return res.status(400).json({ message: 'Project IDs are required' });
+    }
+
+    const result = await Project.deleteMany({ _id: { $in: ids } });
+
+    res.json({
+      message: 'Projects deleted successfully',
+      deletedCount: result.deletedCount
+    });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
 // @route   PUT /api/projects/:id
 // @desc    Update project
 // @access  Private/Admin
 router.put('/:id', protect, adminOnly, async (req, res) => {
   try {
-    const project = await Project.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true, runValidators: true }
-    )
-      .populate('contractor', 'name logo')
-      .populate('location');
+    const project = await Project.findById(req.params.id);
 
     if (!project) {
       return res.status(404).json({ message: 'Project not found' });
     }
+
+    Object.assign(project, normalizeProjectPayload(req.body));
+    await project.save();
+    await project.populate('contractor', 'name logo');
+    await project.populate('location');
 
     res.json(project);
   } catch (error) {
