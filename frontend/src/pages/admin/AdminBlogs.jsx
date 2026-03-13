@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import AdminLayout from '../../components/admin/AdminLayout';
 import { useToast } from '../../components/Toast';
+import ImageDropzone from '../../components/admin/ImageDropzone';
 import { FiPlus, FiEdit2, FiTrash2, FiEye, FiImage, FiFilter, FiFileText, FiCheckCircle, FiClock, FiX, FiYoutube } from 'react-icons/fi';
 
 const AdminBlogs = () => {
@@ -12,11 +13,13 @@ const AdminBlogs = () => {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [editing, setEditing] = useState(null);
+  const [selectedIds, setSelectedIds] = useState([]);
   const [stats, setStats] = useState({
     total: 0,
     published: 0,
     draft: 0
   });
+  const [pendingFeaturedImages, setPendingFeaturedImages] = useState([]);
   const [filter, setFilter] = useState({
     category: '',
     status: ''
@@ -50,6 +53,7 @@ const AdminBlogs = () => {
       const res = await axios.get(`/blogs?${params.toString()}`);
       const blogsData = Array.isArray(res.data) ? res.data : [];
       setBlogs(blogsData);
+      setSelectedIds([]);
       
       // Calculate stats from all blogs (not filtered)
       const allRes = await axios.get('/blogs');
@@ -97,17 +101,37 @@ const AdminBlogs = () => {
       });
     }
     setShowModal(true);
+    setPendingFeaturedImages([]);
+  };
+
+  const uploadFeaturedImage = async (file) => {
+    const uploadFormData = new FormData();
+    uploadFormData.append('file', file);
+
+    const query = new URLSearchParams({
+      type: 'blogs',
+      category: formData.category || '',
+      entity: formData.title || 'untitled-blog',
+      field: 'featured-image'
+    });
+
+    const res = await axios.post(`/upload?${query.toString()}`, uploadFormData);
+    return res.data.url;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     const payload = {
       ...formData,
       tags: formData.tags.split(',').map(t => t.trim()).filter(Boolean)
     };
 
     try {
+      if (pendingFeaturedImages[0]) {
+        payload.featuredImage = await uploadFeaturedImage(pendingFeaturedImages[0]);
+      }
+
       if (editing) {
         const res = await axios.put(`/blogs/${editing}`, payload);
         setBlogs(blogs.map(b => b._id === editing ? res.data : b));
@@ -116,6 +140,7 @@ const AdminBlogs = () => {
         setBlogs([res.data, ...blogs]);
       }
       setShowModal(false);
+      setPendingFeaturedImages([]);
       fetchBlogs();
     } catch (error) {
       console.error('Error saving blog:', error);
@@ -136,19 +161,34 @@ const AdminBlogs = () => {
     }
   };
 
-  const handleImageUpload = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+  const handleToggleBlog = (blogId) => {
+    setSelectedIds((current) => (
+      current.includes(blogId)
+        ? current.filter((id) => id !== blogId)
+        : [...current, blogId]
+    ));
+  };
 
-    const uploadFormData = new FormData();
-    uploadFormData.append('file', file);
+  const handleToggleAll = () => {
+    if (selectedIds.length === blogs.length) {
+      setSelectedIds([]);
+      return;
+    }
+
+    setSelectedIds(blogs.map((blog) => blog._id));
+  };
+
+  const handleBulkDelete = async () => {
+    if (selectedIds.length === 0) return;
+    if (!window.confirm(`Delete ${selectedIds.length} selected blog post(s)?`)) return;
 
     try {
-      const res = await axios.post('/upload', uploadFormData);
-      setFormData({ ...formData, featuredImage: res.data.url });
+      await axios.delete('/blogs/bulk', { data: { ids: selectedIds } });
+      toast.success('Selected blog posts deleted');
+      fetchBlogs();
     } catch (error) {
-      console.error('Error uploading image:', error);
-      toast.error('Failed to upload image');
+      console.error('Error deleting selected blogs:', error);
+      toast.error(error.response?.data?.message || 'Failed to delete selected blogs');
     }
   };
 
@@ -270,6 +310,18 @@ const AdminBlogs = () => {
           </div>
         </div>
 
+        {selectedIds.length > 0 && (
+          <div className="bg-primary/5 border border-primary/20 rounded-xl p-4 flex items-center justify-between gap-3">
+            <p className="text-sm font-medium text-gray-700">{selectedIds.length} blog post(s) selected</p>
+            <button
+              onClick={handleBulkDelete}
+              className="px-3 py-2 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700"
+            >
+              Delete Selected
+            </button>
+          </div>
+        )}
+
         {/* Blog List */}
         {loading ? (
           <div className="flex justify-center py-12">
@@ -294,6 +346,14 @@ const AdminBlogs = () => {
               <table className="w-full">
                 <thead>
                   <tr className="bg-gray-50 border-b border-gray-100">
+                    <th className="px-4 py-4 text-left">
+                      <input
+                        type="checkbox"
+                        checked={selectedIds.length > 0 && selectedIds.length === blogs.length}
+                        onChange={handleToggleAll}
+                        className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
+                      />
+                    </th>
                     <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Post</th>
                     <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Category</th>
                     <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Status</th>
@@ -305,6 +365,14 @@ const AdminBlogs = () => {
                 <tbody className="divide-y divide-gray-100">
                   {blogs.map((blog) => (
                     <tr key={blog._id} className="hover:bg-gray-50 transition-colors">
+                      <td className="px-4 py-4">
+                        <input
+                          type="checkbox"
+                          checked={selectedIds.includes(blog._id)}
+                          onChange={() => handleToggleBlog(blog._id)}
+                          className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
+                        />
+                      </td>
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-4">
                           <div className="w-16 h-16 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0 relative">
@@ -390,7 +458,7 @@ const AdminBlogs = () => {
                   <FiX className="w-5 h-5" />
                 </button>
               </div>
-              
+
               <form onSubmit={handleSubmit} className="p-6 space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="md:col-span-2">
@@ -403,7 +471,7 @@ const AdminBlogs = () => {
                       required
                     />
                   </div>
-                  
+
                   <div className="md:col-span-2">
                     <label className="block text-sm font-medium text-gray-700 mb-2">Excerpt *</label>
                     <textarea
@@ -435,11 +503,12 @@ const AdminBlogs = () => {
                       {formData.featuredImage && (
                         <img src={formData.featuredImage} alt="Preview" className="w-full h-40 object-cover rounded-xl" />
                       )}
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleImageUpload}
-                        className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20"
+                      <ImageDropzone
+                        files={pendingFeaturedImages}
+                        onFilesSelected={(files) => setPendingFeaturedImages(files.slice(0, 1))}
+                        onRemove={() => setPendingFeaturedImages([])}
+                        buttonLabel="Select Featured Image"
+                        helperText="Drag and drop image here. Upload happens when you save the blog post."
                       />
                     </div>
                   </div>
@@ -483,7 +552,7 @@ const AdminBlogs = () => {
 
                   <div className="md:col-span-2">
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      YouTube URL <span className="text-gray-400 font-normal">(optional — for video posts)</span>
+                      YouTube URL <span className="text-gray-400 font-normal">(optional - for video posts)</span>
                     </label>
                     <div className="flex items-center gap-3">
                       <FiYoutube className="text-red-500 w-5 h-5 flex-shrink-0" />
