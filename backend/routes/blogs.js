@@ -127,6 +127,28 @@ router.post('/', protect, adminOnly, async (req, res) => {
   }
 });
 
+// @route   DELETE /api/blogs/bulk
+// @desc    Delete multiple blogs
+// @access  Private (Admin only)
+router.delete('/bulk', protect, adminOnly, async (req, res) => {
+  try {
+    const { ids } = req.body;
+
+    if (!Array.isArray(ids) || ids.length === 0) {
+      return res.status(400).json({ message: 'Blog IDs are required' });
+    }
+
+    const result = await Blog.deleteMany({ _id: { $in: ids } });
+
+    res.json({
+      message: 'Blogs deleted successfully',
+      deletedCount: result.deletedCount
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 // @route   PUT /api/blogs/:id
 // @desc    Update a blog
 // @access  Private (Admin only)
