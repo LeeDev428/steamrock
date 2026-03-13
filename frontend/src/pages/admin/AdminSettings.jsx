@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import AdminLayout from '../../components/admin/AdminLayout';
 import { useToast } from '../../components/Toast';
-import { FiSave, FiPlus, FiTrash2, FiUpload, FiImage, FiVideo } from 'react-icons/fi';
+import ImageDropzone from '../../components/admin/ImageDropzone';
+import { FiSave, FiPlus, FiTrash2, FiImage, FiVideo } from 'react-icons/fi';
 
 const AdminSettings = () => {
   const toast = useToast();
@@ -45,8 +46,7 @@ const AdminSettings = () => {
     setSaving(false);
   };
 
-  const handleHeroImageUpload = async (e, index) => {
-    const file = e.target.files[0];
+  const handleHeroImageUpload = async (file, index) => {
     if (!file) return;
 
     const formData = new FormData();
@@ -54,7 +54,13 @@ const AdminSettings = () => {
     formData.append('type', 'hero');
 
     try {
-      const res = await axios.post('/upload', formData, {
+      const query = new URLSearchParams({
+        type: 'hero',
+        entity: `slide-${index + 1}`,
+        field: 'hero-image'
+      });
+
+      const res = await axios.post(`/upload?${query.toString()}`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       
@@ -64,6 +70,28 @@ const AdminSettings = () => {
     } catch (error) {
       console.error('Error uploading image:', error);
       toast.error('Failed to upload image');
+    }
+  };
+
+  const handleBannerImageUpload = async (file, category) => {
+    if (!file) return;
+
+    const fd = new FormData();
+    fd.append('file', file);
+
+    try {
+      const query = new URLSearchParams({
+        type: 'banner',
+        category,
+        field: 'category-banner'
+      });
+      const r = await axios.post(`/upload?${query.toString()}`, fd, { headers: { 'Content-Type': 'multipart/form-data' } });
+      setSettings((current) => ({
+        ...current,
+        categoryBanners: { ...current.categoryBanners, [category]: r.data.url }
+      }));
+    } catch {
+      toast.error('Upload failed');
     }
   };
 
@@ -224,7 +252,7 @@ const AdminSettings = () => {
                                   className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
                                 />
                               ) : (
-                                <div className="flex items-center gap-2">
+                                <div className="space-y-2">
                                   {item.url ? (
                                     <img src={item.url} alt="" className="w-16 h-10 object-cover rounded" />
                                   ) : (
@@ -232,19 +260,12 @@ const AdminSettings = () => {
                                       <FiImage className="w-5 h-5 text-gray-400" />
                                     </div>
                                   )}
-                                  <input
-                                    type="file"
-                                    accept="image/*"
-                                    onChange={(e) => handleHeroImageUpload(e, index)}
-                                    className="hidden"
-                                    id={`heroImage-${index}`}
+                                  <ImageDropzone
+                                    files={[]}
+                                    onFilesSelected={(files) => handleHeroImageUpload(files[0], index)}
+                                    buttonLabel="Select"
+                                    helperText="Drag/drop image"
                                   />
-                                  <label
-                                    htmlFor={`heroImage-${index}`}
-                                    className="px-3 py-2 bg-gray-100 text-gray-700 rounded-lg cursor-pointer hover:bg-gray-200 text-sm"
-                                  >
-                                    <FiUpload className="w-4 h-4" />
-                                  </label>
                                 </div>
                               )}
                             </div>
@@ -417,21 +438,13 @@ const AdminSettings = () => {
                           placeholder="https://... or upload below"
                           className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:border-transparent"
                         />
-                        <label className="px-3 py-2 bg-gray-100 text-gray-700 rounded-lg cursor-pointer hover:bg-gray-200 text-sm flex items-center gap-1">
-                          <FiUpload className="w-4 h-4" />
-                          <input type="file" accept="image/*" className="hidden" onChange={async (e) => {
-                            const file = e.target.files[0];
-                            if (!file) return;
-                            const fd = new FormData();
-                            fd.append('file', file);
-                            fd.append('type', 'banner');
-                            try {
-                              const r = await axios.post('/upload', fd, { headers: { 'Content-Type': 'multipart/form-data' } });
-                              setSettings({ ...settings, categoryBanners: { ...settings.categoryBanners, [cat]: r.data.url } });
-                            } catch { toast.error('Upload failed'); }
-                          }} />
-                        </label>
                       </div>
+                      <ImageDropzone
+                        files={[]}
+                        onFilesSelected={(files) => handleBannerImageUpload(files[0], cat)}
+                        buttonLabel="Upload Banner"
+                        helperText="Drag/drop image"
+                      />
                     </div>
                   ))}
                 </div>
