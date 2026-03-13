@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import AdminLayout from '../../components/admin/AdminLayout';
 import { useToast } from '../../components/Toast';
+import ImageDropzone from '../../components/admin/ImageDropzone';
 import { FiPlus, FiEdit2, FiTrash2, FiX, FiCheck, FiUpload } from 'react-icons/fi';
 
 const AdminContractors = () => {
@@ -10,6 +11,7 @@ const AdminContractors = () => {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [editing, setEditing] = useState(null);
+  const [pendingLogoImages, setPendingLogoImages] = useState([]);
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -46,21 +48,46 @@ const AdminContractors = () => {
       setFormData({ name: '', description: '', website: '', logo: '' });
     }
     setShowModal(true);
+    setPendingLogoImages([]);
+  };
+
+  const uploadLogo = async (file) => {
+    const uploadFormData = new FormData();
+    uploadFormData.append('file', file);
+
+    const query = new URLSearchParams({
+      type: 'contractors',
+      entity: formData.name || 'untitled-contractor',
+      field: 'logo'
+    });
+
+    const res = await axios.post(`/upload?${query.toString()}`, uploadFormData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    });
+
+    return res.data.url;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      const payload = { ...formData };
+
+      if (pendingLogoImages[0]) {
+        payload.logo = await uploadLogo(pendingLogoImages[0]);
+      }
+
       if (editing) {
-        const res = await axios.put(`/contractors/${editing}`, formData);
+        const res = await axios.put(`/contractors/${editing}`, payload);
         const updatedContractor = res.data.data || res.data;
         setContractors(contractors.map(c => c._id === editing ? updatedContractor : c));
       } else {
-        const res = await axios.post('/contractors', formData);
+        const res = await axios.post('/contractors', payload);
         const newContractor = res.data.data || res.data;
         setContractors([...contractors, newContractor]);
       }
       setShowModal(false);
+      setPendingLogoImages([]);
     } catch (error) {
       console.error('Error saving contractor:', error);
       toast.error(error.response?.data?.message || 'Failed to save contractor');
@@ -75,25 +102,6 @@ const AdminContractors = () => {
     } catch (error) {
       console.error('Error deleting contractor:', error);
       toast.error('Failed to delete contractor');
-    }
-  };
-
-  const handleLogoUpload = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    const uploadFormData = new FormData();
-    uploadFormData.append('file', file);
-    uploadFormData.append('type', 'contractors');
-
-    try {
-      const res = await axios.post('/upload', uploadFormData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-      });
-      setFormData({ ...formData, logo: res.data.url });
-    } catch (error) {
-      console.error('Error uploading logo:', error);
-      toast.error('Failed to upload logo');
     }
   };
 
@@ -229,7 +237,7 @@ const AdminContractors = () => {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Logo</label>
-                <div className="flex items-center gap-3">
+                <div className="space-y-3">
                   {formData.logo ? (
                     <img src={formData.logo} alt="Logo" className="w-16 h-16 object-contain border rounded" />
                   ) : (
@@ -237,19 +245,13 @@ const AdminContractors = () => {
                       <FiUpload className="w-6 h-6" />
                     </div>
                   )}
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleLogoUpload}
-                    className="hidden"
-                    id="logoUpload"
+                  <ImageDropzone
+                    files={pendingLogoImages}
+                    onFilesSelected={(files) => setPendingLogoImages(files.slice(0, 1))}
+                    onRemove={() => setPendingLogoImages([])}
+                    buttonLabel="Select Logo"
+                    helperText="Drag and drop logo image here. Upload happens when you save."
                   />
-                  <label
-                    htmlFor="logoUpload"
-                    className="px-3 py-2 bg-gray-100 text-gray-700 rounded-lg cursor-pointer hover:bg-gray-200 text-sm"
-                  >
-                    Upload Logo
-                  </label>
                 </div>
               </div>
               <div className="flex items-center justify-end gap-3 pt-4 border-t">
