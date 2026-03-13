@@ -29,6 +29,7 @@ const AdminLayout = ({ children }) => {
   const [pendingCount, setPendingCount] = useState(0);
   const [recentBookings, setRecentBookings] = useState([]);
   const notifRef = useRef(null);
+  const navRef = useRef(null);
   const { admin, logout } = useAuth();
   const navigate = useNavigate();
 
@@ -79,6 +80,28 @@ const AdminLayout = ({ children }) => {
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  useEffect(() => {
+    const navElement = navRef.current;
+    if (!navElement) {
+      return;
+    }
+
+    const savedScrollTop = window.sessionStorage.getItem('adminSidebarScrollTop');
+    if (savedScrollTop) {
+      navElement.scrollTop = Number(savedScrollTop);
+    }
+
+    const handleScroll = () => {
+      window.sessionStorage.setItem('adminSidebarScrollTop', String(navElement.scrollTop));
+    };
+
+    navElement.addEventListener('scroll', handleScroll);
+
+    return () => {
+      navElement.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
   const handleLogout = () => {
@@ -218,7 +241,7 @@ const AdminLayout = ({ children }) => {
             </div>
 
             {/* Navigation - scrollable */}
-        <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent">
+        <nav ref={navRef} className="flex-1 px-4 py-6 space-y-2 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent">
           <p className="px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
             Main Menu
           </p>
