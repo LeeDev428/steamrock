@@ -1,5 +1,47 @@
 const mongoose = require('mongoose');
 
+const ProjectComponentSchema = new mongoose.Schema({
+  id: { type: String },
+  type: {
+    type: String,
+    enum: ['label', 'title', 'subtitle', 'longText', 'bullets', 'checkedFeatures', 'images'],
+    required: true
+  },
+  content: { type: String, default: '' },
+  items: [{ type: String }],
+  images: [{
+    id: { type: String },
+    url: { type: String },
+    caption: { type: String },
+    alt: { type: String },
+    order: { type: Number, default: 0 }
+  }]
+}, { _id: false });
+
+const ProjectSectionSchema = new mongoose.Schema({
+  id: { type: String },
+  order: { type: Number, default: 0 },
+  type: {
+    type: String,
+    enum: ['intro', 'about', 'explore', 'features', 'gallery', 'info-box', 'map', 'custom'],
+    default: 'custom'
+  },
+  sectionType: {
+    type: String,
+    enum: ['intro', 'about', 'explore', 'features', 'gallery', 'custom'],
+    default: 'custom'
+  },
+  label: { type: String },
+  title: { type: String },
+  subtitle: { type: String },
+  description: { type: String },
+  images: [{ type: String }],
+  features: [{ type: String }],
+  backgroundColor: { type: String, default: '#ffffff' },
+  textColor: { type: String, default: '#1a202c' },
+  components: [ProjectComponentSchema]
+}, { _id: false });
+
 const ProjectSchema = new mongoose.Schema({
   // Basic Info
   name: {
@@ -50,6 +92,10 @@ const ProjectSchema = new mongoose.Schema({
     max: Number,
     currency: { type: String, default: 'PHP' }
   },
+  youtubeUrl: {
+    type: String,
+    default: ''
+  },
   
   // Hero Section
   hero: {
@@ -65,25 +111,11 @@ const ProjectSchema = new mongoose.Schema({
     required: [true, 'Card image is required']
   },
   shortDescription: {
-    type: String,
-    maxlength: 200
+    type: String
   },
   
   // Page Layout Sections
-  sections: [{
-    order: { type: Number, default: 0 },
-    type: {
-      type: String,
-      enum: ['intro', 'features', 'gallery', 'info-box', 'map', 'custom']
-    },
-    label: { type: String }, // e.g., "ABOUT", "PARKS", "DISCOVER", "EXPLORE"
-    title: { type: String },
-    description: { type: String },
-    images: [{ type: String }],
-    features: [{ type: String }],
-    backgroundColor: { type: String, default: '#ffffff' },
-    textColor: { type: String, default: '#1a202c' }
-  }],
+  sections: [ProjectSectionSchema],
   
   // Gallery
   gallery: [{
