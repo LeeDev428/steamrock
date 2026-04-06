@@ -3,6 +3,8 @@ import axios from 'axios';
 import { FiMessageCircle, FiSend, FiX, FiExternalLink } from 'react-icons/fi';
 
 const ONBOARDING_STORAGE_KEY = 'rocky-ai-onboarded-v1';
+const BRAND_PRIMARY = 'rgb(26, 54, 93)';
+const BRAND_PRIMARY_DARK = 'rgb(20, 43, 74)';
 
 const FALLBACK_FAQS = [
   {
@@ -49,7 +51,7 @@ const renderTextWithLinks = (text) => {
                   event.preventDefault();
                   window.location.href = segment;
                 }}
-                className="inline-flex items-center gap-1 break-all text-teal-600 underline underline-offset-2 hover:text-teal-700"
+                className="inline-flex items-center gap-1 break-all text-blue-800 underline underline-offset-2 hover:text-blue-900"
               >
                 {segment}
                 <FiExternalLink className="h-3.5 w-3.5" />
@@ -80,7 +82,7 @@ const RockyAIChatbot = () => {
   const [messages, setMessages] = useState(() => [
     createMessage(
       'assistant',
-      'Hi, I am Rocky AI. I can guide you through Streamrock projects, units, locations, and system information only. Would you like to schedule a meeting for a full in-depth clarification and details of the units and projects?'
+      'Hi, I am Rocky AI. I can help you with Streamrock projects, units, prices, locations, and company information. Share your budget, preferred location, and property type so I can suggest the best options.'
     )
   ]);
 
@@ -184,9 +186,9 @@ const RockyAIChatbot = () => {
   return (
     <>
       {showOnboarding && (
-        <div className="fixed inset-0 z-[75] flex items-end justify-end bg-black/35 p-4 sm:p-6">
-          <div className="w-full max-w-sm rounded-2xl border border-teal-100 bg-white p-5 shadow-2xl">
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-teal-600">New Assistant</p>
+        <div className="fixed inset-0 z-[120] flex items-end justify-end bg-black/35 p-4 sm:p-6">
+          <div className="w-full max-w-sm rounded-2xl border border-blue-100 bg-white p-5 shadow-2xl">
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-800">New Assistant</p>
             <h3 className="mt-2 text-xl font-semibold text-gray-900">Talk to Rocky AI</h3>
             <p className="mt-2 text-sm leading-relaxed text-gray-600">
               Need quick guidance? Rocky AI can help you explore projects, units, pricing, and other system information instantly.
@@ -197,7 +199,14 @@ const RockyAIChatbot = () => {
                   setIsOpen(true);
                   markOnboardingDone();
                 }}
-                className="rounded-lg bg-teal-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-teal-700"
+                className="rounded-lg px-4 py-2 text-sm font-semibold text-white transition"
+                style={{ backgroundColor: BRAND_PRIMARY }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = BRAND_PRIMARY_DARK;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = BRAND_PRIMARY;
+                }}
               >
                 Open Rocky AI
               </button>
@@ -212,14 +221,14 @@ const RockyAIChatbot = () => {
         </div>
       )}
 
-      <div className="fixed bottom-6 right-4 z-[70] sm:right-6">
-        {isOpen && (
-          <div className="mb-3 h-[72vh] max-h-[620px] w-[calc(100vw-2rem)] max-w-[390px] overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-2xl">
-            <div className="flex items-start justify-between bg-gradient-to-r from-teal-600 to-cyan-600 px-4 py-3 text-white">
+      {isOpen && (
+        <div className="fixed bottom-24 right-4 z-[110] h-[68vh] max-h-[620px] w-[calc(100vw-2rem)] max-w-[390px] overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-2xl sm:bottom-24 sm:right-6 sm:h-[72vh]">
+          <div className="flex h-full flex-col">
+            <div className="flex items-start justify-between px-4 py-3 text-white" style={{ backgroundColor: BRAND_PRIMARY }}>
               <div>
-                <p className="text-xs uppercase tracking-[0.2em] text-teal-100">Streamrock Assistant</p>
-                <h2 className="text-lg font-semibold">Rocky AI</h2>
-                <p className="text-xs text-cyan-100">Friendly and professional system guide</p>
+                <p className="text-xs uppercase tracking-[0.2em] text-white/80">Streamrock Assistant</p>
+                <h2 className="text-lg font-semibold text-white">Rocky AI</h2>
+                <p className="text-xs text-white/85">Friendly and professional system guide</p>
               </div>
               <button
                 onClick={() => setIsOpen(false)}
@@ -237,7 +246,7 @@ const RockyAIChatbot = () => {
                   <button
                     key={faq.id}
                     onClick={() => useFaqPrompt(faq.quickPrompt)}
-                    className="whitespace-nowrap rounded-full border border-teal-200 bg-teal-50 px-3 py-1.5 text-xs font-medium text-teal-700 transition hover:bg-teal-100"
+                    className="whitespace-nowrap rounded-full border border-blue-200 bg-blue-50 px-3 py-1.5 text-xs font-medium text-blue-800 transition hover:bg-blue-100"
                   >
                     {faq.question}
                   </button>
@@ -245,7 +254,7 @@ const RockyAIChatbot = () => {
               </div>
             </div>
 
-            <div className="h-[calc(72vh-220px)] max-h-[360px] overflow-y-auto bg-gray-50 px-3 py-3 scrollbar-thin">
+            <div className="min-h-0 flex-1 overflow-y-auto bg-gray-50 px-3 py-3 scrollbar-thin">
               <div className="space-y-3">
                 {messages.map((message) => (
                   <div
@@ -255,9 +264,10 @@ const RockyAIChatbot = () => {
                     <div
                       className={`max-w-[88%] rounded-2xl px-3 py-2 text-sm leading-relaxed shadow-sm ${
                         message.role === 'user'
-                          ? 'rounded-br-md bg-teal-600 text-white'
+                          ? 'rounded-br-md text-white'
                           : 'rounded-bl-md border border-gray-200 bg-white text-gray-700'
                       }`}
+                      style={message.role === 'user' ? { backgroundColor: BRAND_PRIMARY } : undefined}
                     >
                       {renderTextWithLinks(message.text)}
                     </div>
@@ -290,13 +300,14 @@ const RockyAIChatbot = () => {
                   value={input}
                   onChange={(event) => setInput(event.target.value)}
                   placeholder="Ask about projects, units, prices, or locations..."
-                  className="h-10 flex-1 rounded-xl border border-gray-300 px-3 text-sm outline-none transition focus:border-teal-500 focus:ring-2 focus:ring-teal-100"
+                  className="h-10 flex-1 rounded-xl border border-gray-300 px-3 text-sm outline-none transition focus:border-[#1a365d] focus:ring-2 focus:ring-[#1a365d]/20"
                   maxLength={500}
                 />
                 <button
                   type="submit"
                   disabled={isLoading || !input.trim()}
-                  className="flex h-10 w-10 items-center justify-center rounded-xl bg-teal-600 text-white transition hover:bg-teal-700 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="flex h-10 w-10 items-center justify-center rounded-xl text-white transition disabled:cursor-not-allowed disabled:opacity-50"
+                  style={{ backgroundColor: BRAND_PRIMARY }}
                   aria-label="Send message"
                 >
                   <FiSend className="h-4 w-4" />
@@ -304,17 +315,18 @@ const RockyAIChatbot = () => {
               </form>
             </div>
           </div>
-        )}
+        </div>
+      )}
 
+      <div className="fixed bottom-6 right-4 z-[111] sm:right-6">
         <div className="relative">
-          {!isOpen && (
-            <span className="pointer-events-none absolute -inset-1 rounded-full bg-teal-400/50 blur-sm animate-pulse" />
-          )}
+          {!isOpen && <span className="pointer-events-none absolute -inset-1 rounded-full bg-[#1a365d]/40 blur-sm animate-pulse" />}
 
           <button
             onClick={toggleOpen}
             aria-label="Open Rocky AI chat"
-            className="relative flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-teal-600 to-cyan-600 text-white shadow-xl transition hover:scale-105"
+            className="relative flex h-14 w-14 items-center justify-center rounded-full text-white shadow-xl transition hover:scale-105"
+            style={{ backgroundColor: BRAND_PRIMARY }}
           >
             <FiMessageCircle className="h-6 w-6" />
           </button>
