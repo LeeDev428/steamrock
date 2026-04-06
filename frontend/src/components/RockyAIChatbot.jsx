@@ -217,7 +217,7 @@ const RockyAIChatbot = () => {
           <div className="mb-3 h-[72vh] max-h-[620px] w-[calc(100vw-2rem)] max-w-[390px] overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-2xl">
             <div className="flex items-start justify-between bg-gradient-to-r from-teal-600 to-cyan-600 px-4 py-3 text-white">
               <div>
-                <p className="text-xs uppercase tracking-[0.2em] text-teal-100">Streamrock Assistant</p>
+                {/* <p className="text-xs uppercase tracking-[0.2em] text-teal-100">Streamrock Assistant</p> */}
                 <h2 className="text-lg font-semibold">Rocky AI</h2>
                 <p className="text-xs text-cyan-100">Friendly and professional system guide</p>
               </div>
