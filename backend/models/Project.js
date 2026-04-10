@@ -92,6 +92,21 @@ const ProjectSchema = new mongoose.Schema({
     max: Number,
     currency: { type: String, default: 'PHP' }
   },
+  featuredProperty: {
+    propertyType: {
+      type: String,
+      enum: ['Lot', 'House and Lot', 'Condo'],
+      default: 'Lot'
+    },
+    title: { type: String, default: '' },
+    description: { type: String, default: '' },
+    location: { type: String, default: '' },
+    price: { type: Number },
+    lotArea: { type: Number },
+    floorArea: { type: Number },
+    unitSizeArea: { type: Number },
+    unitSizeRange: { type: String, default: '' }
+  },
   youtubeUrl: {
     type: String,
     default: ''
