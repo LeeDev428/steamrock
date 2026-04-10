@@ -331,6 +331,7 @@ const AdminProjects = () => {
                     <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">Project</th>
                     <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">Category</th>
                     <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">Developer</th>
+                    <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">Featured</th>
                     <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">Status</th>
                     <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">Created</th>
                     <th className="px-6 py-4 text-right text-xs font-semibold uppercase tracking-wider text-gray-600">Actions</th>
@@ -371,6 +372,15 @@ const AdminProjects = () => {
                       </td>
                       <td className="px-6 py-4">
                         <p className="text-sm font-medium text-gray-700">{project.contractor?.name || 'N/A'}</p>
+                      </td>
+                      <td className="px-6 py-4">
+                        {project.featured ? (
+                          <span className="inline-flex items-center rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700">
+                            Featured
+                          </span>
+                        ) : (
+                          <span className="text-xs text-gray-400">No</span>
+                        )}
                       </td>
                       <td className="px-6 py-4">
                         <select
