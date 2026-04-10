@@ -215,7 +215,7 @@ This project is private and confidential.
 ## 👤 Contact
 
 **Streamrock Realty Corporation**
-- Phone: +63 912 345 6789
+- Phone: +63 908 885 6169
 - Email: info@streamrockrealty.com
 - Address: Blk 8 Lot 3 Iris St., Camella Homes I, Brgy. Putatan, Muntinlupa City 1770
 
