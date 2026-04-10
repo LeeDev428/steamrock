@@ -881,6 +881,124 @@ const AdminProjectForm = () => {
                   />
                   <span className="text-sm text-gray-700">Featured Project</span>
                 </label>
+                {formData.featured && formData.status !== 'Published' && (
+                  <p className="rounded-lg bg-amber-50 px-3 py-2 text-xs text-amber-700">
+                    Featured projects appear on the homepage only when status is Published.
+                  </p>
+                )}
+              </div>
+            </div>
+
+            <div className="rounded-lg bg-white p-6 shadow-sm">
+              <h2 className="mb-4 text-lg font-semibold text-gray-800">Featured Property Details</h2>
+              <p className="mb-4 text-xs text-gray-500">
+                These details are shown in the homepage section under "Building Dreams, Creating Communities".
+              </p>
+              <div className="space-y-4">
+                <div>
+                  <label className="mb-2 block text-sm font-medium text-gray-700">Featured Property Type</label>
+                  <select
+                    value={formData.featuredProperty.propertyType}
+                    onChange={(event) => handleNestedChange('featuredProperty', 'propertyType', event.target.value)}
+                    className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-primary"
+                  >
+                    <option value="Lot">Lot</option>
+                    <option value="House and Lot">House and Lot</option>
+                    <option value="Condo">Condo</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="mb-2 block text-sm font-medium text-gray-700">Title</label>
+                  <input
+                    type="text"
+                    value={formData.featuredProperty.title}
+                    onChange={(event) => handleNestedChange('featuredProperty', 'title', event.target.value)}
+                    className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-primary"
+                    placeholder="Nature-inspired communities"
+                  />
+                </div>
+
+                <div>
+                  <label className="mb-2 block text-sm font-medium text-gray-700">Description</label>
+                  <textarea
+                    rows={3}
+                    value={formData.featuredProperty.description}
+                    onChange={(event) => handleNestedChange('featuredProperty', 'description', event.target.value)}
+                    className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-primary"
+                    placeholder="Concise detail for homepage card"
+                  />
+                </div>
+
+                <div>
+                  <label className="mb-2 block text-sm font-medium text-gray-700">Location</label>
+                  <input
+                    type="text"
+                    value={formData.featuredProperty.location}
+                    onChange={(event) => handleNestedChange('featuredProperty', 'location', event.target.value)}
+                    className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-primary"
+                    placeholder="City, Province"
+                  />
+                </div>
+
+                <div>
+                  <label className="mb-2 block text-sm font-medium text-gray-700">Price</label>
+                  <input
+                    type="number"
+                    value={formData.featuredProperty.price}
+                    onChange={(event) => handleNestedChange('featuredProperty', 'price', event.target.value)}
+                    className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-primary"
+                    placeholder="e.g. 2500000"
+                  />
+                </div>
+
+                {formData.featuredProperty.propertyType === 'Condo' ? (
+                  <>
+                    <div>
+                      <label className="mb-2 block text-sm font-medium text-gray-700">Unit Size Area (sqm)</label>
+                      <input
+                        type="number"
+                        value={formData.featuredProperty.unitSizeArea}
+                        onChange={(event) => handleNestedChange('featuredProperty', 'unitSizeArea', event.target.value)}
+                        className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-primary"
+                        placeholder="e.g. 32"
+                      />
+                    </div>
+                    <div>
+                      <label className="mb-2 block text-sm font-medium text-gray-700">Unit Size Range</label>
+                      <input
+                        type="text"
+                        value={formData.featuredProperty.unitSizeRange}
+                        onChange={(event) => handleNestedChange('featuredProperty', 'unitSizeRange', event.target.value)}
+                        className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-primary"
+                        placeholder="e.g. 22 sqm - 45 sqm"
+                      />
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div>
+                      <label className="mb-2 block text-sm font-medium text-gray-700">Lot Area (sqm)</label>
+                      <input
+                        type="number"
+                        value={formData.featuredProperty.lotArea}
+                        onChange={(event) => handleNestedChange('featuredProperty', 'lotArea', event.target.value)}
+                        className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-primary"
+                        placeholder="e.g. 80"
+                      />
+                    </div>
+                    <div>
+                      <label className="mb-2 block text-sm font-medium text-gray-700">Floor Area (sqm)</label>
+                      <input
+                        type="number"
+                        value={formData.featuredProperty.floorArea}
+                        onChange={(event) => handleNestedChange('featuredProperty', 'floorArea', event.target.value)}
+                        className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-primary"
+                        placeholder="e.g. 45"
+                      />
+                    </div>
+                  </>
+                )}
               </div>
             </div>
 
