@@ -36,7 +36,7 @@ const defaultSettings = {
     { icon: 'umbrella', title: 'THEMED RESORT AMENITIES', order: 3 }
   ],
   contact: {
-    phone: '+63 912 345 6789',
+    phone: '+63 908 885 6169',
     email: 'info@streamrockrealty.com',
     address: 'Manila, Philippines'
   },
