@@ -46,6 +46,7 @@ const defaultSettings = {
     Shores: '',
     Peaks: ''
   },
+  aboutImage: '',
   footer: {
     copyright: '© 2026 Streamrock Realty. All rights reserved.'
   }
