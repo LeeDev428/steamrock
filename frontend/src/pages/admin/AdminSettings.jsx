@@ -27,6 +27,7 @@ const AdminSettings = () => {
         contact: data.contact || { phone: '', email: '', address: '' },
         social: data.social || { facebook: '', instagram: '', linkedin: '', youtube: '' },
         categoryBanners: data.categoryBanners || { Parks: '', BeachTowns: '', Shores: '', Peaks: '' },
+        aboutImage: data.aboutImage || '',
       });
     } catch (error) {
       console.error('Error fetching settings:', error);
@@ -90,6 +91,19 @@ const AdminSettings = () => {
         ...current,
         categoryBanners: { ...current.categoryBanners, [category]: r.data.url }
       }));
+    } catch {
+      toast.error('Upload failed');
+    }
+  };
+
+  const handleAboutImageUpload = async (file) => {
+    if (!file) return;
+    const fd = new FormData();
+    fd.append('file', file);
+    try {
+      const query = new URLSearchParams({ type: 'homepage', entity: 'about', field: 'about-image' });
+      const r = await axios.post(`/upload?${query.toString()}`, fd, { headers: { 'Content-Type': 'multipart/form-data' } });
+      setSettings((current) => ({ ...current, aboutImage: r.data.url }));
     } catch {
       toast.error('Upload failed');
     }
@@ -171,7 +185,7 @@ const AdminSettings = () => {
         <div className="bg-white rounded-lg shadow-sm">
           <div className="border-b">
             <nav className="flex gap-4 px-6">
-              {['hero', 'features', 'banners', 'contact', 'social'].map((tab) => (
+              {['hero', 'homepage', 'features', 'banners', 'contact', 'social'].map((tab) => (
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
@@ -312,6 +326,38 @@ const AdminSettings = () => {
                     />
                   </div>
                 )}
+              </div>
+            )}
+
+            {/* Homepage Tab */}
+            {activeTab === 'homepage' && (
+              <div className="space-y-6 max-w-lg">
+                <div>
+                  <h3 className="text-sm font-semibold text-gray-700 mb-1">About Section Image</h3>
+                  <p className="text-xs text-gray-400 mb-4">This image appears in the "Building Dreams, Creating Communities" section on the homepage.</p>
+                  {settings.aboutImage && (
+                    <img
+                      src={settings.aboutImage}
+                      alt="About section"
+                      className="w-full h-48 object-cover rounded-lg mb-3 border border-gray-200"
+                    />
+                  )}
+                  <div className="flex gap-2 mb-2">
+                    <input
+                      type="url"
+                      value={settings.aboutImage}
+                      onChange={(e) => setSettings({ ...settings, aboutImage: e.target.value })}
+                      placeholder="https://... or upload below"
+                      className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:border-transparent"
+                    />
+                  </div>
+                  <ImageDropzone
+                    files={[]}
+                    onFilesSelected={(files) => handleAboutImageUpload(files[0])}
+                    buttonLabel="Upload Image"
+                    helperText="Drag & drop or click to upload"
+                  />
+                </div>
               </div>
             )}
 
