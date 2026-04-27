@@ -1,32 +1,44 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 import { FaChevronLeft, FaChevronRight, FaPlay } from 'react-icons/fa';
+
+const DEFAULT_SLIDES = [
+  {
+    type: 'image',
+    url: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
+    title: 'Live in Harmony with Nature',
+    subtitle: 'Discover premium communities in Laguna and Batangas'
+  },
+  {
+    type: 'image',
+    url: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
+    title: 'Your Dream Home Awaits',
+    subtitle: 'Exclusive properties from top developers'
+  },
+  {
+    type: 'image',
+    url: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
+    title: 'Investment Opportunities',
+    subtitle: 'Secure your future with prime real estate'
+  }
+];
 
 const Hero = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [loaded, setLoaded] = useState(false);
+  const [slides, setSlides] = useState(DEFAULT_SLIDES);
 
-  // Default slides - will be replaced by SiteSettings from API
-  const slides = [
-    {
-      type: 'image',
-      url: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
-      title: 'Live in Harmony with Nature',
-      subtitle: 'Discover premium communities in Laguna and Batangas'
-    },
-    {
-      type: 'image',
-      url: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
-      title: 'Your Dream Home Awaits',
-      subtitle: 'Exclusive properties from top developers'
-    },
-    {
-      type: 'image',
-      url: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
-      title: 'Investment Opportunities',
-      subtitle: 'Secure your future with prime real estate'
-    }
-  ];
+  useEffect(() => {
+    axios.get('/settings')
+      .then((res) => {
+        const items = res.data?.hero?.items;
+        if (Array.isArray(items) && items.length > 0) {
+          setSlides(items);
+        }
+      })
+      .catch(() => {/* keep defaults */});
+  }, []);
 
   useEffect(() => {
     const timer = setInterval(() => {
