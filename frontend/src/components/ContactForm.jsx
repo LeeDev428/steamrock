@@ -23,7 +23,7 @@ const ContactForm = () => {
     setStatus({ type: '', message: '' });
 
     try {
-      await axios.post('/api/inquiries', formData);
+      await axios.post('/inquiries', formData);
       toast.success('Thank you for your inquiry! We will contact you soon.');
       setStatus({
         type: 'success',
