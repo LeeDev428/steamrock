@@ -3,6 +3,7 @@ import axios from 'axios';
 import AdminLayout from '../../components/admin/AdminLayout';
 import { useToast } from '../../components/Toast';
 import ImageDropzone from '../../components/admin/ImageDropzone';
+import ConfirmModal from '../../components/admin/ConfirmModal';
 import { FiPlus, FiEdit2, FiTrash2, FiX, FiCheck, FiUpload } from 'react-icons/fi';
 
 const AdminContractors = () => {
@@ -12,6 +13,7 @@ const AdminContractors = () => {
   const [showModal, setShowModal] = useState(false);
   const [editing, setEditing] = useState(null);
   const [pendingLogoImages, setPendingLogoImages] = useState([]);
+  const [confirmModal, setConfirmModal] = useState({ isOpen: false, title: '', message: '', onConfirm: null });
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -81,10 +83,12 @@ const AdminContractors = () => {
         const res = await axios.put(`/contractors/${editing}`, payload);
         const updatedContractor = res.data.data || res.data;
         setContractors(contractors.map(c => c._id === editing ? updatedContractor : c));
+        toast.success('Contractor updated');
       } else {
         const res = await axios.post('/contractors', payload);
         const newContractor = res.data.data || res.data;
         setContractors([...contractors, newContractor]);
+        toast.success('Contractor created');
       }
       setShowModal(false);
       setPendingLogoImages([]);
@@ -94,15 +98,22 @@ const AdminContractors = () => {
     }
   };
 
-  const handleDelete = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this contractor?')) return;
-    try {
-      await axios.delete(`/contractors/${id}`);
-      setContractors(contractors.filter(c => c._id !== id));
-    } catch (error) {
-      console.error('Error deleting contractor:', error);
-      toast.error('Failed to delete contractor');
-    }
+  const handleDelete = (id) => {
+    setConfirmModal({
+      isOpen: true,
+      title: 'Delete Contractor',
+      message: 'Are you sure you want to delete this contractor? This action cannot be undone.',
+      onConfirm: async () => {
+        try {
+          await axios.delete(`/contractors/${id}`);
+          setContractors(contractors.filter(c => c._id !== id));
+          toast.success('Contractor deleted');
+        } catch (error) {
+          console.error('Error deleting contractor:', error);
+          toast.error('Failed to delete contractor');
+        }
+      }
+    });
   };
 
   return (
@@ -275,6 +286,13 @@ const AdminContractors = () => {
         </div>
       )}
     </AdminLayout>
+    <ConfirmModal
+      isOpen={confirmModal.isOpen}
+      title={confirmModal.title}
+      message={confirmModal.message}
+      onConfirm={() => { setConfirmModal(m => ({ ...m, isOpen: false })); confirmModal.onConfirm?.(); }}
+      onCancel={() => setConfirmModal(m => ({ ...m, isOpen: false }))}
+    />
   );
 };
 
