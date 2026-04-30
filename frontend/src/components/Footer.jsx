@@ -69,6 +69,20 @@ const Footer = () => {
           </div>
         </div>
 
+        {/* Office Map */}
+        <div className="mt-8 rounded-lg overflow-hidden border border-gray-700">
+          <iframe
+            src="https://maps.google.com/maps?q=Camella+Homes+Putatan+Muntinlupa+City+1770+Philippines&output=embed&z=16"
+            width="100%"
+            height="200"
+            style={{ border: 0 }}
+            allowFullScreen=""
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            title="Streamrock Realty Office Location"
+          />
+        </div>
+
         <div className="border-t border-gray-700 mt-8 pt-8 text-center text-sm">
           <p>&copy; {currentYear} Streamrock Realty Corporation. All rights reserved.</p>
         </div>
