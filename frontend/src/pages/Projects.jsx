@@ -168,6 +168,7 @@ const Projects = () => {
             )}
           </div>
         ) : (
+          <>
           <div ref={gridRef} className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 stagger-children ${gridVisible ? 'visible' : ''}`}>
             {pagedProjects.map((project) => (
               <Link
@@ -220,8 +221,8 @@ const Projects = () => {
             <div className="mt-12">
               <Pagination page={page} totalPages={totalPages} onPageChange={setPage} totalItems={projects.length} pageSize={PAGE_SIZE} />
             </div>
-          )}
-      </div>
+          )}          </>
+        )}      </>
     </div>
   );
 };
