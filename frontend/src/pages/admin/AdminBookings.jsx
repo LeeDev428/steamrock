@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import AdminLayout from '../../components/admin/AdminLayout';
 import { useToast } from '../../components/Toast';
+import ConfirmModal from '../../components/admin/ConfirmModal';
 import { FiCalendar, FiClock, FiUser, FiMail, FiPhone, FiCheck, FiX, FiEye, FiTrash2, FiMapPin, FiMessageCircle, FiCheckCircle, FiAlertCircle, FiSend } from 'react-icons/fi';
 
 const AdminBookings = () => {
@@ -27,6 +28,7 @@ const AdminBookings = () => {
   const [emailModal, setEmailModal] = useState(null); // holds the booking to email
   const [emailData, setEmailData] = useState({ subject: '', message: '' });
   const [emailSending, setEmailSending] = useState(false);
+  const [confirmModal, setConfirmModal] = useState({ isOpen: false, title: '', message: '', onConfirm: null });
 
   const statuses = ['Pending', 'Approved', 'Rejected', 'Completed', 'Cancelled'];
 
@@ -114,17 +116,23 @@ const AdminBookings = () => {
     setEmailSending(false);
   };
 
-  const handleDelete = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this booking?')) return;
-    
-    try {
-      await axios.delete(`/bookings/${id}`);
-      setBookings(bookings.filter(b => b._id !== id));
-      fetchStats();
-    } catch (error) {
-      console.error('Error deleting booking:', error);
-      toast.error('Failed to delete booking');
-    }
+  const handleDelete = (id) => {
+    setConfirmModal({
+      isOpen: true,
+      title: 'Delete Booking',
+      message: 'Are you sure you want to delete this booking? This action cannot be undone.',
+      onConfirm: async () => {
+        try {
+          await axios.delete(`/bookings/${id}`);
+          setBookings(bookings.filter(b => b._id !== id));
+          toast.success('Booking deleted');
+          fetchStats();
+        } catch (error) {
+          console.error('Error deleting booking:', error);
+          toast.error('Failed to delete booking');
+        }
+      }
+    });
   };
 
   const getStatusColor = (status) => {
@@ -516,6 +524,13 @@ const AdminBookings = () => {
         </div>
       )}
     </AdminLayout>
+    <ConfirmModal
+      isOpen={confirmModal.isOpen}
+      title={confirmModal.title}
+      message={confirmModal.message}
+      onConfirm={() => { setConfirmModal(m => ({ ...m, isOpen: false })); confirmModal.onConfirm?.(); }}
+      onCancel={() => setConfirmModal(m => ({ ...m, isOpen: false }))}
+    />
   );
 };
 
