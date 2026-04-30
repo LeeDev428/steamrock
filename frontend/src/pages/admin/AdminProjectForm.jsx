@@ -501,8 +501,8 @@ const AdminProjectForm = () => {
             <p className="text-xs font-medium text-gray-500">Existing uploaded images</p>
             <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
               {component.images.map((image) => (
-                <div key={image.id} className="overflow-hidden rounded-lg border border-gray-200 bg-gray-50">
-                  <img src={cldUrl(image.url, { w: 400 })} alt="Section" className="h-40 w-full object-cover" loading="lazy" decoding="async" />
+                <div key={image.id} className="relative overflow-hidden rounded-lg border border-gray-200 bg-gray-50">
+                  <OptimizedImage src={image.url} w={400} alt="Section" className="h-40 w-full object-cover" />
                   <div className="flex items-center justify-between px-3 py-2">
                     <p className="truncate text-xs text-gray-500">{image.url}</p>
                     <button
