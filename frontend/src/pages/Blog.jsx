@@ -128,6 +128,7 @@ const Blog = () => {
                 <p className="text-gray-500 text-lg">No blog posts found</p>
               </div>
             ) : (
+              <>
               <div className="space-y-8">
                 {pagedBlogs.map((blog, index) => (
                   <AnimatedSection key={blog._id} animation="fade-in-up" delay={index * 100}>
@@ -254,6 +255,7 @@ const Blog = () => {
                   <Pagination page={page} totalPages={totalPages} onPageChange={setPage} totalItems={blogs.length} pageSize={PAGE_SIZE} />
                 </div>
               )}
+              </>
             )}
           </div>
 
