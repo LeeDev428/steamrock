@@ -5,7 +5,7 @@ dist
 build
 *.log
 .vscode
-
+TODO.md
 # Uploaded files
 backend/uploads/
 uploads/
