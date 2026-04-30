@@ -4,6 +4,7 @@ import axios from 'axios';
 import AdminLayout from '../../components/admin/AdminLayout';
 import { useToast } from '../../components/Toast';
 import ConfirmModal from '../../components/admin/ConfirmModal';
+import { cldUrl } from '../../utils/cloudinary';
 import {
   FiCheckCircle,
   FiClock,
@@ -376,7 +377,7 @@ const AdminProjects = () => {
                         <div className="flex items-center gap-4">
                           <div className="h-16 w-20 flex-shrink-0 overflow-hidden rounded-lg bg-gray-100">
                             {project.cardImage ? (
-                              <img src={project.cardImage} alt={project.name} className="h-full w-full object-cover" />
+                              <img src={cldUrl(project.cardImage, { w: 400 })} alt={project.name} className="h-full w-full object-cover" loading="lazy" decoding="async" />
                             ) : (
                               <div className="flex h-full w-full items-center justify-center text-gray-400">
                                 <FiImage className="h-7 w-7" />
