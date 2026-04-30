@@ -5,6 +5,7 @@ import AdminLayout from '../../components/admin/AdminLayout';
 import { useToast } from '../../components/Toast';
 import ImageDropzone from '../../components/admin/ImageDropzone';
 import ConfirmModal from '../../components/admin/ConfirmModal';
+import { cldUrl } from '../../utils/cloudinary';
 import { FiPlus, FiEdit2, FiTrash2, FiEye, FiImage, FiFilter, FiFileText, FiCheckCircle, FiClock, FiX, FiYoutube } from 'react-icons/fi';
 
 const AdminBlogs = () => {
@@ -399,10 +400,10 @@ const AdminBlogs = () => {
                         <div className="flex items-center gap-4">
                           <div className="w-16 h-16 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0 relative">
                             {blog.featuredImage ? (
-                              <img src={blog.featuredImage} alt={blog.title} className="w-full h-full object-cover" />
+                              <img src={cldUrl(blog.featuredImage, { w: 400 })} alt={blog.title} className="w-full h-full object-cover" loading="lazy" decoding="async" />
                             ) : blog.youtubeUrl && getYoutubeId(blog.youtubeUrl) ? (
                               <>
-                                <img src={`https://img.youtube.com/vi/${getYoutubeId(blog.youtubeUrl)}/hqdefault.jpg`} alt={blog.title} className="w-full h-full object-cover" />
+                                <img src={`https://img.youtube.com/vi/${getYoutubeId(blog.youtubeUrl)}/hqdefault.jpg`} alt={blog.title} className="w-full h-full object-cover" loading="lazy" decoding="async" />
                                 <div className="absolute inset-0 flex items-center justify-center bg-black/20">
                                   <FiYoutube className="w-5 h-5 text-red-500" />
                                 </div>
@@ -523,7 +524,7 @@ const AdminBlogs = () => {
                     <label className="block text-sm font-medium text-gray-700 mb-2">Featured Image</label>
                     <div className="space-y-3">
                       {formData.featuredImage && (
-                        <img src={formData.featuredImage} alt="Preview" className="w-full h-40 object-cover rounded-xl" />
+                        <img src={cldUrl(formData.featuredImage, { w: 600 })} alt="Preview" className="w-full h-40 object-cover rounded-xl" loading="lazy" decoding="async" />
                       )}
                       <ImageDropzone
                         files={pendingFeaturedImages}
