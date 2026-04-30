@@ -1,9 +1,19 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+const rateLimit = require('express-rate-limit');
 const Booking = require('../models/Booking');
 const { protect, adminOnly } = require('../middleware/auth');
 const nodemailer = require('nodemailer');
+
+// Rate limiter for public booking submissions
+const bookingLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  message: { message: 'Too many booking requests. Please try again after 15 minutes.' },
+  standardHeaders: true,
+  legacyHeaders: false
+});
 
 const EMAIL_USER = String(process.env.EMAIL_USER || '').trim();
 const EMAIL_PASS = String(process.env.EMAIL_PASS || '').trim();
@@ -207,7 +217,7 @@ router.get('/:id', protect, adminOnly, async (req, res) => {
 // @route   POST /api/bookings
 // @desc    Create a new booking (public)
 // @access  Public
-router.post('/', async (req, res) => {
+router.post('/', bookingLimiter, async (req, res) => {
   try {
     const { name, email, phone, project, projectName, preferredDate, preferredTime, tourType, message } = req.body;
 
