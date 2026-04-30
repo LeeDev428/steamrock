@@ -5,6 +5,7 @@ import { useToast } from '../../components/Toast';
 import ImageDropzone from '../../components/admin/ImageDropzone';
 import ConfirmModal from '../../components/admin/ConfirmModal';
 import OptimizedImage from '../../components/OptimizedImage';
+import Pagination from '../../components/Pagination';
 import {
   FiFilter,
   FiImage,
@@ -36,6 +37,8 @@ const AdminMedia = () => {
     blogCategory: '',
     blogName: ''
   });
+  const PAGE_SIZE = 36;
+  const [page, setPage] = useState(1);
   const [assignment, setAssignment] = useState({
     targetType: 'project',
     projectCategory: 'Parks',
@@ -50,6 +53,8 @@ const AdminMedia = () => {
     fetchProjects();
     fetchBlogs();
   }, []);
+
+  useEffect(() => { setPage(1); }, [filters]);
 
   const fetchFiles = async () => {
     setLoading(true);
@@ -114,6 +119,9 @@ const AdminMedia = () => {
       return true;
     });
   }, [files, filters]);
+
+  const totalMediaPages = Math.ceil(filteredFiles.length / PAGE_SIZE);
+  const pagedFiles = filteredFiles.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   useEffect(() => {
     if (filteredProjects.length > 0) {
@@ -188,7 +196,7 @@ const AdminMedia = () => {
   };
 
   const handleToggleAll = () => {
-    const visibleIds = filteredFiles.map((file) => file._id).filter(Boolean);
+    const visibleIds = pagedFiles.map((file) => file._id).filter(Boolean);
     if (visibleIds.length === 0) return;
 
     const allSelected = visibleIds.every((id) => selectedIds.includes(id));
