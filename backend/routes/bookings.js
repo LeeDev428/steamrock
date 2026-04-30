@@ -53,18 +53,24 @@ const escapeHtml = (value = '') => String(value)
 // @access  Private
 router.get('/', protect, adminOnly, async (req, res) => {
   try {
-    const { status, isRead } = req.query;
+    const { status, isRead, page = 1, limit = 20 } = req.query;
     let filter = {};
     
     if (status) filter.status = status;
     if (isRead !== undefined) filter.isRead = isRead === 'true';
 
-    const bookings = await Booking.find(filter)
-      .populate('project', 'name slug')
-      .populate('respondedBy', 'name')
-      .sort({ createdAt: -1 });
+    const skip = (parseInt(page) - 1) * parseInt(limit);
+    const [bookings, total] = await Promise.all([
+      Booking.find(filter)
+        .populate('project', 'name slug')
+        .populate('respondedBy', 'name')
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(parseInt(limit)),
+      Booking.countDocuments(filter)
+    ]);
 
-    res.json(bookings);
+    res.json({ bookings, total, page: parseInt(page), pages: Math.ceil(total / parseInt(limit)) });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -205,6 +211,18 @@ router.post('/', async (req, res) => {
   try {
     const { name, email, phone, project, projectName, preferredDate, preferredTime, tourType, message } = req.body;
 
+    // Input validation
+    if (!name || !email || !phone || !preferredDate || !preferredTime) {
+      return res.status(400).json({ message: 'Name, email, phone, preferred date and time are required.' });
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ message: 'Invalid email address.' });
+    }
+    if (new Date(preferredDate) < new Date()) {
+      return res.status(400).json({ message: 'Preferred date cannot be in the past.' });
+    }
+
     const booking = new Booking({
       name,
       email,
@@ -272,7 +290,7 @@ router.post('/', async (req, res) => {
       </div>
     `;
 
-    await sendEmail('dwllaneta@gmail.com', `New Booking: ${name} - ${projectName || 'General Inquiry'}`, adminEmailHtml);
+    await sendEmail(process.env.ADMIN_EMAIL || EMAIL_USER, `New Booking: ${name} - ${projectName || 'General Inquiry'}`, adminEmailHtml);
 
     // Emit socket event for real-time notification
     const io = req.app.get('io');
