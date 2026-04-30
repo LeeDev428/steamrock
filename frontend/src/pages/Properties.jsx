@@ -4,6 +4,8 @@ import axios from 'axios';
 import PropertyCard from '../components/PropertyCard';
 import { FaFilter } from 'react-icons/fa';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
+import Pagination from '../components/Pagination';
+import { cacheGet, cacheSet } from '../utils/apiCache';
 
 const Properties = () => {
   const [gridRef, gridVisible] = useScrollAnimation();
@@ -18,8 +20,11 @@ const Properties = () => {
     maxPrice: ''
   });
   const [showFilters, setShowFilters] = useState(false);
+  const PAGE_SIZE = 12;
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
+    setPage(1);
     fetchProperties();
   }, [filters]);
 
@@ -29,19 +34,31 @@ const Properties = () => {
       const queryParams = new URLSearchParams();
       if (filters.category) queryParams.append('category', filters.category);
       if (filters.propertyType) queryParams.append('propertyType', filters.propertyType);
-
+      const cacheKey = `properties_${queryParams.toString()}`;
+      const applyData = (raw) => {
+        let data = raw;
+        if (filters.minPrice) data = data.filter(p => p.price >= parseInt(filters.minPrice));
+        if (filters.maxPrice) data = data.filter(p => p.price <= parseInt(filters.maxPrice));
+        setProperties(data);
+      };
+      if (!filters.minPrice && !filters.maxPrice) {
+        const cached = cacheGet(cacheKey);
+        if (cached) {
+          setProperties(cached);
+          setLoading(false);
+          axios.get(`/api/properties?${queryParams}`)
+            .then(res => {
+              const fresh = res.data;
+              setProperties(fresh);
+              cacheSet(cacheKey, fresh, 5 * 60 * 1000);
+            })
+            .catch(() => {});
+          return;
+        }
+      }
       const response = await axios.get(`/api/properties?${queryParams}`);
-      let data = response.data;
-
-      // Client-side filtering for price range
-      if (filters.minPrice) {
-        data = data.filter(p => p.price >= parseInt(filters.minPrice));
-      }
-      if (filters.maxPrice) {
-        data = data.filter(p => p.price <= parseInt(filters.maxPrice));
-      }
-
-      setProperties(data);
+      applyData(response.data);
+      if (!filters.minPrice && !filters.maxPrice) cacheSet(cacheKey, response.data, 5 * 60 * 1000);
     } catch (error) {
       console.error('Error fetching properties:', error);
       setSampleProperties();
@@ -346,16 +363,26 @@ const Properties = () => {
               </p>
             </div>
 
-            {loading ? (
+            {(() => {
+              const totalPages = Math.ceil(properties.length / PAGE_SIZE);
+              const pagedProperties = properties.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+              return loading ? (
               <div className="flex justify-center items-center h-96">
                 <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-primary"></div>
               </div>
             ) : properties.length > 0 ? (
+              <>
               <div ref={gridRef} className={`grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 stagger-children ${gridVisible ? 'visible' : ''}`}>
-                {properties.map((property) => (
+                {pagedProperties.map((property) => (
                   <PropertyCard key={property._id} property={property} />
                 ))}
               </div>
+              {totalPages > 1 && (
+                <div className="mt-8">
+                  <Pagination page={page} totalPages={totalPages} onPageChange={setPage} totalItems={properties.length} pageSize={PAGE_SIZE} />
+                </div>
+              )}
+              </>
             ) : (
               <div className="text-center py-16">
                 <p className="text-gray-500 text-lg">No properties found matching your criteria</p>
@@ -366,7 +393,7 @@ const Properties = () => {
                   Clear Filters
                 </button>
               </div>
-            )}
+            )};
           </div>
         </div>
       </div>
