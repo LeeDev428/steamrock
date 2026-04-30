@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
-import { cldUrl } from '../../utils/cloudinary';
+import OptimizedImage from '../../components/OptimizedImage';
 import {
   FiArrowDown,
   FiArrowUp,
@@ -671,9 +671,9 @@ const AdminProjectForm = () => {
               <div className="grid gap-6 lg:grid-cols-2">
                 <div className="space-y-3">
                   <label className="block text-sm font-medium text-gray-700">Card Image</label>
-                  <div className="overflow-hidden rounded-lg bg-gray-100">
+                  <div className="relative overflow-hidden rounded-lg bg-gray-100">
                     {formData.cardImage ? (
-                      <img src={cldUrl(formData.cardImage, { w: 600 })} alt="Card" className="h-48 w-full object-cover" loading="lazy" decoding="async" />
+                      <OptimizedImage src={formData.cardImage} w={600} alt="Card" className="h-48 w-full object-cover" />
                     ) : (
                       <div className="flex h-48 items-center justify-center text-gray-400">
                         <FiImage className="h-10 w-10" />
@@ -691,9 +691,9 @@ const AdminProjectForm = () => {
 
                 <div className="space-y-3">
                   <label className="block text-sm font-medium text-gray-700">Hero Image</label>
-                  <div className="overflow-hidden rounded-lg bg-gray-100">
+                  <div className="relative overflow-hidden rounded-lg bg-gray-100">
                     {formData.hero.image ? (
-                      <img src={cldUrl(formData.hero.image, { w: 600 })} alt="Hero" className="h-48 w-full object-cover" loading="lazy" decoding="async" />
+                      <OptimizedImage src={formData.hero.image} w={600} alt="Hero" className="h-48 w-full object-cover" />
                     ) : (
                       <div className="flex h-48 items-center justify-center text-gray-400">
                         <FiImage className="h-10 w-10" />
