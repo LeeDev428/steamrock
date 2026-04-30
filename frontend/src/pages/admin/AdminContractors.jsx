@@ -117,6 +117,7 @@ const AdminContractors = () => {
   };
 
   return (
+    <>
     <AdminLayout>
       <div className="space-y-6">
         {/* Header */}
@@ -293,6 +294,7 @@ const AdminContractors = () => {
       onConfirm={() => { setConfirmModal(m => ({ ...m, isOpen: false })); confirmModal.onConfirm?.(); }}
       onCancel={() => setConfirmModal(m => ({ ...m, isOpen: false }))}
     />
+  </>
   );
 };
 
