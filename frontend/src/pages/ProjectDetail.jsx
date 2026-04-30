@@ -6,6 +6,7 @@ import { FiCheck } from 'react-icons/fi';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import { componentHasContent, normalizeProjectForDisplay } from '../utils/projectContent';
 import Lightbox from '../components/Lightbox';
+import { cldUrl } from '../utils/cloudinary';
 
 const renderComponent = (component, sectionType, textColor, onImageClick) => {
   if (component.type === 'label') {
@@ -78,9 +79,11 @@ const renderComponent = (component, sectionType, textColor, onImageClick) => {
             onClick={() => onImageClick && onImageClick(image.url)}
           >
             <img
-              src={image.url}
+              src={cldUrl(image.url, { w: 900 })}
               alt={image.alt || ''}
               className="h-64 w-full object-cover transition-transform duration-500 group-hover:scale-105"
+              loading="lazy"
+              decoding="async"
             />
             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
               <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/90 text-gray-800 text-xs font-medium px-3 py-1.5 rounded-full">
