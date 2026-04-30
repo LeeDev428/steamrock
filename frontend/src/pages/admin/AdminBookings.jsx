@@ -166,6 +166,7 @@ const AdminBookings = () => {
   };
 
   return (
+    <>
     <AdminLayout>
       <div className="space-y-6">
         {/* Header */}
@@ -531,6 +532,7 @@ const AdminBookings = () => {
       onConfirm={() => { setConfirmModal(m => ({ ...m, isOpen: false })); confirmModal.onConfirm?.(); }}
       onCancel={() => setConfirmModal(m => ({ ...m, isOpen: false }))}
     />
+  </>
   );
 };
 
