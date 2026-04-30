@@ -413,7 +413,7 @@ const AdminBlogs = () => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
-                  {blogs.map((blog) => (
+                  {pagedBlogs.map((blog) => (
                     <tr key={blog._id} className="hover:bg-gray-50 transition-colors">
                       <td className="px-4 py-4">
                         <input
@@ -490,6 +490,11 @@ const AdminBlogs = () => {
                 </tbody>
               </table>
             </div>
+            {totalPages > 1 && (
+              <div className="border-t border-gray-100 px-4 py-4">
+                <Pagination page={page} totalPages={totalPages} onPageChange={setPage} totalItems={blogs.length} pageSize={PAGE_SIZE} />
+              </div>
+            )}
           </div>
         )}
 
