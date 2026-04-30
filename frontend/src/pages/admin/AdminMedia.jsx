@@ -261,6 +261,7 @@ const AdminMedia = () => {
   };
 
   return (
+    <>
     <AdminLayout>
       <div className="space-y-6">
         <div className="flex items-center justify-between">
@@ -605,6 +606,7 @@ const AdminMedia = () => {
       onConfirm={() => { setConfirmModal(m => ({ ...m, isOpen: false })); confirmModal.onConfirm?.(); }}
       onCancel={() => setConfirmModal(m => ({ ...m, isOpen: false }))}
     />
+  </>
   );
 };
 
