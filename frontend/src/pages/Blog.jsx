@@ -4,6 +4,8 @@ import axios from 'axios';
 import { AnimatedSection } from '../hooks/useScrollAnimation';
 import { FaCalendar, FaUser, FaEye, FaSearch, FaArrowRight, FaPlay, FaYoutube } from 'react-icons/fa';
 import OptimizedImage from '../components/OptimizedImage';
+import Pagination from '../components/Pagination';
+import { cacheGet, cacheSet } from '../utils/apiCache';
 
 const Blog = () => {
   const navigate = useNavigate();
@@ -13,6 +15,8 @@ const Blog = () => {
   const [recentPosts, setRecentPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const PAGE_SIZE = 9;
+  const [page, setPage] = useState(1);
 
   const activeCategory = searchParams.get('category') || '';
   const [playingId, setPlayingId] = useState(null);
@@ -26,6 +30,7 @@ const Blog = () => {
     fetchBlogs();
     fetchCategories();
     fetchRecentPosts();
+    setPage(1);
   }, [activeCategory]);
 
   const fetchBlogs = async (search = '') => {
@@ -34,9 +39,26 @@ const Blog = () => {
       const params = new URLSearchParams();
       if (activeCategory) params.append('category', activeCategory);
       if (search.trim()) params.append('search', search.trim());
-      
+      const cacheKey = `blogs_${params.toString()}`;
+      if (!search.trim()) {
+        const cached = cacheGet(cacheKey);
+        if (cached) {
+          setBlogs(cached);
+          setLoading(false);
+          axios.get(`/blogs?${params.toString()}`)
+            .then(res => {
+              const fresh = Array.isArray(res.data) ? res.data : [];
+              setBlogs(fresh);
+              cacheSet(cacheKey, fresh, 5 * 60 * 1000);
+            })
+            .catch(() => {});
+          return;
+        }
+      }
       const res = await axios.get(`/blogs?${params.toString()}`);
-      setBlogs(Array.isArray(res.data) ? res.data : []);
+      const data = Array.isArray(res.data) ? res.data : [];
+      setBlogs(data);
+      if (!search.trim()) cacheSet(cacheKey, data, 5 * 60 * 1000);
     } catch (error) {
       console.error('Error fetching blogs:', error);
     }
