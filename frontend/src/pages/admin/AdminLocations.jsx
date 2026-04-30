@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import AdminLayout from '../../components/admin/AdminLayout';
 import { useToast } from '../../components/Toast';
+import ConfirmModal from '../../components/admin/ConfirmModal';
 import { FiPlus, FiEdit2, FiTrash2, FiX, FiCheck, FiMapPin } from 'react-icons/fi';
 
 const AdminLocations = () => {
@@ -10,6 +11,7 @@ const AdminLocations = () => {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [editing, setEditing] = useState(null);
+  const [confirmModal, setConfirmModal] = useState({ isOpen: false, title: '', message: '', onConfirm: null });
   const [formData, setFormData] = useState({
     street: '',
     village: '',
@@ -57,9 +59,11 @@ const AdminLocations = () => {
       if (editing) {
         const res = await axios.put(`/locations/${editing}`, formData);
         setLocations(locations.map(l => l._id === editing ? res.data : l));
+        toast.success('Location updated');
       } else {
         const res = await axios.post('/locations', formData);
         setLocations([...locations, res.data]);
+        toast.success('Location created');
       }
       setShowModal(false);
     } catch (error) {
@@ -68,15 +72,22 @@ const AdminLocations = () => {
     }
   };
 
-  const handleDelete = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this location?')) return;
-    try {
-      await axios.delete(`/locations/${id}`);
-      setLocations(locations.filter(l => l._id !== id));
-    } catch (error) {
-      console.error('Error deleting location:', error);
-      toast.error('Failed to delete location');
-    }
+  const handleDelete = (id) => {
+    setConfirmModal({
+      isOpen: true,
+      title: 'Delete Location',
+      message: 'Are you sure you want to delete this location? This action cannot be undone.',
+      onConfirm: async () => {
+        try {
+          await axios.delete(`/locations/${id}`);
+          setLocations(locations.filter(l => l._id !== id));
+          toast.success('Location deleted');
+        } catch (error) {
+          console.error('Error deleting location:', error);
+          toast.error('Failed to delete location');
+        }
+      }
+    });
   };
 
   return (
@@ -251,6 +262,13 @@ const AdminLocations = () => {
         </div>
       )}
     </AdminLayout>
+    <ConfirmModal
+      isOpen={confirmModal.isOpen}
+      title={confirmModal.title}
+      message={confirmModal.message}
+      onConfirm={() => { setConfirmModal(m => ({ ...m, isOpen: false })); confirmModal.onConfirm?.(); }}
+      onCancel={() => setConfirmModal(m => ({ ...m, isOpen: false }))}
+    />
   );
 };
 
