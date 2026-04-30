@@ -514,8 +514,8 @@ const AdminMedia = () => {
               </button>
             </div>
             <div className="space-y-4 p-4">
-              <div className="relative overflow-hidden rounded-lg border border-gray-200">
-                <OptimizedImage src={assignmentModal.file.url} w={800} alt={assignmentModal.file.filename} className="h-44 w-full object-cover" loading="eager" />
+              <div className="relative overflow-hidden rounded-lg border border-gray-200 bg-gray-50">
+                <OptimizedImage src={assignmentModal.file.url} w={1200} alt={assignmentModal.file.filename} className="w-full max-h-80 object-contain" loading="eager" />
               </div>
 
               <div className="flex gap-2">
