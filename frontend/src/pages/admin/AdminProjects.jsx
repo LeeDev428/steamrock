@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import AdminLayout from '../../components/admin/AdminLayout';
 import { useToast } from '../../components/Toast';
+import ConfirmModal from '../../components/admin/ConfirmModal';
 import {
   FiCheckCircle,
   FiClock,
@@ -23,6 +24,7 @@ const AdminProjects = () => {
   const [loading, setLoading] = useState(true);
   const [selectedIds, setSelectedIds] = useState([]);
   const [bulkStatus, setBulkStatus] = useState('Draft');
+  const [confirmModal, setConfirmModal] = useState({ isOpen: false, title: '', message: '', onConfirm: null });
   const [stats, setStats] = useState({
     total: 0,
     published: 0,
@@ -74,18 +76,30 @@ const AdminProjects = () => {
     setLoading(false);
   };
 
-  const handleDelete = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this project?')) return;
+  const openConfirm = (title, message, onConfirm) => {
+    setConfirmModal({ isOpen: true, title, message, onConfirm });
+  };
 
-    try {
-      await axios.delete(`/projects/${id}`);
-      setProjects(projects.filter((project) => project._id !== id));
-      setSelectedIds((current) => current.filter((selectedId) => selectedId !== id));
-      toast.success('Project deleted');
-    } catch (error) {
-      console.error('Error deleting project:', error);
-      toast.error('Failed to delete project');
-    }
+  const closeConfirm = () => {
+    setConfirmModal({ isOpen: false, title: '', message: '', onConfirm: null });
+  };
+
+  const handleDelete = (id) => {
+    openConfirm(
+      'Delete Project',
+      'Are you sure you want to delete this project? This action cannot be undone.',
+      async () => {
+        try {
+          await axios.delete(`/projects/${id}`);
+          setProjects(projects.filter((project) => project._id !== id));
+          setSelectedIds((current) => current.filter((selectedId) => selectedId !== id));
+          toast.success('Project deleted');
+        } catch (error) {
+          console.error('Error deleting project:', error);
+          toast.error('Failed to delete project');
+        }
+      }
+    );
   };
 
   const handleStatusChange = async (id, newStatus) => {
@@ -94,6 +108,7 @@ const AdminProjects = () => {
       setProjects(projects.map((project) =>
         project._id === id ? { ...project, status: newStatus } : project
       ));
+      toast.success('Project status updated');
     } catch (error) {
       console.error('Error updating status:', error);
       toast.error('Failed to update status');
@@ -117,18 +132,22 @@ const AdminProjects = () => {
     setSelectedIds(projects.map((project) => project._id));
   };
 
-  const handleBulkDelete = async () => {
+  const handleBulkDelete = () => {
     if (selectedIds.length === 0) return;
-    if (!window.confirm(`Delete ${selectedIds.length} selected project(s)?`)) return;
-
-    try {
-      await axios.delete('/projects/bulk', { data: { ids: selectedIds } });
-      toast.success('Selected projects deleted');
-      await fetchProjects();
-    } catch (error) {
-      console.error('Error deleting selected projects:', error);
-      toast.error(error.response?.data?.message || 'Failed to delete selected projects');
-    }
+    openConfirm(
+      'Delete Selected Projects',
+      `Are you sure you want to delete ${selectedIds.length} selected project(s)? This action cannot be undone.`,
+      async () => {
+        try {
+          await axios.delete('/projects/bulk', { data: { ids: selectedIds } });
+          toast.success('Selected projects deleted');
+          await fetchProjects();
+        } catch (error) {
+          console.error('Error deleting selected projects:', error);
+          toast.error(error.response?.data?.message || 'Failed to delete selected projects');
+        }
+      }
+    );
   };
 
   const handleBulkStatusUpdate = async () => {
@@ -446,6 +465,13 @@ const AdminProjects = () => {
         </div>
       </div>
     </AdminLayout>
+    <ConfirmModal
+      isOpen={confirmModal.isOpen}
+      title={confirmModal.title}
+      message={confirmModal.message}
+      onConfirm={() => { closeConfirm(); confirmModal.onConfirm?.(); }}
+      onCancel={closeConfirm}
+    />
   );
 };
 
