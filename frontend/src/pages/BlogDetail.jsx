@@ -4,6 +4,7 @@ import axios from 'axios';
 import { AnimatedSection } from '../hooks/useScrollAnimation';
 import { FaCalendar, FaUser, FaEye, FaArrowLeft, FaFacebook, FaTwitter, FaLinkedin, FaWhatsapp, FaTag, FaYoutube } from 'react-icons/fa';
 import { cldUrl } from '../utils/cloudinary';
+import OptimizedImage from '../components/OptimizedImage';
 
 const BlogDetail = () => {
   const { slug } = useParams();
@@ -104,12 +105,13 @@ const BlogDetail = () => {
           <AnimatedSection animation="fade-in-up" className="bg-white rounded-2xl shadow-sm overflow-hidden -mt-16 relative z-10 mb-8">
             {/* Cover Image */}
             {blog.featuredImage && (
-              <div className="w-full aspect-[21/9] overflow-hidden">
-                <img
-                  src={cldUrl(blog.featuredImage, { w: 1200 })}
+              <div className="relative w-full aspect-[21/9] overflow-hidden">
+                <OptimizedImage
+                  src={blog.featuredImage}
+                  w={1200}
                   alt={blog.title}
+                  loading="eager"
                   className="w-full h-full object-cover"
-                  decoding="async"
                 />
               </div>
             )}
@@ -246,13 +248,12 @@ const BlogDetail = () => {
                     to={`/blog/${post.slug}`}
                     className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-lg transition-shadow group"
                   >
-                    <div className="aspect-video overflow-hidden">
-                      <img
-                        src={cldUrl(post.featuredImage, { w: 600 }) || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400'}
+                    <div className="relative aspect-video overflow-hidden">
+                      <OptimizedImage
+                        src={post.featuredImage || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400'}
+                        w={600}
                         alt={post.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        loading="lazy"
-                        decoding="async"
                       />
                     </div>
                     <div className="p-4">
