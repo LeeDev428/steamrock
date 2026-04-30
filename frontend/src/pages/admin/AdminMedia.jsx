@@ -3,6 +3,7 @@ import axios from 'axios';
 import AdminLayout from '../../components/admin/AdminLayout';
 import { useToast } from '../../components/Toast';
 import ImageDropzone from '../../components/admin/ImageDropzone';
+import ConfirmModal from '../../components/admin/ConfirmModal';
 import {
   FiFilter,
   FiImage,
@@ -26,6 +27,7 @@ const AdminMedia = () => {
   const [uploading, setUploading] = useState(false);
   const [pendingFiles, setPendingFiles] = useState([]);
   const [selectedIds, setSelectedIds] = useState([]);
+  const [confirmModal, setConfirmModal] = useState({ isOpen: false, title: '', message: '', onConfirm: null });
   const [filters, setFilters] = useState({
     type: '',
     projectCategory: '',
@@ -158,17 +160,22 @@ const AdminMedia = () => {
     setUploading(false);
   };
 
-  const handleDelete = async (file) => {
-    if (!window.confirm('Are you sure you want to delete this file?')) return;
-
-    try {
-      await axios.delete('/upload', { data: { publicId: file.publicId, url: file.url } });
-      await fetchFiles();
-      toast.success('File deleted successfully');
-    } catch (error) {
-      console.error('Delete error:', error);
-      toast.error('Failed to delete file');
-    }
+  const handleDelete = (file) => {
+    setConfirmModal({
+      isOpen: true,
+      title: 'Delete File',
+      message: 'Are you sure you want to permanently delete this file? This action cannot be undone.',
+      onConfirm: async () => {
+        try {
+          await axios.delete('/upload', { data: { publicId: file.publicId, url: file.url } });
+          await fetchFiles();
+          toast.success('File deleted successfully');
+        } catch (error) {
+          console.error('Delete error:', error);
+          toast.error('Failed to delete file');
+        }
+      }
+    });
   };
 
   const handleToggleFile = (fileId) => {
@@ -192,23 +199,27 @@ const AdminMedia = () => {
     setSelectedIds((current) => Array.from(new Set([...current, ...visibleIds])));
   };
 
-  const handleBulkDelete = async () => {
+  const handleBulkDelete = () => {
     if (selectedIds.length === 0) {
       toast.error('Please select files to delete');
       return;
     }
-
-    if (!window.confirm(`Delete ${selectedIds.length} selected file(s)?`)) return;
-
-    try {
-      await axios.delete('/upload/bulk', { data: { ids: selectedIds } });
-      toast.success('Selected files deleted successfully');
-      setSelectedIds([]);
-      await fetchFiles();
-    } catch (error) {
-      console.error('Bulk delete error:', error);
-      toast.error(error.response?.data?.message || 'Failed to delete selected files');
-    }
+    setConfirmModal({
+      isOpen: true,
+      title: 'Delete Selected Files',
+      message: `Are you sure you want to permanently delete ${selectedIds.length} selected file(s)? This action cannot be undone.`,
+      onConfirm: async () => {
+        try {
+          await axios.delete('/upload/bulk', { data: { ids: selectedIds } });
+          toast.success('Selected files deleted successfully');
+          setSelectedIds([]);
+          await fetchFiles();
+        } catch (error) {
+          console.error('Bulk delete error:', error);
+          toast.error(error.response?.data?.message || 'Failed to delete selected files');
+        }
+      }
+    });
   };
 
   const handleAssignImage = async () => {
@@ -587,6 +598,13 @@ const AdminMedia = () => {
         </div>
       )}
     </AdminLayout>
+    <ConfirmModal
+      isOpen={confirmModal.isOpen}
+      title={confirmModal.title}
+      message={confirmModal.message}
+      onConfirm={() => { setConfirmModal(m => ({ ...m, isOpen: false })); confirmModal.onConfirm?.(); }}
+      onCancel={() => setConfirmModal(m => ({ ...m, isOpen: false }))}
+    />
   );
 };
 
