@@ -3,7 +3,7 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import { AnimatedSection } from '../hooks/useScrollAnimation';
 import { FaCalendar, FaUser, FaEye, FaSearch, FaArrowRight, FaPlay, FaYoutube } from 'react-icons/fa';
-import { cldUrl } from '../utils/cloudinary';
+import OptimizedImage from '../components/OptimizedImage';
 
 const Blog = () => {
   const navigate = useNavigate();
@@ -139,12 +139,10 @@ const Blog = () => {
                                   }}
                                   className="relative w-full block overflow-hidden aspect-[4/3] md:aspect-auto md:h-full group"
                                 >
-                                  <img
+                                  <OptimizedImage
                                     src={`https://img.youtube.com/vi/${videoId}/hqdefault.jpg`}
                                     alt={blog.title}
                                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                                    loading="lazy"
-                                    decoding="async"
                                   />
                                   <div className="absolute inset-0 bg-black/30 flex items-center justify-center group-hover:bg-black/40 transition-colors">
                                     <div className="w-14 h-14 bg-red-600 rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
@@ -158,13 +156,12 @@ const Blog = () => {
                           return (
                             <div className="md:w-1/3">
                               <Link to={`/blog/${blog.slug}`}>
-                                <div className="aspect-[4/3] md:aspect-auto md:h-full overflow-hidden">
-                                  <img
-                                    src={cldUrl(blog.featuredImage, { w: 600 }) || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600'}
+                                <div className="relative aspect-[4/3] md:aspect-auto md:h-full overflow-hidden">
+                                  <OptimizedImage
+                                    src={blog.featuredImage || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600'}
+                                    w={600}
                                     alt={blog.title}
                                     className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-                                    loading="lazy"
-                                    decoding="async"
                                   />
                                 </div>
                               </Link>
@@ -296,13 +293,12 @@ const Blog = () => {
                 {recentPosts.map((post) => (
                   <li key={post._id}>
                     <Link to={`/blog/${post.slug}`} className="flex gap-3 group">
-                      <div className="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
-                        <img
-                          src={cldUrl(post.featuredImage, { w: 150 }) || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=150'}
+                      <div className="relative w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
+                        <OptimizedImage
+                          src={post.featuredImage || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=150'}
+                          w={150}
                           alt={post.title}
                           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                          loading="lazy"
-                          decoding="async"
                         />
                       </div>
                       <div>
