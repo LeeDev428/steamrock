@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import { AnimatedSection } from '../hooks/useScrollAnimation';
 import { FaCalendar, FaUser, FaEye, FaArrowLeft, FaFacebook, FaTwitter, FaLinkedin, FaWhatsapp, FaTag, FaYoutube } from 'react-icons/fa';
+import { cldUrl } from '../utils/cloudinary';
 
 const BlogDetail = () => {
   const { slug } = useParams();
@@ -81,7 +82,7 @@ const BlogDetail = () => {
       {/* Hero Banner */}
       <div
         className="relative h-40 md:h-56 overflow-hidden bg-gradient-to-br from-primary to-secondary"
-        style={heroThumb ? { backgroundImage: `url(${heroThumb})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}
+        style={heroThumb ? { backgroundImage: `url(${cldUrl(heroThumb, { w: 1200 })})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}
       >
         <div className="absolute inset-0 bg-black/40" />
       </div>
@@ -105,9 +106,10 @@ const BlogDetail = () => {
             {blog.featuredImage && (
               <div className="w-full aspect-[21/9] overflow-hidden">
                 <img
-                  src={blog.featuredImage}
+                  src={cldUrl(blog.featuredImage, { w: 1200 })}
                   alt={blog.title}
                   className="w-full h-full object-cover"
+                  decoding="async"
                 />
               </div>
             )}
@@ -246,9 +248,11 @@ const BlogDetail = () => {
                   >
                     <div className="aspect-video overflow-hidden">
                       <img
-                        src={post.featuredImage || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400'}
+                        src={cldUrl(post.featuredImage, { w: 600 }) || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400'}
                         alt={post.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        loading="lazy"
+                        decoding="async"
                       />
                     </div>
                     <div className="p-4">
