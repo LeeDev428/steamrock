@@ -96,6 +96,9 @@ const Blog = () => {
     });
   };
 
+  const totalPages = Math.ceil(blogs.length / PAGE_SIZE);
+  const pagedBlogs = blogs.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+
   return (
     <div className="pt-20 min-h-screen bg-gray-50">
       {/* Hero Section */}
