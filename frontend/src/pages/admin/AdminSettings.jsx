@@ -4,7 +4,7 @@ import AdminLayout from '../../components/admin/AdminLayout';
 import { useToast } from '../../components/Toast';
 import ImageDropzone from '../../components/admin/ImageDropzone';
 import { FiSave, FiPlus, FiTrash2, FiImage, FiVideo } from 'react-icons/fi';
-import { cldUrl } from '../../utils/cloudinary';
+import OptimizedImage from '../../components/OptimizedImage';
 
 const AdminSettings = () => {
   const toast = useToast();
@@ -269,7 +269,9 @@ const AdminSettings = () => {
                               ) : (
                                 <div className="space-y-2">
                                   {item.url ? (
-                                    <img src={cldUrl(item.url, { w: 200 })} alt="" className="w-16 h-10 object-cover rounded" loading="lazy" decoding="async" />
+                                    <div className="relative w-16 h-10 overflow-hidden rounded">
+                                      <OptimizedImage src={item.url} w={200} alt="" className="w-full h-full object-cover" />
+                                    </div>
                                   ) : (
                                     <div className="w-16 h-10 bg-gray-100 rounded flex items-center justify-center">
                                       <FiImage className="w-5 h-5 text-gray-400" />
@@ -475,7 +477,9 @@ const AdminSettings = () => {
                         {cat === 'BeachTowns' ? 'Beach Towns' : cat}
                       </label>
                       {settings.categoryBanners?.[cat] && (
-                        <img src={cldUrl(settings.categoryBanners[cat], { w: 600 })} alt={cat} className="w-full h-24 object-cover rounded-lg mb-3" loading="lazy" decoding="async" />
+                        <div className="relative overflow-hidden rounded-lg mb-3 h-24">
+                          <OptimizedImage src={settings.categoryBanners[cat]} w={600} alt={cat} className="w-full h-full object-cover" />
+                        </div>
                       )}
                       <div className="flex gap-2">
                         <input
