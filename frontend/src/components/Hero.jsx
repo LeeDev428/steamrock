@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { FaChevronLeft, FaChevronRight, FaPlay } from 'react-icons/fa';
+import { cldUrl } from '../utils/cloudinary';
 
 const DEFAULT_SLIDES = [
   {
@@ -81,7 +82,7 @@ const Hero = () => {
             <div
               className="absolute inset-0 bg-cover bg-center transition-transform duration-[8000ms] ease-out"
               style={{
-                backgroundImage: `url(${slide.url})`,
+                backgroundImage: `url(${cldUrl(slide.url, { w: 1400 })})`,
                 transform: index === currentSlide ? 'scale(1.05)' : 'scale(1)'
               }}
             />
