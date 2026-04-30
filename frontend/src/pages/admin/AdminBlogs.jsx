@@ -6,6 +6,8 @@ import { useToast } from '../../components/Toast';
 import ImageDropzone from '../../components/admin/ImageDropzone';
 import ConfirmModal from '../../components/admin/ConfirmModal';
 import OptimizedImage from '../../components/OptimizedImage';
+import Pagination from '../../components/Pagination';
+import { cacheGet, cacheSet, cacheBust } from '../../utils/apiCache';
 import { FiPlus, FiEdit2, FiTrash2, FiEye, FiImage, FiFilter, FiFileText, FiCheckCircle, FiClock, FiX, FiYoutube } from 'react-icons/fi';
 
 const AdminBlogs = () => {
@@ -13,6 +15,8 @@ const AdminBlogs = () => {
   const navigate = useNavigate();
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const PAGE_SIZE = 20;
+  const [page, setPage] = useState(1);
   const [showModal, setShowModal] = useState(false);
   const [editing, setEditing] = useState(null);
   const [selectedIds, setSelectedIds] = useState([]);
@@ -44,28 +48,46 @@ const AdminBlogs = () => {
   const statuses = ['Draft', 'Published'];
 
   useEffect(() => {
+    setPage(1);
     fetchBlogs();
   }, [filter]);
 
   const fetchBlogs = async () => {
-    try {
-      const params = new URLSearchParams();
-      if (filter.category) params.append('category', filter.category);
-      if (filter.status) params.append('status', filter.status);
-      
-      const res = await axios.get(`/blogs?${params.toString()}`);
-      const blogsData = Array.isArray(res.data) ? res.data : [];
-      setBlogs(blogsData);
+    const params = new URLSearchParams();
+    if (filter.category) params.append('category', filter.category);
+    if (filter.status) params.append('status', filter.status);
+    const cacheKey = `admin_blogs_${params.toString()}`;
+    const cached = cacheGet(cacheKey);
+    if (cached) {
+      setBlogs(cached.blogs);
+      setStats(cached.stats);
       setSelectedIds([]);
-      
-      // Calculate stats from all blogs (not filtered)
-      const allRes = await axios.get('/blogs');
+      setLoading(false);
+      // Background revalidate
+      Promise.all([axios.get(`/blogs?${params.toString()}`), axios.get('/blogs')])
+        .then(([filteredRes, allRes]) => {
+          const fresh = Array.isArray(filteredRes.data) ? filteredRes.data : [];
+          const all = Array.isArray(allRes.data) ? allRes.data : [];
+          const freshStats = { total: all.length, published: all.filter(b => b.status === 'Published').length, draft: all.filter(b => b.status === 'Draft').length };
+          setBlogs(fresh);
+          setStats(freshStats);
+          cacheSet(cacheKey, { blogs: fresh, stats: freshStats }, 30 * 1000);
+        })
+        .catch(() => {});
+      return;
+    }
+    try {
+      const [filteredRes, allRes] = await Promise.all([
+        axios.get(`/blogs?${params.toString()}`),
+        axios.get('/blogs')
+      ]);
+      const blogsData = Array.isArray(filteredRes.data) ? filteredRes.data : [];
       const allBlogs = Array.isArray(allRes.data) ? allRes.data : [];
-      setStats({
-        total: allBlogs.length,
-        published: allBlogs.filter(b => b.status === 'Published').length,
-        draft: allBlogs.filter(b => b.status === 'Draft').length
-      });
+      const statsData = { total: allBlogs.length, published: allBlogs.filter(b => b.status === 'Published').length, draft: allBlogs.filter(b => b.status === 'Draft').length };
+      setBlogs(blogsData);
+      setStats(statsData);
+      setSelectedIds([]);
+      cacheSet(cacheKey, { blogs: blogsData, stats: statsData }, 30 * 1000);
     } catch (error) {
       console.error('Error fetching blogs:', error);
       setBlogs([]);
