@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const rateLimit = require('express-rate-limit');
 const dotenv = require('dotenv');
 const path = require('path');
 const http = require('http');
