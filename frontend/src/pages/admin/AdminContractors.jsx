@@ -4,7 +4,7 @@ import AdminLayout from '../../components/admin/AdminLayout';
 import { useToast } from '../../components/Toast';
 import ImageDropzone from '../../components/admin/ImageDropzone';
 import ConfirmModal from '../../components/admin/ConfirmModal';
-import { cldUrl } from '../../utils/cloudinary';
+import OptimizedImage from '../../components/OptimizedImage';
 import { FiPlus, FiEdit2, FiTrash2, FiX, FiCheck, FiUpload } from 'react-icons/fi';
 
 const AdminContractors = () => {
@@ -157,7 +157,9 @@ const AdminContractors = () => {
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-3">
                       {contractor?.logo ? (
-                        <img src={cldUrl(contractor.logo, { w: 200 })} alt={contractor.name} className="w-12 h-12 object-contain rounded" loading="lazy" decoding="async" />
+                        <div className="relative w-12 h-12 overflow-hidden rounded flex-shrink-0">
+                          <OptimizedImage src={contractor.logo} w={200} alt={contractor.name} className="w-full h-full object-contain" />
+                        </div>
                       ) : (
                         <div className="w-12 h-12 bg-gray-100 rounded flex items-center justify-center text-gray-400 font-bold">
                           {contractor.name?.charAt(0) || '?'}
@@ -252,7 +254,9 @@ const AdminContractors = () => {
                 <label className="block text-sm font-medium text-gray-700 mb-2">Logo</label>
                 <div className="space-y-3">
                   {formData.logo ? (
-                    <img src={cldUrl(formData.logo, { w: 200 })} alt="Logo" className="w-16 h-16 object-contain border rounded" loading="lazy" decoding="async" />
+                    <div className="relative w-16 h-16 overflow-hidden border rounded">
+                      <OptimizedImage src={formData.logo} w={200} alt="Logo" className="w-full h-full object-contain" />
+                    </div>
                   ) : (
                     <div className="w-16 h-16 bg-gray-100 border rounded flex items-center justify-center text-gray-400">
                       <FiUpload className="w-6 h-6" />
