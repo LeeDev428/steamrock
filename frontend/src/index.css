@@ -248,6 +248,22 @@
     }
   }
 
+  /* ConfirmModal animation */
+  .animate-fade-in-up {
+    animation: fadeInUp 0.2s ease-out;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(12px) scale(0.97);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
   /* Toast animation */
   .animate-slide-in-right {
     animation: toastSlideIn 0.35s ease-out;
