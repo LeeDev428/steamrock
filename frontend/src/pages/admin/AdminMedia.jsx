@@ -4,7 +4,7 @@ import AdminLayout from '../../components/admin/AdminLayout';
 import { useToast } from '../../components/Toast';
 import ImageDropzone from '../../components/admin/ImageDropzone';
 import ConfirmModal from '../../components/admin/ConfirmModal';
-import { cldUrl } from '../../utils/cloudinary';
+import OptimizedImage from '../../components/OptimizedImage';
 import {
   FiFilter,
   FiImage,
@@ -398,8 +398,8 @@ const AdminMedia = () => {
             <div className="grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-6">
               {filteredFiles.map((file) => (
                 <div key={file._id || file.publicId || file.url} className="overflow-hidden rounded-lg border border-gray-200 bg-white transition-colors hover:border-primary">
-                  <div className="aspect-square bg-gray-50">
-                    <img src={cldUrl(file.url, { w: 400 })} alt={file.filename} className="h-full w-full object-cover" loading="lazy" decoding="async" />
+                  <div className="relative aspect-square bg-gray-50">
+                    <OptimizedImage src={file.url} w={400} alt={file.filename} className="h-full w-full object-cover" />
                   </div>
                   <div className="space-y-1 bg-white p-2">
                     <label className="inline-flex items-center gap-2 text-xs text-gray-500">
@@ -503,8 +503,8 @@ const AdminMedia = () => {
               </button>
             </div>
             <div className="space-y-4 p-4">
-              <div className="overflow-hidden rounded-lg border border-gray-200">
-                <img src={cldUrl(assignmentModal.file.url, { w: 800 })} alt={assignmentModal.file.filename} className="h-44 w-full object-cover" decoding="async" />
+              <div className="relative overflow-hidden rounded-lg border border-gray-200">
+                <OptimizedImage src={assignmentModal.file.url} w={800} alt={assignmentModal.file.filename} className="h-44 w-full object-cover" loading="eager" />
               </div>
 
               <div className="flex gap-2">
