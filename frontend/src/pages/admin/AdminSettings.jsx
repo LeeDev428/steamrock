@@ -4,6 +4,7 @@ import AdminLayout from '../../components/admin/AdminLayout';
 import { useToast } from '../../components/Toast';
 import ImageDropzone from '../../components/admin/ImageDropzone';
 import { FiSave, FiPlus, FiTrash2, FiImage, FiVideo } from 'react-icons/fi';
+import { cldUrl } from '../../utils/cloudinary';
 
 const AdminSettings = () => {
   const toast = useToast();
@@ -268,7 +269,7 @@ const AdminSettings = () => {
                               ) : (
                                 <div className="space-y-2">
                                   {item.url ? (
-                                    <img src={item.url} alt="" className="w-16 h-10 object-cover rounded" />
+                                    <img src={cldUrl(item.url, { w: 200 })} alt="" className="w-16 h-10 object-cover rounded" loading="lazy" decoding="async" />
                                   ) : (
                                     <div className="w-16 h-10 bg-gray-100 rounded flex items-center justify-center">
                                       <FiImage className="w-5 h-5 text-gray-400" />
@@ -474,7 +475,7 @@ const AdminSettings = () => {
                         {cat === 'BeachTowns' ? 'Beach Towns' : cat}
                       </label>
                       {settings.categoryBanners?.[cat] && (
-                        <img src={settings.categoryBanners[cat]} alt={cat} className="w-full h-24 object-cover rounded-lg mb-3" />
+                        <img src={cldUrl(settings.categoryBanners[cat], { w: 600 })} alt={cat} className="w-full h-24 object-cover rounded-lg mb-3" loading="lazy" decoding="async" />
                       )}
                       <div className="flex gap-2">
                         <input
