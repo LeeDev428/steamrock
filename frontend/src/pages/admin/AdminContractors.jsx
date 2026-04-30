@@ -5,6 +5,7 @@ import { useToast } from '../../components/Toast';
 import ImageDropzone from '../../components/admin/ImageDropzone';
 import ConfirmModal from '../../components/admin/ConfirmModal';
 import OptimizedImage from '../../components/OptimizedImage';
+import { cacheGet, cacheSet, cacheBust } from '../../utils/apiCache';
 import { FiPlus, FiEdit2, FiTrash2, FiX, FiCheck, FiUpload } from 'react-icons/fi';
 
 const AdminContractors = () => {
@@ -27,9 +28,24 @@ const AdminContractors = () => {
   }, []);
 
   const fetchContractors = async () => {
+    const cached = cacheGet('admin_contractors');
+    if (cached) {
+      setContractors(cached);
+      setLoading(false);
+      axios.get('/contractors')
+        .then(res => {
+          const fresh = Array.isArray(res.data) ? res.data : res.data.data || [];
+          setContractors(fresh);
+          cacheSet('admin_contractors', fresh, 30 * 1000);
+        })
+        .catch(() => {});
+      return;
+    }
     try {
       const res = await axios.get('/contractors');
-      setContractors(Array.isArray(res.data) ? res.data : res.data.data || []);
+      const data = Array.isArray(res.data) ? res.data : res.data.data || [];
+      setContractors(data);
+      cacheSet('admin_contractors', data, 30 * 1000);
     } catch (error) {
       console.error('Error fetching contractors:', error);
       setContractors([]);
