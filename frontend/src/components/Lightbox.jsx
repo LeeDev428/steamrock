@@ -1,5 +1,6 @@
 import { useEffect, useCallback } from 'react';
 import { FiX, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { cldUrl } from '../utils/cloudinary';
 
 const Lightbox = ({ images, currentIndex, onClose, onPrev, onNext, onGoTo }) => {
   const handleKey = useCallback((e) => {
@@ -88,7 +89,7 @@ const Lightbox = ({ images, currentIndex, onClose, onPrev, onNext, onGoTo }) => 
                 i === currentIndex ? 'border-white opacity-100' : 'border-transparent opacity-50 hover:opacity-80'
               }`}
             >
-              <img src={img.url} alt="" className="w-full h-full object-cover" />
+              <img src={cldUrl(img.url, { w: 1200 })} alt="" className="w-full h-full object-cover" decoding="async" />
             </button>
           ))}
         </div>
