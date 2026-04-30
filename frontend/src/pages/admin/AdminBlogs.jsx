@@ -4,6 +4,7 @@ import axios from 'axios';
 import AdminLayout from '../../components/admin/AdminLayout';
 import { useToast } from '../../components/Toast';
 import ImageDropzone from '../../components/admin/ImageDropzone';
+import ConfirmModal from '../../components/admin/ConfirmModal';
 import { FiPlus, FiEdit2, FiTrash2, FiEye, FiImage, FiFilter, FiFileText, FiCheckCircle, FiClock, FiX, FiYoutube } from 'react-icons/fi';
 
 const AdminBlogs = () => {
@@ -20,6 +21,7 @@ const AdminBlogs = () => {
     draft: 0
   });
   const [pendingFeaturedImages, setPendingFeaturedImages] = useState([]);
+  const [confirmModal, setConfirmModal] = useState({ isOpen: false, title: '', message: '', onConfirm: null });
   const [filter, setFilter] = useState({
     category: '',
     status: ''
@@ -119,6 +121,14 @@ const AdminBlogs = () => {
     return res.data.url;
   };
 
+  const openConfirm = (title, message, onConfirm) => {
+    setConfirmModal({ isOpen: true, title, message, onConfirm });
+  };
+
+  const closeConfirm = () => {
+    setConfirmModal({ isOpen: false, title: '', message: '', onConfirm: null });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -135,9 +145,11 @@ const AdminBlogs = () => {
       if (editing) {
         const res = await axios.put(`/blogs/${editing}`, payload);
         setBlogs(blogs.map(b => b._id === editing ? res.data : b));
+        toast.success('Blog post updated');
       } else {
         const res = await axios.post('/blogs', payload);
         setBlogs([res.data, ...blogs]);
+        toast.success('Blog post created');
       }
       setShowModal(false);
       setPendingFeaturedImages([]);
@@ -148,17 +160,22 @@ const AdminBlogs = () => {
     }
   };
 
-  const handleDelete = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this blog?')) return;
-    
-    try {
-      await axios.delete(`/blogs/${id}`);
-      setBlogs(blogs.filter(b => b._id !== id));
-      fetchBlogs();
-    } catch (error) {
-      console.error('Error deleting blog:', error);
-      toast.error('Failed to delete blog');
-    }
+  const handleDelete = (id) => {
+    openConfirm(
+      'Delete Blog Post',
+      'Are you sure you want to delete this blog post? This action cannot be undone.',
+      async () => {
+        try {
+          await axios.delete(`/blogs/${id}`);
+          setBlogs(blogs.filter(b => b._id !== id));
+          toast.success('Blog post deleted');
+          fetchBlogs();
+        } catch (error) {
+          console.error('Error deleting blog:', error);
+          toast.error('Failed to delete blog');
+        }
+      }
+    );
   };
 
   const handleToggleBlog = (blogId) => {
@@ -178,18 +195,22 @@ const AdminBlogs = () => {
     setSelectedIds(blogs.map((blog) => blog._id));
   };
 
-  const handleBulkDelete = async () => {
+  const handleBulkDelete = () => {
     if (selectedIds.length === 0) return;
-    if (!window.confirm(`Delete ${selectedIds.length} selected blog post(s)?`)) return;
-
-    try {
-      await axios.delete('/blogs/bulk', { data: { ids: selectedIds } });
-      toast.success('Selected blog posts deleted');
-      fetchBlogs();
-    } catch (error) {
-      console.error('Error deleting selected blogs:', error);
-      toast.error(error.response?.data?.message || 'Failed to delete selected blogs');
-    }
+    openConfirm(
+      'Delete Selected Posts',
+      `Are you sure you want to delete ${selectedIds.length} selected blog post(s)? This action cannot be undone.`,
+      async () => {
+        try {
+          await axios.delete('/blogs/bulk', { data: { ids: selectedIds } });
+          toast.success('Selected blog posts deleted');
+          fetchBlogs();
+        } catch (error) {
+          console.error('Error deleting selected blogs:', error);
+          toast.error(error.response?.data?.message || 'Failed to delete selected blogs');
+        }
+      }
+    );
   };
 
   const getYoutubeId = (url) => {
@@ -615,6 +636,13 @@ const AdminBlogs = () => {
         )}
       </div>
     </AdminLayout>
+    <ConfirmModal
+      isOpen={confirmModal.isOpen}
+      title={confirmModal.title}
+      message={confirmModal.message}
+      onConfirm={() => { closeConfirm(); confirmModal.onConfirm?.(); }}
+      onCancel={closeConfirm}
+    />
   );
 };
 
