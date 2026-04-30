@@ -397,11 +397,28 @@ const ProjectDetail = () => {
 
                 <div className="rounded-lg bg-gray-50 p-6">
                   <h3 className="mb-3 font-semibold text-gray-900">Location</h3>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-gray-600 mb-3">
                     {project.location?.street && `${project.location.street}, `}
                     {project.location?.barangay && `${project.location.barangay}, `}
                     {project.location?.city}, {project.location?.province}
                   </p>
+                  {(project.location?.city || project.location?.province) && (
+                    <div className="rounded overflow-hidden">
+                      <iframe
+                        src={`https://maps.google.com/maps?q=${encodeURIComponent(
+                          [project.location?.street, project.location?.barangay, project.location?.city, project.location?.province]
+                            .filter(Boolean).join(', ') + ', Philippines'
+                        )}&output=embed&z=15`}
+                        width="100%"
+                        height="180"
+                        style={{ border: 0 }}
+                        allowFullScreen=""
+                        loading="lazy"
+                        referrerPolicy="no-referrer-when-downgrade"
+                        title={`${project.name} location`}
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
