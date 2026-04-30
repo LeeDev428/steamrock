@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import OptimizedImage from '../../components/OptimizedImage';
+import { cacheGet, cacheSet } from '../../utils/apiCache';
 import {
   FiArrowDown,
   FiArrowUp,
@@ -89,14 +90,36 @@ const AdminProjectForm = () => {
   }, [id]);
 
   const fetchOptions = async () => {
+    const cached = cacheGet('admin_form_options');
+    if (cached) {
+      setContractors(cached.contractors);
+      setLocations(cached.locations);
+      // Revalidate silently
+      Promise.all([axios.get('/contractors'), axios.get('/locations')])
+        .then(([contractorsRes, locationsRes]) => {
+          const fresh = {
+            contractors: Array.isArray(contractorsRes.data) ? contractorsRes.data : [],
+            locations: Array.isArray(locationsRes.data) ? locationsRes.data : []
+          };
+          setContractors(fresh.contractors);
+          setLocations(fresh.locations);
+          cacheSet('admin_form_options', fresh, 60 * 1000);
+        })
+        .catch(() => {});
+      return;
+    }
     try {
       const [contractorsRes, locationsRes] = await Promise.all([
         axios.get('/contractors'),
         axios.get('/locations')
       ]);
-
-      setContractors(Array.isArray(contractorsRes.data) ? contractorsRes.data : []);
-      setLocations(Array.isArray(locationsRes.data) ? locationsRes.data : []);
+      const data = {
+        contractors: Array.isArray(contractorsRes.data) ? contractorsRes.data : [],
+        locations: Array.isArray(locationsRes.data) ? locationsRes.data : []
+      };
+      setContractors(data.contractors);
+      setLocations(data.locations);
+      cacheSet('admin_form_options', data, 60 * 1000);
     } catch (error) {
       console.error('Error fetching options:', error);
       toast.error('Failed to load project options');
@@ -104,9 +127,23 @@ const AdminProjectForm = () => {
   };
 
   const fetchProject = async () => {
+    const cacheKey = `admin_project_${id}`;
+    const cached = cacheGet(cacheKey);
+    if (cached) {
+      setFormData(normalizeProjectForForm(cached));
+      setLoading(false);
+      axios.get(`/projects/${id}`)
+        .then(res => {
+          setFormData(normalizeProjectForForm(res.data));
+          cacheSet(cacheKey, res.data, 30 * 1000);
+        })
+        .catch(() => {});
+      return;
+    }
     try {
       const res = await axios.get(`/projects/${id}`);
       setFormData(normalizeProjectForForm(res.data));
+      cacheSet(cacheKey, res.data, 30 * 1000);
     } catch (error) {
       console.error('Error fetching project:', error);
       toast.error('Failed to load project');
