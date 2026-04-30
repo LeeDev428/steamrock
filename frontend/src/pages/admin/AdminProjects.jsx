@@ -5,6 +5,8 @@ import AdminLayout from '../../components/admin/AdminLayout';
 import { useToast } from '../../components/Toast';
 import ConfirmModal from '../../components/admin/ConfirmModal';
 import OptimizedImage from '../../components/OptimizedImage';
+import Pagination from '../../components/Pagination';
+import { cacheGet, cacheSet, cacheBust } from '../../utils/apiCache';
 import {
   FiCheckCircle,
   FiClock,
@@ -23,6 +25,8 @@ const AdminProjects = () => {
   const [searchParams] = useSearchParams();
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
+  const PAGE_SIZE = 20;
+  const [page, setPage] = useState(1);
   const [selectedIds, setSelectedIds] = useState([]);
   const [bulkStatus, setBulkStatus] = useState('Draft');
   const [confirmModal, setConfirmModal] = useState({ isOpen: false, title: '', message: '', onConfirm: null });
@@ -48,27 +52,45 @@ const AdminProjects = () => {
   }, [searchParams]);
 
   useEffect(() => {
+    setPage(1);
     fetchProjects();
   }, [filter]);
 
+  const applyProjectsData = (projectsData) => {
+    setProjects(projectsData);
+    setSelectedIds([]);
+    setStats({
+      total: projectsData.length,
+      published: projectsData.filter((project) => project.status === 'Published').length,
+      draft: projectsData.filter((project) => project.status === 'Draft').length,
+      archived: projectsData.filter((project) => project.status === 'Archived').length
+    });
+  };
+
   const fetchProjects = async () => {
+    const params = new URLSearchParams();
+    if (filter.category) params.append('category', filter.category);
+    if (filter.status) params.append('status', filter.status);
+    const cacheKey = `admin_projects_${params.toString()}`;
+    const cached = cacheGet(cacheKey);
+    if (cached) {
+      applyProjectsData(cached);
+      setLoading(false);
+      axios.get(`/projects?${params.toString()}`)
+        .then(res => {
+          const fresh = Array.isArray(res.data) ? res.data : (res.data.data || []);
+          applyProjectsData(fresh);
+          cacheSet(cacheKey, fresh, 30 * 1000);
+        })
+        .catch(() => {});
+      return;
+    }
     setLoading(true);
     try {
-      const params = new URLSearchParams();
-      if (filter.category) params.append('category', filter.category);
-      if (filter.status) params.append('status', filter.status);
-
       const res = await axios.get(`/projects?${params.toString()}`);
       const projectsData = Array.isArray(res.data) ? res.data : (res.data.data || []);
-      setProjects(projectsData);
-      setSelectedIds([]);
-
-      setStats({
-        total: projectsData.length,
-        published: projectsData.filter((project) => project.status === 'Published').length,
-        draft: projectsData.filter((project) => project.status === 'Draft').length,
-        archived: projectsData.filter((project) => project.status === 'Archived').length
-      });
+      applyProjectsData(projectsData);
+      cacheSet(cacheKey, projectsData, 30 * 1000);
     } catch (error) {
       console.error('Error fetching projects:', error);
       toast.error('Failed to fetch projects');
@@ -94,6 +116,7 @@ const AdminProjects = () => {
           await axios.delete(`/projects/${id}`);
           setProjects(projects.filter((project) => project._id !== id));
           setSelectedIds((current) => current.filter((selectedId) => selectedId !== id));
+          cacheBust('admin_projects_');
           toast.success('Project deleted');
         } catch (error) {
           console.error('Error deleting project:', error);
@@ -109,6 +132,7 @@ const AdminProjects = () => {
       setProjects(projects.map((project) =>
         project._id === id ? { ...project, status: newStatus } : project
       ));
+      cacheBust('admin_projects_');
       toast.success('Project status updated');
     } catch (error) {
       console.error('Error updating status:', error);
@@ -141,6 +165,7 @@ const AdminProjects = () => {
       async () => {
         try {
           await axios.delete('/projects/bulk', { data: { ids: selectedIds } });
+          cacheBust('admin_projects_');
           toast.success('Selected projects deleted');
           await fetchProjects();
         } catch (error) {
@@ -159,6 +184,7 @@ const AdminProjects = () => {
         ids: selectedIds,
         status: bulkStatus
       });
+      cacheBust('admin_projects_');
       toast.success('Selected project statuses updated');
       await fetchProjects();
     } catch (error) {
@@ -185,6 +211,9 @@ const AdminProjects = () => {
       default: return 'bg-gray-50 text-gray-700 border-gray-200';
     }
   };
+
+  const totalPages = Math.ceil(projects.length / PAGE_SIZE);
+  const pagedProjects = projects.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   return (
     <>
@@ -340,6 +369,7 @@ const AdminProjects = () => {
               </Link>
             </div>
           ) : (
+            <>
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
@@ -363,7 +393,7 @@ const AdminProjects = () => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
-                  {projects.map((project) => (
+                  {pagedProjects.map((project) => (
                     <tr key={project._id} className="transition-colors hover:bg-gray-50">
                       <td className="px-4 py-4">
                         <input
@@ -463,6 +493,12 @@ const AdminProjects = () => {
                 </tbody>
               </table>
             </div>
+            {totalPages > 1 && (
+              <div className="border-t border-gray-100 px-6 py-4">
+                <Pagination page={page} totalPages={totalPages} onPageChange={setPage} totalItems={projects.length} pageSize={PAGE_SIZE} />
+              </div>
+            )}
+            </>
           )}
         </div>
       </div>
