@@ -7,6 +7,7 @@ import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import { componentHasContent, normalizeProjectForDisplay } from '../utils/projectContent';
 import Lightbox from '../components/Lightbox';
 import OptimizedImage from '../components/OptimizedImage';
+import { cacheGet, cacheSet } from '../utils/apiCache';
 
 const renderComponent = (component, sectionType, textColor, onImageClick) => {
   if (component.type === 'label') {
@@ -142,11 +143,27 @@ const ProjectDetail = () => {
 
   useEffect(() => {
     const fetchProject = async () => {
+      const cacheKey = `project_${slug}`;
+      const cached = cacheGet(cacheKey);
+      if (cached) {
+        setProject(cached);
+        setLoading(false);
+        document.title = `${cached.name} | Streamrock Realty`;
+        axios.get(`/projects/${slug}`)
+          .then(res => {
+            const fresh = normalizeProjectForDisplay(res.data);
+            setProject(fresh);
+            cacheSet(cacheKey, fresh, 10 * 60 * 1000);
+          })
+          .catch(() => {});
+        return;
+      }
       try {
         const res = await axios.get(`/projects/${slug}`);
         const normalized = normalizeProjectForDisplay(res.data);
         setProject(normalized);
         document.title = `${normalized.name} | Streamrock Realty`;
+        cacheSet(cacheKey, normalized, 10 * 60 * 1000);
       } catch (error) {
         console.error('Error fetching project:', error);
       } finally {
