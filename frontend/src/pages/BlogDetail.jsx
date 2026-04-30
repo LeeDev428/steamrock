@@ -18,6 +18,7 @@ const BlogDetail = () => {
     try {
       const res = await axios.get(`/blogs/${slug}`);
       setBlog(res.data);
+      document.title = `${res.data.title} | Streamrock Realty`;
       
       // Fetch related posts from same category
       if (res.data.category) {
@@ -30,6 +31,10 @@ const BlogDetail = () => {
     }
     setLoading(false);
   };
+
+  useEffect(() => {
+    return () => { document.title = 'Streamrock Realty'; };
+  }, []);
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('en-US', {
