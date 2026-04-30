@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Property = require('../models/Property');
+const { protect, adminOnly } = require('../middleware/auth');
 
 // Get all properties
 router.get('/', async (req, res) => {
@@ -33,7 +34,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // Create property
-router.post('/', async (req, res) => {
+router.post('/', protect, adminOnly, async (req, res) => {
   const property = new Property(req.body);
   try {
     const newProperty = await property.save();
@@ -44,7 +45,7 @@ router.post('/', async (req, res) => {
 });
 
 // Update property
-router.put('/:id', async (req, res) => {
+router.put('/:id', protect, adminOnly, async (req, res) => {
   try {
     const property = await Property.findByIdAndUpdate(
       req.params.id,
@@ -61,7 +62,7 @@ router.put('/:id', async (req, res) => {
 });
 
 // Delete property
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', protect, adminOnly, async (req, res) => {
   try {
     const property = await Property.findByIdAndDelete(req.params.id);
     if (!property) {
