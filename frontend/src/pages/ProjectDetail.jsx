@@ -1,12 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { FaChevronLeft, FaEnvelope, FaMapMarkerAlt, FaPhone } from 'react-icons/fa';
 import { FiCheck } from 'react-icons/fi';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import { componentHasContent, normalizeProjectForDisplay } from '../utils/projectContent';
+import Lightbox from '../components/Lightbox';
 
-const renderComponent = (component, sectionType, textColor) => {
+const renderComponent = (component, sectionType, textColor, onImageClick) => {
   if (component.type === 'label') {
     return (
       <span className="text-primary text-sm tracking-[0.3em] uppercase font-medium">
@@ -71,8 +72,21 @@ const renderComponent = (component, sectionType, textColor) => {
     return (
       <div className={`grid gap-4 ${sectionType === 'gallery' ? 'sm:grid-cols-2 xl:grid-cols-3' : 'md:grid-cols-2'}`}>
         {component.images.filter((image) => image?.url).map((image) => (
-          <div key={image.id || image.url} className="overflow-hidden rounded-xl bg-gray-100 shadow-sm">
-            <img src={image.url} alt={image.alt || ''} className="h-64 w-full object-cover" />
+          <div
+            key={image.id || image.url}
+            className="group overflow-hidden rounded-xl bg-gray-100 shadow-sm cursor-zoom-in relative"
+            onClick={() => onImageClick && onImageClick(image.url)}
+          >
+            <img
+              src={image.url}
+              alt={image.alt || ''}
+              className="h-64 w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
+              <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/90 text-gray-800 text-xs font-medium px-3 py-1.5 rounded-full">
+                View
+              </span>
+            </div>
           </div>
         ))}
       </div>
@@ -117,6 +131,8 @@ const ProjectDetail = () => {
   const { slug } = useParams();
   const [project, setProject] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
 
   const [contentRef, contentVisible] = useScrollAnimation();
   const [sidebarRef, sidebarVisible] = useScrollAnimation();
@@ -160,24 +176,56 @@ const ProjectDetail = () => {
   );
   const projectVideoEmbedUrl = getYoutubeEmbedUrl(project.youtubeUrl || '');
 
+  // Collect all images across all sections for the lightbox
+  const allLightboxImages = visibleSections.flatMap((section) =>
+    section.components.flatMap((comp) =>
+      comp.type === 'images' ? comp.images.filter((img) => img?.url) : []
+    )
+  );
+
+  const openLightbox = useCallback((url) => {
+    const idx = allLightboxImages.findIndex((img) => img.url === url);
+    setLightboxIndex(idx >= 0 ? idx : 0);
+    setLightboxOpen(true);
+  }, [allLightboxImages]);
+
+  const closeLightbox = useCallback(() => setLightboxOpen(false), []);
+  const prevImage = useCallback(() => setLightboxIndex((i) => (i - 1 + allLightboxImages.length) % allLightboxImages.length), [allLightboxImages.length]);
+  const nextImage = useCallback(() => setLightboxIndex((i) => (i + 1) % allLightboxImages.length), [allLightboxImages.length]);
+  const goToImage = useCallback((i) => setLightboxIndex(i), []);
+
   return (
     <div>
-      <div className="relative h-[70vh] min-h-[500px]">
+      {/* Hero */}
+      <div className="relative h-[75vh] min-h-[520px] overflow-hidden">
         {project.hero?.image ? (
           <div
-            className="absolute inset-0 bg-cover bg-center"
+            className="absolute inset-0 bg-cover bg-center scale-105"
             style={{ backgroundImage: `url(${project.hero.image})` }}
           />
         ) : project.cardImage ? (
           <div
-            className="absolute inset-0 bg-cover bg-center"
+            className="absolute inset-0 bg-cover bg-center scale-105"
             style={{ backgroundImage: `url(${project.cardImage})` }}
           />
         ) : (
           <div className="absolute inset-0 bg-gray-200" />
         )}
 
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/10" />
+
+        {/* Back link */}
+        <div className="absolute top-6 left-0 right-0">
+          <div className="container-custom">
+            <Link
+              to="/projects"
+              className="inline-flex items-center gap-2 text-white/80 hover:text-white text-sm transition-colors animate-fade-in-delay-1"
+            >
+              <FaChevronLeft className="text-xs" />
+              All Projects
+            </Link>
+          </div>
+        </div>
 
         <div className="absolute bottom-0 left-0 right-0 pb-16">
           <div className="container-custom">
@@ -200,29 +248,29 @@ const ProjectDetail = () => {
         </div>
       </div>
 
-      <div className="bg-gray-900 py-6 text-white">
+      <div className="bg-gray-900 py-5 text-white border-b border-white/5">
         <div className="container-custom">
           <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
             <div>
-              <p className="mb-1 text-sm uppercase tracking-wide text-gray-400">Developer</p>
-              <p className="font-semibold">{project.contractor?.name || 'N/A'}</p>
+              <p className="mb-1 text-xs uppercase tracking-widest text-gray-400">Developer</p>
+              <p className="font-semibold text-sm">{project.contractor?.name || 'N/A'}</p>
             </div>
             <div>
-              <p className="mb-1 text-sm uppercase tracking-wide text-gray-400">Property Type</p>
-              <p className="font-semibold">{project.propertyType}</p>
+              <p className="mb-1 text-xs uppercase tracking-widest text-gray-400">Property Type</p>
+              <p className="font-semibold text-sm">{project.propertyType}</p>
             </div>
             {project.lotSizeRange?.min && (
               <div>
-                <p className="mb-1 text-sm uppercase tracking-wide text-gray-400">Lot Size</p>
-                <p className="font-semibold">
-                  {project.lotSizeRange.min} - {project.lotSizeRange.max} {project.lotSizeRange.unit}
+                <p className="mb-1 text-xs uppercase tracking-widest text-gray-400">Lot Size</p>
+                <p className="font-semibold text-sm">
+                  {project.lotSizeRange.min}–{project.lotSizeRange.max} {project.lotSizeRange.unit}
                 </p>
               </div>
             )}
             {project.totalArea?.value && (
               <div>
-                <p className="mb-1 text-sm uppercase tracking-wide text-gray-400">Total Area</p>
-                <p className="font-semibold">
+                <p className="mb-1 text-xs uppercase tracking-widest text-gray-400">Total Area</p>
+                <p className="font-semibold text-sm">
                   {project.totalArea.value} {project.totalArea.unit}
                 </p>
               </div>
@@ -248,7 +296,7 @@ const ProjectDetail = () => {
                   >
                     {section.components.filter(componentHasContent).map((component) => (
                       <div key={component.id || `${component.type}-${component.content || component.items?.join('-')}`}>
-                        {renderComponent(component, section.sectionType, section.textColor || '#1a202c')}
+                        {renderComponent(component, section.sectionType, section.textColor || '#1a202c', openLightbox)}
                       </div>
                     ))}
                   </section>
@@ -258,30 +306,34 @@ const ProjectDetail = () => {
 
             <div ref={sidebarRef} className={`lg:col-span-1 scroll-fade-up ${sidebarVisible ? 'visible' : ''}`}>
               <div className="sticky top-24 space-y-6">
-                <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-                  <h3 className="mb-4 text-lg font-semibold text-gray-900">Interested in this project?</h3>
-                  <p className="mb-6 text-sm text-gray-600">
+                <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+                  <h3 className="mb-1 text-lg font-semibold text-gray-900">Interested in this project?</h3>
+                  <p className="mb-5 text-sm text-gray-500">
                     Get in touch with our team for more information, site visits, or investment opportunities.
                   </p>
                   <div className="space-y-3">
                     <a
-                      href="tel:+639123456789"
-                      className="flex items-center gap-3 text-gray-600 transition-colors hover:text-primary"
+                      href="tel:+639088856169"
+                      className="flex items-center gap-3 text-gray-600 transition-colors hover:text-primary text-sm"
                     >
-                      <FaPhone className="text-primary" />
+                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
+                        <FaPhone className="text-primary text-xs" />
+                      </div>
                       +63 908 885 6169
                     </a>
                     <a
                       href="mailto:dwllaneta@gmail.com"
-                      className="flex items-center gap-3 text-gray-600 transition-colors hover:text-primary"
+                      className="flex items-center gap-3 text-gray-600 transition-colors hover:text-primary text-sm"
                     >
-                      <FaEnvelope className="text-primary" />
+                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
+                        <FaEnvelope className="text-primary text-xs" />
+                      </div>
                       dwllaneta@gmail.com
                     </a>
                   </div>
                   <Link
                     to="/contact"
-                    className="mt-6 block w-full rounded bg-primary py-3 text-center font-semibold text-white transition-colors hover:bg-secondary"
+                    className="mt-6 block w-full rounded-lg bg-primary py-3 text-center font-semibold text-white transition-colors hover:bg-secondary"
                   >
                     Schedule a Visit
                   </Link>
@@ -330,17 +382,28 @@ const ProjectDetail = () => {
         </div>
       </div>
 
-      <div className="border-t border-gray-200 py-8">
+      <div className="border-t border-gray-100 py-8 bg-gray-50">
         <div className="container-custom">
           <Link
             to="/projects"
-            className="inline-flex items-center gap-2 text-primary hover:text-secondary"
+            className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-primary transition-colors"
           >
-            <FaChevronLeft className="text-sm" />
+            <FaChevronLeft className="text-xs" />
             Back to All Projects
           </Link>
         </div>
       </div>
+
+      {lightboxOpen && allLightboxImages.length > 0 && (
+        <Lightbox
+          images={allLightboxImages}
+          currentIndex={lightboxIndex}
+          onClose={closeLightbox}
+          onPrev={prevImage}
+          onNext={nextImage}
+          onGoTo={goToImage}
+        />
+      )}
     </div>
   );
 };
