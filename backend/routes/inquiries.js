@@ -1,7 +1,17 @@
 const express = require('express');
 const router = express.Router();
+const rateLimit = require('express-rate-limit');
 const Inquiry = require('../models/Inquiry');
 const { protect, adminOnly } = require('../middleware/auth');
+
+// Rate limiter for public inquiry submissions
+const inquiryLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  message: { message: 'Too many submissions. Please try again after 15 minutes.' },
+  standardHeaders: true,
+  legacyHeaders: false
+});
 
 // Get all inquiries
 router.get('/', protect, adminOnly, async (req, res) => {
@@ -27,7 +37,7 @@ router.get('/:id', protect, adminOnly, async (req, res) => {
 });
 
 // Create inquiry
-router.post('/', async (req, res) => {
+router.post('/', inquiryLimiter, async (req, res) => {
   const inquiry = new Inquiry(req.body);
   try {
     const newInquiry = await inquiry.save();
