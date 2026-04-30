@@ -363,10 +363,7 @@ const Properties = () => {
               </p>
             </div>
 
-            {(() => {
-              const totalPages = Math.ceil(properties.length / PAGE_SIZE);
-              const pagedProperties = properties.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
-              return loading ? (
+            {loading ? (
               <div className="flex justify-center items-center h-96">
                 <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-primary"></div>
               </div>
@@ -393,7 +390,7 @@ const Properties = () => {
                   Clear Filters
                 </button>
               </div>
-            )};
+            )}
           </div>
         </div>
       </div>
