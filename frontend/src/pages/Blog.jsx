@@ -129,7 +129,7 @@ const Blog = () => {
               </div>
             ) : (
               <div className="space-y-8">
-                {blogs.map((blog, index) => (
+                {pagedBlogs.map((blog, index) => (
                   <AnimatedSection key={blog._id} animation="fade-in-up" delay={index * 100}>
                     <article
                       onClick={() => navigate(`/blog/${blog.slug}`)}
