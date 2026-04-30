@@ -91,6 +91,7 @@ const AdminLocations = () => {
   };
 
   return (
+    <>
     <AdminLayout>
       <div className="space-y-6">
         {/* Header */}
@@ -269,6 +270,7 @@ const AdminLocations = () => {
       onConfirm={() => { setConfirmModal(m => ({ ...m, isOpen: false })); confirmModal.onConfirm?.(); }}
       onCancel={() => setConfirmModal(m => ({ ...m, isOpen: false }))}
     />
+  </>
   );
 };
 
