@@ -78,12 +78,12 @@ const renderComponent = (component, sectionType, textColor, onImageClick) => {
             className="group overflow-hidden rounded-xl bg-gray-100 shadow-sm cursor-zoom-in relative"
             onClick={() => onImageClick && onImageClick(image.url)}
           >
-            <img
-              src={cldUrl(image.url, { w: 900 })}
+            <OptimizedImage
+              src={image.url}
+              w={900}
               alt={image.alt || ''}
+              loading="eager"
               className="h-64 w-full object-cover transition-transform duration-500 group-hover:scale-105"
-              loading="lazy"
-              decoding="async"
             />
             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
               <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/90 text-gray-800 text-xs font-medium px-3 py-1.5 rounded-full">
