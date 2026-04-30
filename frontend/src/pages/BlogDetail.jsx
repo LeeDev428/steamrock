@@ -5,6 +5,7 @@ import { AnimatedSection } from '../hooks/useScrollAnimation';
 import { FaCalendar, FaUser, FaEye, FaArrowLeft, FaFacebook, FaTwitter, FaLinkedin, FaWhatsapp, FaTag, FaYoutube } from 'react-icons/fa';
 import { cldUrl } from '../utils/cloudinary';
 import OptimizedImage from '../components/OptimizedImage';
+import { cacheGet, cacheSet } from '../utils/apiCache';
 
 const BlogDetail = () => {
   const { slug } = useParams();
@@ -17,17 +18,40 @@ const BlogDetail = () => {
   }, [slug]);
 
   const fetchBlog = async () => {
+    const cacheKey = `blog_${slug}`;
+    const cached = cacheGet(cacheKey);
+    if (cached) {
+      setBlog(cached.blog);
+      setRelatedPosts(cached.related);
+      setLoading(false);
+      document.title = `${cached.blog.title} | Streamrock Realty`;
+      // Revalidate silently
+      axios.get(`/blogs/${slug}`)
+        .then(async res => {
+          setBlog(res.data);
+          if (res.data.category) {
+            const relatedRes = await axios.get(`/blogs?category=${res.data.category}&limit=3`);
+            const related = Array.isArray(relatedRes.data) ? relatedRes.data : [];
+            const filtered = related.filter(p => p._id !== res.data._id).slice(0, 3);
+            setRelatedPosts(filtered);
+            cacheSet(cacheKey, { blog: res.data, related: filtered }, 10 * 60 * 1000);
+          }
+        })
+        .catch(() => {});
+      return;
+    }
     try {
       const res = await axios.get(`/blogs/${slug}`);
       setBlog(res.data);
       document.title = `${res.data.title} | Streamrock Realty`;
-      
-      // Fetch related posts from same category
+      let related = [];
       if (res.data.category) {
         const relatedRes = await axios.get(`/blogs?category=${res.data.category}&limit=3`);
-        const related = Array.isArray(relatedRes.data) ? relatedRes.data : [];
-        setRelatedPosts(related.filter(p => p._id !== res.data._id).slice(0, 3));
+        const relatedData = Array.isArray(relatedRes.data) ? relatedRes.data : [];
+        related = relatedData.filter(p => p._id !== res.data._id).slice(0, 3);
+        setRelatedPosts(related);
       }
+      cacheSet(cacheKey, { blog: res.data, related }, 10 * 60 * 1000);
     } catch (error) {
       console.error('Error fetching blog:', error);
     }
