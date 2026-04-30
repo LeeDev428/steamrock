@@ -249,6 +249,11 @@ const Blog = () => {
                   </AnimatedSection>
                 ))}
               </div>
+              {totalPages > 1 && (
+                <div className="mt-10">
+                  <Pagination page={page} totalPages={totalPages} onPageChange={setPage} totalItems={blogs.length} pageSize={PAGE_SIZE} />
+                </div>
+              )}
             )}
           </div>
 
