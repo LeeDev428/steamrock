@@ -191,6 +191,7 @@ const AdminBlogs = () => {
         try {
           await axios.delete(`/blogs/${id}`);
           setBlogs(blogs.filter(b => b._id !== id));
+          cacheBust('admin_blogs_');
           toast.success('Blog post deleted');
           fetchBlogs();
         } catch (error) {
@@ -226,6 +227,7 @@ const AdminBlogs = () => {
       async () => {
         try {
           await axios.delete('/blogs/bulk', { data: { ids: selectedIds } });
+          cacheBust('admin_blogs_');
           toast.success('Selected blog posts deleted');
           fetchBlogs();
         } catch (error) {
@@ -260,6 +262,9 @@ const AdminBlogs = () => {
     };
     return colors[category] || 'bg-gray-50 text-gray-700';
   };
+
+  const totalPages = Math.ceil(blogs.length / PAGE_SIZE);
+  const pagedBlogs = blogs.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   return (
     <>
