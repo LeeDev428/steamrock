@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import AdminLayout from '../../components/admin/AdminLayout';
+import { cldUrl } from '../../utils/cloudinary';
 import { 
   FiGrid, FiUsers, FiMapPin, FiImage, FiPlus, FiArrowRight, 
   FiCheckCircle, FiClock, FiArchive, FiEye, FiEdit2
@@ -243,9 +244,11 @@ const AdminDashboard = () => {
                           <div className="flex items-center gap-3">
                             {project.cardImage && (
                               <img 
-                                src={project.cardImage} 
+                                src={cldUrl(project.cardImage, { w: 100 })} 
                                 alt={project.name}
                                 className="w-12 h-12 rounded-lg object-cover shadow-sm"
+                                loading="lazy"
+                                decoding="async"
                               />
                             )}
                             <div>
