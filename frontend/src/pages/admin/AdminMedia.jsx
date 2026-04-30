@@ -369,7 +369,7 @@ const AdminMedia = () => {
               <label className="inline-flex items-center gap-2 text-sm text-gray-700">
                 <input
                   type="checkbox"
-                  checked={filteredFiles.length > 0 && filteredFiles.every((file) => selectedIds.includes(file._id))}
+                  checked={pagedFiles.length > 0 && pagedFiles.every((file) => selectedIds.includes(file._id))}
                   onChange={handleToggleAll}
                   className="h-4 w-4 rounded border-gray-300"
                 />
@@ -403,8 +403,9 @@ const AdminMedia = () => {
               </button>
             </div>
           ) : (
+            <>
             <div className="grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-6">
-              {filteredFiles.map((file) => (
+              {pagedFiles.map((file) => (
                 <div key={file._id || file.publicId || file.url} className="overflow-hidden rounded-lg border border-gray-200 bg-white transition-colors hover:border-primary">
                   <div className="relative aspect-square bg-gray-50">
                     <OptimizedImage src={file.url} w={400} alt={file.filename} className="h-full w-full object-cover" />
@@ -441,6 +442,8 @@ const AdminMedia = () => {
                 </div>
               ))}
             </div>
+            <Pagination page={page} totalPages={totalMediaPages} onPageChange={setPage} totalItems={filteredFiles.length} pageSize={PAGE_SIZE} />
+            </>
           )}
         </div>
       </div>
