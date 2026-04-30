@@ -100,11 +100,13 @@ const AdminContractors = () => {
         const res = await axios.put(`/contractors/${editing}`, payload);
         const updatedContractor = res.data.data || res.data;
         setContractors(contractors.map(c => c._id === editing ? updatedContractor : c));
+        cacheBust('admin_contractors');
         toast.success('Contractor updated');
       } else {
         const res = await axios.post('/contractors', payload);
         const newContractor = res.data.data || res.data;
         setContractors([...contractors, newContractor]);
+        cacheBust('admin_contractors');
         toast.success('Contractor created');
       }
       setShowModal(false);
@@ -124,6 +126,7 @@ const AdminContractors = () => {
         try {
           await axios.delete(`/contractors/${id}`);
           setContractors(contractors.filter(c => c._id !== id));
+          cacheBust('admin_contractors');
           toast.success('Contractor deleted');
         } catch (error) {
           console.error('Error deleting contractor:', error);
