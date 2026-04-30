@@ -3,12 +3,17 @@ import { Link, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import { FaMapMarkerAlt, FaFilter, FaTimes } from 'react-icons/fa';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
+import OptimizedImage from '../components/OptimizedImage';
+import Pagination from '../components/Pagination';
+import { cacheGet, cacheSet } from '../utils/apiCache';
 
 const Projects = () => {
   const [searchParams] = useSearchParams();
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [categoryBanner, setCategoryBanner] = useState('');
+  const PAGE_SIZE = 12;
+  const [page, setPage] = useState(1);
   const [filter, setFilter] = useState({
     category: searchParams.get('category') || ''
   });
@@ -27,6 +32,8 @@ const Projects = () => {
   useEffect(() => {
     setFilter({ category: searchParams.get('category') || '' });
   }, [searchParams]);
+
+  useEffect(() => { setPage(1); }, [filter]);
 
   // Fetch category banner from site settings
   useEffect(() => {
@@ -49,9 +56,24 @@ const Projects = () => {
       const params = new URLSearchParams();
       params.append('status', 'Published');
       if (filter.category) params.append('category', filter.category);
-      
+      const cacheKey = `projects_${params.toString()}`;
+      const cached = cacheGet(cacheKey);
+      if (cached) {
+        setProjects(cached);
+        setLoading(false);
+        axios.get(`/projects?${params.toString()}`)
+          .then(res => {
+            const fresh = Array.isArray(res.data) ? res.data : (res.data.data || []);
+            setProjects(fresh);
+            cacheSet(cacheKey, fresh, 5 * 60 * 1000);
+          })
+          .catch(() => {});
+        return;
+      }
       const res = await axios.get(`/projects?${params.toString()}`);
-      setProjects(Array.isArray(res.data) ? res.data : (res.data.data || []));
+      const data = Array.isArray(res.data) ? res.data : (res.data.data || []);
+      setProjects(data);
+      cacheSet(cacheKey, data, 5 * 60 * 1000);
     } catch (error) {
       console.error('Error fetching projects:', error);
     }
@@ -147,15 +169,16 @@ const Projects = () => {
           </div>
         ) : (
           <div ref={gridRef} className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 stagger-children ${gridVisible ? 'visible' : ''}`}>
-            {projects.map((project) => (
+            {pagedProjects.map((project) => (
               <Link
                 key={project._id}
                 to={`/projects/${project.slug}`}
                 className="group"
               >
                 <div className="relative aspect-[4/3] overflow-hidden mb-4">
-                  <img
+                  <OptimizedImage
                     src={project.cardImage || 'https://placehold.co/600x400?text=No+Image'}
+                    w={600}
                     alt={project.name}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
@@ -193,7 +216,11 @@ const Projects = () => {
               </Link>
             ))}
           </div>
-        )}
+          {totalPages > 1 && (
+            <div className="mt-12">
+              <Pagination page={page} totalPages={totalPages} onPageChange={setPage} totalItems={projects.length} pageSize={PAGE_SIZE} />
+            </div>
+          )}
       </div>
     </div>
   );
