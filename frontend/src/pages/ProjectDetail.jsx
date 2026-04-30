@@ -155,6 +155,33 @@ const ProjectDetail = () => {
     return () => { document.title = 'Streamrock Realty'; };
   }, [slug]);
 
+  // Derive data (safe even when project is null — hooks must all run unconditionally)
+  const visibleSections = project
+    ? project.sections.filter((section) =>
+        Array.isArray(section.components) && section.components.some(componentHasContent)
+      )
+    : [];
+  const projectVideoEmbedUrl = getYoutubeEmbedUrl(project?.youtubeUrl || '');
+
+  // Collect all images across all sections for the lightbox
+  const allLightboxImages = visibleSections.flatMap((section) =>
+    section.components.flatMap((comp) =>
+      comp.type === 'images' ? comp.images.filter((img) => img?.url) : []
+    )
+  );
+
+  // All hooks must be declared before any early return
+  const openLightbox = useCallback((url) => {
+    const idx = allLightboxImages.findIndex((img) => img.url === url);
+    setLightboxIndex(idx >= 0 ? idx : 0);
+    setLightboxOpen(true);
+  }, [allLightboxImages]);
+
+  const closeLightbox = useCallback(() => setLightboxOpen(false), []);
+  const prevImage = useCallback(() => setLightboxIndex((i) => (i - 1 + allLightboxImages.length) % allLightboxImages.length), [allLightboxImages.length]);
+  const nextImage = useCallback(() => setLightboxIndex((i) => (i + 1) % allLightboxImages.length), [allLightboxImages.length]);
+  const goToImage = useCallback((i) => setLightboxIndex(i), []);
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center pt-24">
@@ -173,29 +200,6 @@ const ProjectDetail = () => {
       </div>
     );
   }
-
-  const visibleSections = project.sections.filter((section) =>
-    Array.isArray(section.components) && section.components.some(componentHasContent)
-  );
-  const projectVideoEmbedUrl = getYoutubeEmbedUrl(project.youtubeUrl || '');
-
-  // Collect all images across all sections for the lightbox
-  const allLightboxImages = visibleSections.flatMap((section) =>
-    section.components.flatMap((comp) =>
-      comp.type === 'images' ? comp.images.filter((img) => img?.url) : []
-    )
-  );
-
-  const openLightbox = useCallback((url) => {
-    const idx = allLightboxImages.findIndex((img) => img.url === url);
-    setLightboxIndex(idx >= 0 ? idx : 0);
-    setLightboxOpen(true);
-  }, [allLightboxImages]);
-
-  const closeLightbox = useCallback(() => setLightboxOpen(false), []);
-  const prevImage = useCallback(() => setLightboxIndex((i) => (i - 1 + allLightboxImages.length) % allLightboxImages.length), [allLightboxImages.length]);
-  const nextImage = useCallback(() => setLightboxIndex((i) => (i + 1) % allLightboxImages.length), [allLightboxImages.length]);
-  const goToImage = useCallback((i) => setLightboxIndex(i), []);
 
   return (
     <div>
