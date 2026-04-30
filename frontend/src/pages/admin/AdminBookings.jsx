@@ -42,7 +42,9 @@ const AdminBookings = () => {
       if (filter.isRead) params.append('isRead', filter.isRead);
       
       const res = await axios.get(`/bookings?${params.toString()}`);
-      setBookings(Array.isArray(res.data) ? res.data : []);
+      // Handle both paginated { bookings, total } and legacy array response
+      const data = res.data;
+      setBookings(Array.isArray(data) ? data : Array.isArray(data.bookings) ? data.bookings : []);
     } catch (error) {
       console.error('Error fetching bookings:', error);
       setBookings([]);
