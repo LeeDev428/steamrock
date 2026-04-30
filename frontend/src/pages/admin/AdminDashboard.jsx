@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import AdminLayout from '../../components/admin/AdminLayout';
 import OptimizedImage from '../../components/OptimizedImage';
+import { cacheGet, cacheSet } from '../../utils/apiCache';
 import { 
   FiGrid, FiUsers, FiMapPin, FiImage, FiPlus, FiArrowRight, 
   FiCheckCircle, FiClock, FiArchive, FiEye, FiEdit2
@@ -19,31 +20,54 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const applyData = ({ projects, contractors, locations }) => {
+      setStats({
+        projects: {
+          total: projects.length,
+          published: projects.filter(p => p.status === 'Published').length,
+          draft: projects.filter(p => p.status === 'Draft').length,
+          archived: projects.filter(p => p.status === 'Archived').length
+        },
+        contractors: contractors.length,
+        locations: locations.length
+      });
+      setAllProjects(projects);
+      setRecentProjects(projects.slice(0, 6));
+    };
+
     const fetchData = async () => {
+      const cached = cacheGet('admin_dashboard');
+      if (cached) {
+        applyData(cached);
+        setLoading(false);
+        Promise.all([
+          axios.get('/projects'),
+          axios.get('/contractors'),
+          axios.get('/locations')
+        ]).then(([projectsRes, contractorsRes, locationsRes]) => {
+          const fresh = {
+            projects: projectsRes.data.data || projectsRes.data || [],
+            contractors: contractorsRes.data.data || contractorsRes.data || [],
+            locations: locationsRes.data.data || locationsRes.data || []
+          };
+          applyData(fresh);
+          cacheSet('admin_dashboard', fresh, 60 * 1000);
+        }).catch(() => {});
+        return;
+      }
       try {
         const [projectsRes, contractorsRes, locationsRes] = await Promise.all([
           axios.get('/projects'),
           axios.get('/contractors'),
           axios.get('/locations')
         ]);
-
-        const projects = projectsRes.data.data || projectsRes.data || [];
-        const contractors = contractorsRes.data.data || contractorsRes.data || [];
-        const locations = locationsRes.data.data || locationsRes.data || [];
-
-        setStats({
-          projects: {
-            total: projects.length,
-            published: projects.filter(p => p.status === 'Published').length,
-            draft: projects.filter(p => p.status === 'Draft').length,
-            archived: projects.filter(p => p.status === 'Archived').length
-          },
-          contractors: contractors.length,
-          locations: locations.length
-        });
-
-        setAllProjects(projects);
-        setRecentProjects(projects.slice(0, 6));
+        const data = {
+          projects: projectsRes.data.data || projectsRes.data || [],
+          contractors: contractorsRes.data.data || contractorsRes.data || [],
+          locations: locationsRes.data.data || locationsRes.data || []
+        };
+        applyData(data);
+        cacheSet('admin_dashboard', data, 60 * 1000);
       } catch (error) {
         console.error('Error fetching dashboard data:', error);
       }
