@@ -11,6 +11,7 @@ dotenv.config();
 
 const app = express();
 const server = http.createServer(app);
+
 const io = new Server(server, {
   cors: {
     origin: process.env.FRONTEND_URL || 'http://localhost:3000',
@@ -31,16 +32,23 @@ io.on('connection', (socket) => {
 });
 
 // Middleware
+// Trust Render's / other reverse-proxy headers (required for rate limiters & correct IPs)
+app.set('trust proxy', 1);
+
 const allowedOrigins = process.env.ALLOWED_ORIGINS
   ? process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim())
-  : ['http://localhost:3000', 'http://localhost:5173'];
+  : [];
 
 app.use(cors({
   origin: (origin, callback) => {
-    // Allow requests with no origin (e.g. mobile apps, curl)
+    // Allow requests with no Origin (mobile apps, curl, same-origin subresources without crossorigin attr)
     if (!origin) return callback(null, true);
-    if (allowedOrigins.includes(origin)) return callback(null, true);
-    callback(new Error(`CORS: origin '${origin}' not allowed`));
+    // If a strict allowlist is configured, enforce it (but deny quietly — no 500)
+    if (allowedOrigins.length > 0) {
+      return callback(null, allowedOrigins.includes(origin));
+    }
+    // No allowlist configured → allow all origins (dev / initial deploy)
+    callback(null, true);
   },
   credentials: true
 }));
