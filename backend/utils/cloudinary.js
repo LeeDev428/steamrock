@@ -1,8 +1,12 @@
 const cloudinary = require('cloudinary').v2;
 
-const CLOUDINARY_CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME || 'drgu9bfh0';
-const CLOUDINARY_API_KEY = process.env.CLOUDINARY_API_KEY || '592549684146675';
+const CLOUDINARY_CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME;
+const CLOUDINARY_API_KEY = process.env.CLOUDINARY_API_KEY;
 const CLOUDINARY_API_SECRET = process.env.CLOUDINARY_API_SECRET;
+
+if (!CLOUDINARY_CLOUD_NAME || !CLOUDINARY_API_KEY) {
+  console.warn('⚠️ CLOUDINARY_CLOUD_NAME or CLOUDINARY_API_KEY is not set. Uploads will fail until configured in .env');
+}
 
 if (!CLOUDINARY_API_SECRET) {
   console.warn('⚠️ CLOUDINARY_API_SECRET is not set. Uploads will fail until it is configured.');
