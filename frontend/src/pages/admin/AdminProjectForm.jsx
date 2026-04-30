@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import { cldUrl } from '../../utils/cloudinary';
 import {
   FiArrowDown,
   FiArrowUp,
@@ -501,7 +502,7 @@ const AdminProjectForm = () => {
             <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
               {component.images.map((image) => (
                 <div key={image.id} className="overflow-hidden rounded-lg border border-gray-200 bg-gray-50">
-                  <img src={image.url} alt="Section" className="h-40 w-full object-cover" />
+                  <img src={cldUrl(image.url, { w: 400 })} alt="Section" className="h-40 w-full object-cover" loading="lazy" decoding="async" />
                   <div className="flex items-center justify-between px-3 py-2">
                     <p className="truncate text-xs text-gray-500">{image.url}</p>
                     <button
@@ -672,7 +673,7 @@ const AdminProjectForm = () => {
                   <label className="block text-sm font-medium text-gray-700">Card Image</label>
                   <div className="overflow-hidden rounded-lg bg-gray-100">
                     {formData.cardImage ? (
-                      <img src={formData.cardImage} alt="Card" className="h-48 w-full object-cover" />
+                      <img src={cldUrl(formData.cardImage, { w: 600 })} alt="Card" className="h-48 w-full object-cover" loading="lazy" decoding="async" />
                     ) : (
                       <div className="flex h-48 items-center justify-center text-gray-400">
                         <FiImage className="h-10 w-10" />
@@ -692,7 +693,7 @@ const AdminProjectForm = () => {
                   <label className="block text-sm font-medium text-gray-700">Hero Image</label>
                   <div className="overflow-hidden rounded-lg bg-gray-100">
                     {formData.hero.image ? (
-                      <img src={formData.hero.image} alt="Hero" className="h-48 w-full object-cover" />
+                      <img src={cldUrl(formData.hero.image, { w: 600 })} alt="Hero" className="h-48 w-full object-cover" loading="lazy" decoding="async" />
                     ) : (
                       <div className="flex h-48 items-center justify-center text-gray-400">
                         <FiImage className="h-10 w-10" />
