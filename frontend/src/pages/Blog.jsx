@@ -27,10 +27,12 @@ const Blog = () => {
     fetchRecentPosts();
   }, [activeCategory]);
 
-  const fetchBlogs = async () => {
+  const fetchBlogs = async (search = '') => {
+    setLoading(true);
     try {
       const params = new URLSearchParams();
       if (activeCategory) params.append('category', activeCategory);
+      if (search.trim()) params.append('search', search.trim());
       
       const res = await axios.get(`/blogs?${params.toString()}`);
       setBlogs(Array.isArray(res.data) ? res.data : []);
@@ -60,16 +62,7 @@ const Blog = () => {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    if (searchQuery.trim()) {
-      // Filter blogs by search query locally
-      const filtered = blogs.filter(blog => 
-        blog.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        blog.excerpt.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-      setBlogs(filtered);
-    } else {
-      fetchBlogs();
-    }
+    fetchBlogs(searchQuery);
   };
 
   const formatDate = (dateString) => {
