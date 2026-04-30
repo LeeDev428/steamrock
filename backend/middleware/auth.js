@@ -1,7 +1,10 @@
 const jwt = require('jsonwebtoken');
 const Admin = require('../models/Admin');
 
-const JWT_SECRET = process.env.JWT_SECRET || 'steamrock-secret-key-change-in-production';
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) {
+  throw new Error('FATAL: JWT_SECRET environment variable is not set. Set it in backend/.env');
+}
 
 // Generate JWT Token
 const generateToken = (id) => {
