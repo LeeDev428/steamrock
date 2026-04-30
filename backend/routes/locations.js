@@ -6,7 +6,7 @@ const { protect, adminOnly } = require('../middleware/auth');
 // @route   GET /api/locations
 // @desc    Get all locations
 // @access  Private/Admin
-router.get('/', protect, async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const locations = await PropertyLocation.find().sort({ province: 1, city: 1 });
     res.json(locations);
@@ -18,7 +18,7 @@ router.get('/', protect, async (req, res) => {
 // @route   GET /api/locations/:id
 // @desc    Get single location
 // @access  Private/Admin
-router.get('/:id', protect, async (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
     const location = await PropertyLocation.findById(req.params.id);
     if (!location) {
