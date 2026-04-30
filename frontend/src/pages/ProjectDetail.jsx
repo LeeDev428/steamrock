@@ -6,7 +6,7 @@ import { FiCheck } from 'react-icons/fi';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import { componentHasContent, normalizeProjectForDisplay } from '../utils/projectContent';
 import Lightbox from '../components/Lightbox';
-import { cldUrl } from '../utils/cloudinary';
+import OptimizedImage from '../components/OptimizedImage';
 
 const renderComponent = (component, sectionType, textColor, onImageClick) => {
   if (component.type === 'label') {
