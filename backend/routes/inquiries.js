@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const Inquiry = require('../models/Inquiry');
+const { protect, adminOnly } = require('../middleware/auth');
 
 // Get all inquiries
-router.get('/', async (req, res) => {
+router.get('/', protect, adminOnly, async (req, res) => {
   try {
     const inquiries = await Inquiry.find().sort({ createdAt: -1 });
     res.json(inquiries);
@@ -13,7 +14,7 @@ router.get('/', async (req, res) => {
 });
 
 // Get single inquiry
-router.get('/:id', async (req, res) => {
+router.get('/:id', protect, adminOnly, async (req, res) => {
   try {
     const inquiry = await Inquiry.findById(req.params.id);
     if (!inquiry) {
@@ -37,7 +38,7 @@ router.post('/', async (req, res) => {
 });
 
 // Update inquiry status
-router.patch('/:id', async (req, res) => {
+router.patch('/:id', protect, adminOnly, async (req, res) => {
   try {
     const inquiry = await Inquiry.findByIdAndUpdate(
       req.params.id,
