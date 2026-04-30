@@ -6,12 +6,17 @@ import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import OptimizedImage from '../components/OptimizedImage';
 import Pagination from '../components/Pagination';
 import { cacheGet, cacheSet } from '../utils/apiCache';
+import OptimizedImage from '../components/OptimizedImage';
+import Pagination from '../components/Pagination';
+import { cacheGet, cacheSet } from '../utils/apiCache';
 
 const Projects = () => {
   const [searchParams] = useSearchParams();
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [categoryBanner, setCategoryBanner] = useState('');
+  const PAGE_SIZE = 12;
+  const [page, setPage] = useState(1);
   const PAGE_SIZE = 12;
   const [page, setPage] = useState(1);
   const [filter, setFilter] = useState({
@@ -32,6 +37,8 @@ const Projects = () => {
   useEffect(() => {
     setFilter({ category: searchParams.get('category') || '' });
   }, [searchParams]);
+
+  useEffect(() => { setPage(1); }, [filter]);
 
   useEffect(() => { setPage(1); }, [filter]);
 
