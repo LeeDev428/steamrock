@@ -239,6 +239,7 @@ const AdminBlogs = () => {
   };
 
   return (
+    <>
     <AdminLayout>
       <div className="space-y-6">
         {/* Header */}
@@ -643,6 +644,7 @@ const AdminBlogs = () => {
       onConfirm={() => { closeConfirm(); confirmModal.onConfirm?.(); }}
       onCancel={closeConfirm}
     />
+  </>
   );
 };
 
