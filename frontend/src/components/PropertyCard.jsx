@@ -1,4 +1,5 @@
 import { FaBed, FaBath, FaRulerCombined, FaMapMarkerAlt } from 'react-icons/fa';
+import { cldUrl } from '../utils/cloudinary';
 
 const PropertyCard = ({ property }) => {
   const formatPrice = (price) => {
@@ -14,9 +15,11 @@ const PropertyCard = ({ property }) => {
       {/* Image */}
       <div className="relative h-64 overflow-hidden group">
         <img
-          src={property.images?.[0] || 'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=800'}
+          src={cldUrl(property.images?.[0], { w: 600 }) || 'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=600'}
           alt={property.name}
           className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 ease-out"
+          loading="lazy"
+          decoding="async"
         />
         <div className="absolute top-4 right-4 bg-accent text-white px-3 py-1 rounded-full text-sm font-semibold">
           {property.propertyType}
