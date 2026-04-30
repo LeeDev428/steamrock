@@ -82,7 +82,7 @@ const Hero = () => {
             <div
               className="absolute inset-0 bg-cover bg-center transition-transform duration-[8000ms] ease-out"
               style={{
-                backgroundImage: `url(${cldUrl(slide.url, { w: 1400 })})`,
+                backgroundImage: `url(${cldUrl(slide.url, { w: 1920, q: 'auto:best' })})`,
                 transform: index === currentSlide ? 'scale(1.05)' : 'scale(1)'
               }}
             />
