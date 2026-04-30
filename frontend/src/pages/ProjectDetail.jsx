@@ -141,7 +141,9 @@ const ProjectDetail = () => {
     const fetchProject = async () => {
       try {
         const res = await axios.get(`/projects/${slug}`);
-        setProject(normalizeProjectForDisplay(res.data));
+        const normalized = normalizeProjectForDisplay(res.data);
+        setProject(normalized);
+        document.title = `${normalized.name} | Streamrock Realty`;
       } catch (error) {
         console.error('Error fetching project:', error);
       } finally {
@@ -150,6 +152,7 @@ const ProjectDetail = () => {
     };
 
     fetchProject();
+    return () => { document.title = 'Streamrock Realty'; };
   }, [slug]);
 
   if (loading) {
