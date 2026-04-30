@@ -31,21 +31,21 @@ const Footer = () => {
           <div>
             <h4 className="text-white font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-2 text-sm">
-              <li><Link to="/properties" className="hover:text-accent transition-colors">All Properties</Link></li>
+              <li><Link to="/projects" className="hover:text-accent transition-colors">All Projects</Link></li>
               <li><Link to="/about" className="hover:text-accent transition-colors">About Us</Link></li>
-              <li><Link to="/investors" className="hover:text-accent transition-colors">For Investors</Link></li>
+              <li><Link to="/blog" className="hover:text-accent transition-colors">Blog</Link></li>
               <li><Link to="/contact" className="hover:text-accent transition-colors">Contact Us</Link></li>
             </ul>
           </div>
 
-          {/* Property Categories */}
+          {/* Project Categories */}
           <div>
-            <h4 className="text-white font-semibold mb-4">Properties</h4>
+            <h4 className="text-white font-semibold mb-4">Projects</h4>
             <ul className="space-y-2 text-sm">
-              <li><Link to="/properties?category=nuvali" className="hover:text-accent transition-colors">Nuvali Properties</Link></li>
-              <li><Link to="/properties?category=vermosa" className="hover:text-accent transition-colors">Vermosa Properties</Link></li>
-              <li><Link to="/properties?category=southmont" className="hover:text-accent transition-colors">Southmont Properties</Link></li>
-              <li><Link to="/properties?category=batangas" className="hover:text-accent transition-colors">Batangas Beach</Link></li>
+              <li><Link to="/projects?category=Parks" className="hover:text-accent transition-colors">Parks</Link></li>
+              <li><Link to="/projects?category=BeachTowns" className="hover:text-accent transition-colors">Beach Towns</Link></li>
+              <li><Link to="/projects?category=Shores" className="hover:text-accent transition-colors">Shores</Link></li>
+              <li><Link to="/projects?category=Peaks" className="hover:text-accent transition-colors">Peaks</Link></li>
             </ul>
           </div>
 
