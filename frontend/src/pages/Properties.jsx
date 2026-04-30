@@ -258,6 +258,9 @@ const Properties = () => {
     });
   };
 
+  const totalPages = Math.ceil(properties.length / PAGE_SIZE);
+  const pagedProperties = properties.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+
   return (
     <div className="pt-20 min-h-screen bg-light">
       {/* Page Header */}
