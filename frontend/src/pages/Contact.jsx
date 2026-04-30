@@ -72,7 +72,7 @@ const Contact = () => {
             {/* Map */}
             <div className="bg-white rounded-lg shadow-lg overflow-hidden h-96">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3862.803019063658!2d121.0419!3d14.4180!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397d1a3f826f54b%3A0x2e2d79eb1a2afb4e!2sPutatan%2C%20Muntinlupa%2C%20Metro%20Manila!5e0!3m2!1sen!2sph!4v1741000000000"
+                src="https://maps.google.com/maps?q=Blk+8+Lot+3+Iris+St+Camella+Homes+I+Putatan+Muntinlupa+City+1770+Philippines&output=embed&z=17"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
