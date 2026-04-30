@@ -4,7 +4,7 @@ import axios from 'axios';
 import AdminLayout from '../../components/admin/AdminLayout';
 import { useToast } from '../../components/Toast';
 import ConfirmModal from '../../components/admin/ConfirmModal';
-import { cldUrl } from '../../utils/cloudinary';
+import OptimizedImage from '../../components/OptimizedImage';
 import {
   FiCheckCircle,
   FiClock,
@@ -375,9 +375,9 @@ const AdminProjects = () => {
                       </td>
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-4">
-                          <div className="h-16 w-20 flex-shrink-0 overflow-hidden rounded-lg bg-gray-100">
+                          <div className="relative h-16 w-20 flex-shrink-0 overflow-hidden rounded-lg bg-gray-100">
                             {project.cardImage ? (
-                              <img src={cldUrl(project.cardImage, { w: 400 })} alt={project.name} className="h-full w-full object-cover" loading="lazy" decoding="async" />
+                              <OptimizedImage src={project.cardImage} w={400} alt={project.name} className="h-full w-full object-cover" />
                             ) : (
                               <div className="flex h-full w-full items-center justify-center text-gray-400">
                                 <FiImage className="h-7 w-7" />
