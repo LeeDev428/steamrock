@@ -1,19 +1,6 @@
 const mongoose = require('mongoose');
 
 const PropertyLocationSchema = new mongoose.Schema({
-  street: {
-    type: String,
-    trim: true
-  },
-  village: {
-    type: String,
-    trim: true
-  },
-  barangay: {
-    type: String,
-    required: [true, 'Barangay is required'],
-    trim: true
-  },
   city: {
     type: String,
     required: [true, 'City/Municipality is required'],
@@ -24,10 +11,16 @@ const PropertyLocationSchema = new mongoose.Schema({
     required: [true, 'Province is required'],
     trim: true
   },
-  postalCode: {
+  // Full address string pasted from Google Maps (e.g. "XVHJ+7GQ, Diokno Hwy, Lemery, Batangas, Philippines")
+  mapQuery: {
     type: String,
     trim: true
   },
+  // Legacy fields kept for backward compatibility
+  street: { type: String, trim: true },
+  village: { type: String, trim: true },
+  barangay: { type: String, trim: true },
+  postalCode: { type: String, trim: true },
   coordinates: {
     lat: Number,
     lng: Number
