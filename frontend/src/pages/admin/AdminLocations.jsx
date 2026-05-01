@@ -13,12 +13,9 @@ const AdminLocations = () => {
   const [editing, setEditing] = useState(null);
   const [confirmModal, setConfirmModal] = useState({ isOpen: false, title: '', message: '', onConfirm: null });
   const [formData, setFormData] = useState({
-    street: '',
-    village: '',
-    barangay: '',
     city: '',
     province: '',
-    postalCode: ''
+    mapQuery: ''
   });
 
   useEffect(() => {
@@ -39,16 +36,13 @@ const AdminLocations = () => {
     if (location) {
       setEditing(location._id);
       setFormData({
-        street: location.street || '',
-        village: location.village || '',
-        barangay: location.barangay || '',
         city: location.city || '',
         province: location.province || '',
-        postalCode: location.postalCode || ''
+        mapQuery: location.mapQuery || ''
       });
     } else {
       setEditing(null);
-      setFormData({ street: '', village: '', barangay: '', city: '', province: '', postalCode: '' });
+      setFormData({ city: '', province: '', mapQuery: '' });
     }
     setShowModal(true);
   };
@@ -131,8 +125,7 @@ const AdminLocations = () => {
                   <tr>
                     <th className="px-6 py-4 text-left text-sm font-medium text-gray-500">City</th>
                     <th className="px-6 py-4 text-left text-sm font-medium text-gray-500">Province</th>
-                    <th className="px-6 py-4 text-left text-sm font-medium text-gray-500">Barangay</th>
-                    <th className="px-6 py-4 text-left text-sm font-medium text-gray-500">Postal Code</th>
+                    <th className="px-6 py-4 text-left text-sm font-medium text-gray-500">Google Maps Address</th>
                     <th className="px-6 py-4 text-right text-sm font-medium text-gray-500">Actions</th>
                   </tr>
                 </thead>
@@ -141,8 +134,9 @@ const AdminLocations = () => {
                     <tr key={location._id} className="hover:bg-gray-50">
                       <td className="px-6 py-4 font-medium text-gray-800">{location.city}</td>
                       <td className="px-6 py-4 text-gray-600">{location.province}</td>
-                      <td className="px-6 py-4 text-gray-600">{location.barangay || '-'}</td>
-                      <td className="px-6 py-4 text-gray-600">{location.postalCode || '-'}</td>
+                      <td className="px-6 py-4 text-gray-500 text-sm max-w-xs truncate" title={location.mapQuery}>
+                        {location.mapQuery || <span className="italic text-gray-400">Not set</span>}
+                      </td>
                       <td className="px-6 py-4">
                         <div className="flex items-center justify-end gap-2">
                           <button
@@ -185,39 +179,13 @@ const AdminLocations = () => {
             </div>
             <form onSubmit={handleSubmit} className="p-4 space-y-4">
               <div className="grid grid-cols-2 gap-4">
-                <div className="col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Street Address</label>
-                  <input
-                    type="text"
-                    value={formData.street}
-                    onChange={(e) => setFormData({ ...formData, street: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Village/Subdivision</label>
-                  <input
-                    type="text"
-                    value={formData.village}
-                    onChange={(e) => setFormData({ ...formData, village: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Barangay</label>
-                  <input
-                    type="text"
-                    value={formData.barangay}
-                    onChange={(e) => setFormData({ ...formData, barangay: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                  />
-                </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">City *</label>
                   <input
                     type="text"
                     value={formData.city}
                     onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+                    placeholder="e.g. Lemery"
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                     required
                   />
@@ -228,18 +196,21 @@ const AdminLocations = () => {
                     type="text"
                     value={formData.province}
                     onChange={(e) => setFormData({ ...formData, province: e.target.value })}
+                    placeholder="e.g. Batangas"
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                     required
                   />
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Postal Code</label>
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Google Maps Address</label>
                   <input
                     type="text"
-                    value={formData.postalCode}
-                    onChange={(e) => setFormData({ ...formData, postalCode: e.target.value })}
+                    value={formData.mapQuery}
+                    onChange={(e) => setFormData({ ...formData, mapQuery: e.target.value })}
+                    placeholder="Paste from Google Maps, e.g. XVHJ+7GQ, Diokno Hwy, Lemery, Batangas, Philippines"
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                   />
+                  <p className="mt-1 text-xs text-gray-500">Copy the address from Google Maps (including Plus Codes) for a precise pin on the map.</p>
                 </div>
               </div>
               <div className="flex items-center justify-end gap-3 pt-4 border-t">
