@@ -35,8 +35,6 @@ const Projects = () => {
 
   useEffect(() => { setPage(1); }, [filter]);
 
-  useEffect(() => { setPage(1); }, [filter]);
-
   // Fetch category banner from site settings
   useEffect(() => {
     if (!filter.category) { setCategoryBanner(''); return; }
@@ -81,6 +79,9 @@ const Projects = () => {
     }
     setLoading(false);
   };
+
+  const totalPages = Math.ceil(projects.length / PAGE_SIZE);
+  const pagedProjects = projects.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   return (
     <div className="pt-24 pb-20">
