@@ -92,7 +92,7 @@ const Navbar = () => {
       <div className="border-b border-gray-100">
         <div className="container-custom">
           <div className="flex justify-between items-center h-10 text-xs">
-            <span className="text-gray-500">Premium Real Estate Development</span>
+            <span className="text-gray-500 hidden sm:block">Premium Real Estate Development</span>
             <a href="tel:+639088856169" className="flex items-center gap-1 text-primary hover:text-secondary">
               <FaPhone className="text-[10px]" />
               <span>+63 908 885 6169</span>
