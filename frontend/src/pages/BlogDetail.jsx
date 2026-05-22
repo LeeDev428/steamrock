@@ -114,18 +114,8 @@ const BlogDetail = () => {
 
       <div className="container-custom py-12">
         <div className="max-w-4xl mx-auto">
-          {/* Back Link */}
-          <AnimatedSection animation="fade-in">
-            <Link
-              to="/blog"
-              className="inline-flex items-center gap-2 text-gray-600 hover:text-primary transition-colors mb-8"
-            >
-              <FaArrowLeft className="text-sm" />
-              Back to Blog
-            </Link>
-          </AnimatedSection>
 
-          {/* Article Header */}
+          {/* Article Header — overlaps hero banner via -mt-16 */}
           <AnimatedSection animation="fade-in-up" className="bg-white rounded-2xl shadow-sm overflow-hidden -mt-16 relative z-10 mb-8">
             {/* Cover Image */}
             {blog.featuredImage && (
@@ -140,7 +130,16 @@ const BlogDetail = () => {
               </div>
             )}
             <div className="p-8 md:p-12">
-              <span className="inline-block px-4 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium mb-4">
+              {/* Back Link — inside card so it's never hidden by -mt-16 overlap */}
+              <Link
+                to="/blog"
+                className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-primary transition-colors mb-6"
+              >
+                <FaArrowLeft className="text-xs" />
+                Back to Blog
+              </Link>
+
+              <span className="block px-4 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium mb-4 w-fit">
                 {blog.category}
               </span>
 
@@ -148,7 +147,7 @@ const BlogDetail = () => {
                 {blog.title}
               </h1>
 
-              <div className="flex flex-wrap items-center gap-6 text-sm text-gray-500 pb-6 border-b border-gray-100">
+              <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 pb-6 border-b border-gray-100">
                 <span className="flex items-center gap-2">
                   <FaUser className="text-primary" />
                   {blog.author?.name || 'Admin'}
