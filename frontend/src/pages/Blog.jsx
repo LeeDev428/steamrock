@@ -215,18 +215,16 @@ const Blog = () => {
                           <p className="text-gray-600 mb-4 line-clamp-2">
                             {blog.excerpt}
                           </p>
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-4 text-sm text-gray-500">
-                              <span className="flex items-center gap-1">
-                                <FaUser className="text-xs" />
-                                {blog.author?.name || 'Admin'}
-                              </span>
-                              <span className="flex items-center gap-1">
-                                <FaEye className="text-xs" />
-                                {blog.views || 0} views
-                              </span>
-                            </div>
-                            <div className="flex items-center gap-3">
+                          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-gray-500 pt-1">
+                            <span className="flex items-center gap-1">
+                              <FaUser className="text-xs" />
+                              {blog.author?.name || 'Admin'}
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <FaEye className="text-xs" />
+                              {blog.views || 0} views
+                            </span>
+                            <div className="flex items-center gap-3 ml-auto">
                               {blog.youtubeUrl && (
                                 <a
                                   href={blog.youtubeUrl}
@@ -241,7 +239,7 @@ const Blog = () => {
                               <Link
                                 to={`/blog/${blog.slug}`}
                                 onClick={(event) => event.stopPropagation()}
-                                className="text-primary font-medium text-sm flex items-center gap-1 hover:gap-2 transition-all"
+                                className="text-primary font-medium text-sm flex items-center gap-1 hover:gap-2 transition-all whitespace-nowrap"
                               >
                                 Read More <FaArrowRight className="text-xs" />
                               </Link>
