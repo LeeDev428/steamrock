@@ -7,6 +7,33 @@ import { cldUrl } from '../utils/cloudinary';
 import OptimizedImage from '../components/OptimizedImage';
 import { cacheGet, cacheSet } from '../utils/apiCache';
 
+const sanitizeBlogHtml = (rawHtml) => {
+  if (!rawHtml || typeof rawHtml !== 'string') return '';
+
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(rawHtml, 'text/html');
+
+  // Remove tags that can affect the whole app layout or execute scripts.
+  doc.querySelectorAll('script, style, link, meta, head, title, base, noscript').forEach((el) => el.remove());
+
+  // Remove inline event handlers and javascript: URLs.
+  doc.querySelectorAll('*').forEach((el) => {
+    Array.from(el.attributes).forEach((attr) => {
+      const name = attr.name.toLowerCase();
+      const value = (attr.value || '').trim();
+      if (name.startsWith('on')) {
+        el.removeAttribute(attr.name);
+        return;
+      }
+      if ((name === 'href' || name === 'src') && /^javascript:/i.test(value)) {
+        el.removeAttribute(attr.name);
+      }
+    });
+  });
+
+  return doc.body?.innerHTML || '';
+};
+
 const BlogDetail = () => {
   const { slug } = useParams();
   const [blog, setBlog] = useState(null);
@@ -101,6 +128,7 @@ const BlogDetail = () => {
   const heroThumb = videoId
     ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`
     : blog.featuredImage || null;
+  const safeContent = sanitizeBlogHtml(blog.content);
 
   return (
     <div className="pt-20 min-h-screen bg-gray-50">
@@ -200,7 +228,7 @@ const BlogDetail = () => {
                 prose-strong:text-gray-900
                 prose-ul:text-gray-600 prose-ol:text-gray-600
                 prose-img:rounded-xl prose-img:shadow-md"
-              dangerouslySetInnerHTML={{ __html: blog.content }}
+              dangerouslySetInnerHTML={{ __html: safeContent }}
             />
 
             {/* Tags */}
