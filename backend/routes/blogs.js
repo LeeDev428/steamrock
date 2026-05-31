@@ -3,6 +3,31 @@ const router = express.Router();
 const Blog = require('../models/Blog');
 const { protect, adminOnly } = require('../middleware/auth');
 
+const normalizeBlogContent = (content) => {
+  if (typeof content !== 'string') return content;
+
+  let normalized = content.trim();
+  const bodyMatch = normalized.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
+  if (bodyMatch && bodyMatch[1]) {
+    normalized = bodyMatch[1];
+  }
+
+  // Strip document-level wrappers and potentially harmful blocks.
+  normalized = normalized
+    .replace(/<!doctype[^>]*>/gi, '')
+    .replace(/<head\b[^<]*(?:(?!<\/head>)<[^<]*)*<\/head>/gi, '')
+    .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '')
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+    .replace(/<link\b[^>]*>/gi, '')
+    .replace(/<meta\b[^>]*>/gi, '')
+    .replace(/<base\b[^>]*>/gi, '')
+    .replace(/<title\b[^<]*(?:(?!<\/title>)<[^<]*)*<\/title>/gi, '')
+    .replace(/<\/?html[^>]*>/gi, '')
+    .replace(/<\/?body[^>]*>/gi, '');
+
+  return normalized.trim();
+};
+
 // @route   GET /api/blogs
 // @desc    Get all blogs (public - only published, admin - all)
 // @access  Public
@@ -110,8 +135,13 @@ router.get('/:slug', async (req, res) => {
 // @access  Private (Admin only)
 router.post('/', protect, adminOnly, async (req, res) => {
   try {
-    const blog = new Blog({
+    const normalizedBody = {
       ...req.body,
+      content: normalizeBlogContent(req.body.content)
+    };
+
+    const blog = new Blog({
+      ...normalizedBody,
       author: req.admin._id
     });
     
@@ -154,9 +184,14 @@ router.delete('/bulk', protect, adminOnly, async (req, res) => {
 // @access  Private (Admin only)
 router.put('/:id', protect, adminOnly, async (req, res) => {
   try {
+    const normalizedBody = {
+      ...req.body,
+      content: normalizeBlogContent(req.body.content)
+    };
+
     const blog = await Blog.findByIdAndUpdate(
       req.params.id,
-      req.body,
+      normalizedBody,
       { new: true, runValidators: true }
     ).populate('author', 'name');
     
